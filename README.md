@@ -23,3 +23,22 @@
 - models.py defines the structure of the database using classes. Includes things like database desing, relationships between data sets, and attribute constraints.
 - views.py provides an interface for all of the views in forms of classes.
 - tests.py used for writing test cases
+- urls.py an array of endpoints that are contained within the application and that can be inherited by the project level directory
+
+## templates
+
+- contains html files
+
+## Pipfile / Pipfile.lock
+
+- These files are used by pipenv
+- You can install pipenv by typing 'pip install pipenv' in your terminal. You do not need to import it to your project.
+- These files are used to keep track of project dependencies/requirements and are an alternative to keeping a 'requirements.txt' file.
+- \[packages\] are python packages that will be used by everyone using the application
+- \[dev-packages\] are python packages that are only used for developing the application.
+- You can use these files by typing "pipenv install" and all of the dependencies will be installed from Pipfile.lock
+
+## requirements.txt
+
+- This is an inferior file to Pipfile/Pipfile.lock that keeps track of project dependencies/requirements
+- You can use this file by typing "pip install -r requirements.txt" and it will install all of the packages specified in the file.
