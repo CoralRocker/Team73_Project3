@@ -5,24 +5,24 @@
 - used as an admin interface for the project after the project has been created using the django-admin commands.
 - So instead of using django-admin, use 'python manage.py (command) (command arguments)' once the project has been created
 
+### Available subcommands
+
 - Type 'manage.py help \<subcommand\>' for help on a specific subcommand.
 
-**Available subcommands:**
-
-### [auth]
+#### [auth]
 
 - changepassword
 - createsuperuser
 
-### [contenttypes]
+#### [contenttypes]
 
 - remove_stale_contenttypes
 
-### [debug_toolbar]
+#### [debug_toolbar]
 
 - debugsqlshell
 
-### [django]
+#### [django]
 
 - check
 - compilemessages
@@ -49,11 +49,11 @@
 - test
 - testserver
 
-### [sessions]
+#### [sessions]
 
 - clearsessions
   
-### [staticfiles]
+#### [staticfiles]
 
 - collectstatic
 - findstatic
