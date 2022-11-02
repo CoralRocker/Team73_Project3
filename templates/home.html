@@ -1,7 +1,6 @@
 <!-- templates/home.html -->
 {% extends 'base.html' %}
 
-{% block content %}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
@@ -15,43 +14,10 @@
   <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
   <link rel="stylesheet" type="text/css" href="style.css" id="page_style"/>
-
   </head>
-  <body>
-    <header class="page_header header">
-      <div class="header_container container">
-        <div class="header_body">
-          <div class="header_leftside">
-            <a href="#" title="" class="header_initials"> SB </a>
-          </div>
-          <div class="header_rightside">
-            <div class="header_menu header-menu">
-              <ul class="header-menu_list">
-                <li class="header-menu_item">
-                    <a href="home.html" title="home" class="header-menu_link"> Home </a>
-                </li>
-                <li class="header-menu_item">
-                    <a href="menu.html" title="espressos" class="header-menu_link"> Espressos </a>
-                </li>
-                <li class="header-menu_item">
-                    <a href="menu.html" title="brewed" class="header-menu_link"> Brewed </a>
-                </li>
-                <li class="header-menu_item">
-                    <a href="menu.html" title="blended" class="header-menu_link"> Blended </a>
-                </li>
-                <li class="header-menu_item">
-                    <a href="menu.html" title="teas" class="header-menu_link"> Teas </a>
-                </li>
-                <li class="header-menu_item">
-                    <a href="menu.html" title="other" class="header-menu_link"> Other </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </header>
 
+  {% block content %}
+  <body>
     <div class="page_intro intro">
       <div class="intro_container container">
         <div class="intro_body">
@@ -65,5 +31,5 @@
 
     <script src="script.js"></script>
   </body>
+  {% endblock content %}
 </html>
-{% endblock content %}

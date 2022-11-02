@@ -7,5 +7,5 @@ class HomePageView(TemplateView):
     
 class MenuPageView(ListView):
     model = Menu
-    template_name = "home.html"
+    template_name = "menu.html"
 

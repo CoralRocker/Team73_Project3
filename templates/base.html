@@ -1,8 +1,49 @@
 <!-- templates/base.html -->
-<header>
-  <a href="{% url 'home' %}">Home</a>
-</header>
-
-{% block content %} 
-
-{% endblock content %}
+<body>
+  <header class="page_header header">
+    <div class="header_container container">
+      <div class="header_body">
+        <div class="header_leftside">
+          <a href="#" title="" class="header_initials"> SB </a>
+        </div>
+        <div class="header_rightside">
+          <div class="header_menu header-menu">
+            <ul class="header-menu_list">
+              <li class="header-menu_item">
+                <a href="{% url 'home' %}" title="home" class="header-menu_link">
+                  Home
+                </a>
+              </li>
+              <li class="header-menu_item">
+                <a href="menu.html" title="espressos" class="header-menu_link">
+                  Espressos
+                </a>
+              </li>
+              <li class="header-menu_item">
+                <a href="menu.html" title="brewed" class="header-menu_link">
+                  Brewed
+                </a>
+              </li>
+              <li class="header-menu_item">
+                <a href="menu.html" title="blended" class="header-menu_link">
+                  Blended
+                </a>
+              </li>
+              <li class="header-menu_item">
+                <a href="menu.html" title="teas" class="header-menu_link">
+                  Teas
+                </a>
+              </li>
+              <li class="header-menu_item">
+                <a href="menu.html" title="other" class="header-menu_link">
+                  Other
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  {% block content %} {% endblock content %}
+</body>
