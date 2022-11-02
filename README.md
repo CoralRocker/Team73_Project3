@@ -20,7 +20,7 @@
 - \_\_init\_\_.py tells the python interpreter that this directory is a package
 - admin.py is used to register models, create superuser, and log in.
 - apps.py includes the application configuration for the app. Most of the time the default configuration is fine.
-- models.py defines the structure of the database using classes. Includes things like database desing, relationships between data sets, and attribute constraints.
+- models.py defines the structure of the database using classes. Includes things like database design, relationships between data sets, and attribute constraints.
 - views.py provides an interface for all of the views in forms of classes.
 - tests.py used for writing test cases
 - urls.py an array of endpoints that are contained within the application and that can be inherited by the project level directory
