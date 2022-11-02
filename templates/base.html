@@ -28,15 +28,16 @@
                   </a>
                 </li>
                 <li class="header-menu_item">
-                  <a href="{% url 'menu' %}" title="home" class="header-menu_link">
+                  <a href="{% url 'menu' %}" title="menu" class="header-menu_link">
                     Menu
                   </a>
                 </li>
                 <li class="header-menu_item">
                   {% if user.is_authenticated %}
-                    <p><a href="{% url 'logout' %}">Log out </a></p>
+                    <p><a href="{% url 'logout' %}" title="logout" class="header-menu_link">Log out </a></p>
                   {% else %}
-                    <a href="{% url 'login' %}">Log In</a>
+                    <a href="{% url 'login' %}" title="login" class="header-menu_link">Log In</a>
+                    <a href="{% url 'signup' %}" title="signup" class="header-menu_link">Sign Up</a>
                   {% endif %}
                 </li>
             </div>

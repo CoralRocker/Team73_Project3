@@ -1,18 +1,18 @@
 from django.contrib import admin
 
 from .models import (
-    Customizations, 
-    Orders, 
-    OrderItems, 
-    Finances, 
-    Inventory, 
-    Menu
+    Customization, 
+    Order, 
+    OrderItem, 
+    Finance, 
+    InventoryItem, 
+    MenuItem
 )
 
 # Register your models here.
-admin.site.register(Customizations)
-admin.site.register(Orders)
-admin.site.register(OrderItems)
-admin.site.register(Finances)
-admin.site.register(Inventory)
-admin.site.register(Menu)
+admin.site.register(Customization)
+admin.site.register(Order)
+admin.site.register(OrderItem)
+admin.site.register(Finance)
+admin.site.register(InventoryItem)
+admin.site.register(MenuItem)
