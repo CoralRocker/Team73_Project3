@@ -79,9 +79,18 @@
 - tests.py used for writing test cases
 - urls.py an array of endpoints that are contained within the application and that can be inherited by the project level directory
 
+## accounts (application directory)
+
+- similar structure to storefront directory
+- used for log in, log out, and sign up functionality
+
 ## templates
 
-- contains html files
+- This is where html files go
+
+## static
+
+- Contains directories for css and js files
 
 ## Pipfile / Pipfile.lock
 
