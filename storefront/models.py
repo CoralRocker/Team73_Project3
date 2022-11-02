@@ -19,8 +19,10 @@ class Customizations(models.Model):
         managed = False
         db_table = 'customizations'
 
+    def __str__(self):
+        return self.name[:50]
 
-
+ 
 class Finances(models.Model):
     date = models.DateField(primary_key=True)
     orders = models.TextField()  # This field type is a guess.
@@ -32,6 +34,9 @@ class Finances(models.Model):
     class Meta:
         managed = False
         db_table = 'finances'
+    
+    def __str__(self):
+        return self.orders[:50]
 
 
 class Inventory(models.Model):
@@ -45,6 +50,9 @@ class Inventory(models.Model):
     class Meta:
         managed = False
         db_table = 'inventory'
+    
+    def __str__(self):
+        return self.name[:50]
 
 
 class Menu(models.Model):
@@ -58,6 +66,9 @@ class Menu(models.Model):
     class Meta:
         managed = False
         db_table = 'menu'
+    
+    def __str__(self):
+        return self.name[:50]
 
 
 class OrderItems(models.Model):
@@ -69,6 +80,9 @@ class OrderItems(models.Model):
     class Meta:
         managed = False
         db_table = 'order_items'
+    
+    def __str__(self):
+        return self.menu_id[:50]
 
 
 class Orders(models.Model):
@@ -81,3 +95,6 @@ class Orders(models.Model):
     class Meta:
         managed = False
         db_table = 'orders'
+    
+    def __str__(self):
+        return self.date[:50]
