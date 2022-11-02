@@ -4,6 +4,54 @@
 
 - used as an admin interface for the project after the project has been created using the django-admin commands.
 - So instead of using django-admin, use 'python manage.py (command) (command arguments)' once the project has been created
+
+- Type 'manage.py help \<subcommand\>' for help on a specific subcommand.
+
+Available subcommands:
+
+[auth]
+    changepassword
+    createsuperuser
+
+[contenttypes]
+    remove_stale_contenttypes
+
+[debug_toolbar]
+    debugsqlshell
+
+[django]
+    check
+    compilemessages
+    createcachetable
+    dbshell
+    diffsettings
+    dumpdata
+    flush
+    inspectdb
+    loaddata
+    makemessages
+    makemigrations
+    migrate
+    optimizemigration
+    sendtestemail
+    shell
+    showmigrations
+    sqlflush
+    sqlmigrate
+    sqlsequencereset
+    squashmigrations
+    startapp
+    startproject
+    test
+    testserver
+
+[sessions]
+    clearsessions
+
+[staticfiles]
+    collectstatic
+    findstatic
+    runserver
   
 ## app (project level directory)
 

@@ -1,28 +1,42 @@
 <!-- templates/base.html -->
-<body>
-  <header class="page_header header">
-    <div class="header_container container">
-      <div class="header_body">
-        <div class="header_leftside">
-          <a href="#" title="" class="header_initials"> SB </a>
-        </div>
-        <div class="header_rightside">
-          <div class="header_menu header-menu">
-            <ul class="header-menu_list">
-              <li class="header-menu_item">
-                <a href="{% url 'home' %}" title="home" class="header-menu_link">
-                  Home
-                </a>
-              </li>
-              <li class="header-menu_item">
-                <a href="{% url 'menu' %}" title="home" class="header-menu_link">
-                  Menu
-                </a>
-              </li>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <title>Starbucks App</title>
+  </head>
+  <body>
+    <header class="page_header header">
+      <div class="header_container container">
+        <div class="header_body">
+          <div class="header_leftside">
+            <a href="{% url 'home' %}" title="" class="header_initials"> SB </a>
+          </div>
+          <div class="header_rightside">
+            <div class="header_menu header-menu">
+              <ul class="header-menu_list">
+                <li class="header-menu_item">
+                  <a href="{% url 'home' %}" title="home" class="header-menu_link">
+                    Home
+                  </a>
+                </li>
+                <li class="header-menu_item">
+                  <a href="{% url 'menu' %}" title="home" class="header-menu_link">
+                    Menu
+                  </a>
+                </li>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </header>
-  {% block content %} {% endblock content %}
-</body>
+    </header>
+    {% block content %} {% endblock content %}
+  </body>
+</html>
+
