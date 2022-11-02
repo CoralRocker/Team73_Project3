@@ -9,49 +9,55 @@
 
 **Available subcommands:**
 
-**[auth]**
-    - changepassword
-    - createsuperuser
+### [auth]
 
-**[contenttypes]**
-    - remove_stale_contenttypes
+- changepassword
+- createsuperuser
 
-**[debug_toolbar]**
-    - debugsqlshell
+### [contenttypes]
 
-**[django]**
-    - check
-    - compilemessages
-    - createcachetable
-    - dbshell
-    - diffsettings
-    - dumpdata
-    - flush
-    - inspectdb
-    - loaddata
-    - makemessages
-    - makemigrations
-    - migrate
-    - optimizemigration
-    - sendtestemail
-    - shell
-    - showmigrations
-    - sqlflush
-    - sqlmigrate
-    - sqlsequencereset
-    - squashmigrations
-    - startapp
-    - startproject
-    - test
-    - testserver
+- remove_stale_contenttypes
 
-**[sessions]**
-    - clearsessions
+### [debug_toolbar]
 
-**[staticfiles]**
-    - collectstatic
-    - findstatic
-    - runserver
+- debugsqlshell
+
+### [django]
+
+- check
+- compilemessages
+- createcachetable
+- dbshell
+- diffsettings
+- dumpdata
+- flush
+- inspectdb
+- loaddata
+- makemessages
+- makemigrations
+- migrate
+- optimizemigration
+- sendtestemail
+- shell
+- showmigrations
+- sqlflush
+- sqlmigrate
+- sqlsequencereset
+- squashmigrations
+- startapp
+- startproject
+- test
+- testserver
+
+### [sessions]
+
+- clearsessions
+  
+### [staticfiles]
+
+- collectstatic
+- findstatic
+- runserver
   
 ## app (project level directory)
 
