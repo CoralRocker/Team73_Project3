@@ -7,51 +7,51 @@
 
 - Type 'manage.py help \<subcommand\>' for help on a specific subcommand.
 
-Available subcommands:
+**Available subcommands:**
 
-[auth]
-    changepassword
-    createsuperuser
+**[auth]**
+    - changepassword
+    - createsuperuser
 
-[contenttypes]
-    remove_stale_contenttypes
+**[contenttypes]**
+    - remove_stale_contenttypes
 
-[debug_toolbar]
-    debugsqlshell
+**[debug_toolbar]**
+    - debugsqlshell
 
-[django]
-    check
-    compilemessages
-    createcachetable
-    dbshell
-    diffsettings
-    dumpdata
-    flush
-    inspectdb
-    loaddata
-    makemessages
-    makemigrations
-    migrate
-    optimizemigration
-    sendtestemail
-    shell
-    showmigrations
-    sqlflush
-    sqlmigrate
-    sqlsequencereset
-    squashmigrations
-    startapp
-    startproject
-    test
-    testserver
+**[django]**
+    - check
+    - compilemessages
+    - createcachetable
+    - dbshell
+    - diffsettings
+    - dumpdata
+    - flush
+    - inspectdb
+    - loaddata
+    - makemessages
+    - makemigrations
+    - migrate
+    - optimizemigration
+    - sendtestemail
+    - shell
+    - showmigrations
+    - sqlflush
+    - sqlmigrate
+    - sqlsequencereset
+    - squashmigrations
+    - startapp
+    - startproject
+    - test
+    - testserver
 
-[sessions]
-    clearsessions
+**[sessions]**
+    - clearsessions
 
-[staticfiles]
-    collectstatic
-    findstatic
-    runserver
+**[staticfiles]**
+    - collectstatic
+    - findstatic
+    - runserver
   
 ## app (project level directory)
 
