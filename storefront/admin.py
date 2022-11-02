@@ -1,6 +1,13 @@
 from django.contrib import admin
 
-from .models import Customizations, Orders, OrderItems, Finances, Inventory, Menu
+from .models import (
+    Customizations, 
+    Orders, 
+    OrderItems, 
+    Finances, 
+    Inventory, 
+    Menu
+)
 
 # Register your models here.
 admin.site.register(Customizations)

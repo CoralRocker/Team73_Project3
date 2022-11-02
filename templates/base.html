@@ -32,11 +32,21 @@
                     Menu
                   </a>
                 </li>
+                <li class="header-menu_item">
+                  {% if user.is_authenticated %}
+                    <p><a href="{% url 'logout' %}">Log out </a></p>
+                  {% else %}
+                    <a href="{% url 'login' %}">Log In</a>
+                  {% endif %}
+                </li>
             </div>
           </div>
         </div>
       </div>
     </header>
+
+    
+
     {% block content %} {% endblock content %}
   </body>
 </html>
