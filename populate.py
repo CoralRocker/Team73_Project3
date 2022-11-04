@@ -15,7 +15,7 @@
 inventory_repopulate = False # Set to true to modify the inventory table
 inventory_append = False # Set to true to append items to the inventory.
 
-menu_repopulate = True # Set to true to modify the menu table
+menu_repopulate = False # Set to true to modify the menu table
 menu_append = False  # Set to true to append data to the menu instead of clearing it
 
 # Repopulation Files. Set these to the path to the TSV file with the data
@@ -97,8 +97,7 @@ if menu_repopulate:
             size = row[4]
             type = row[5]
 
-            item = Menu(name=name, price=price, size=size, type=type)
-            item.save()
+            item = Menu.create(name, price, size, type)
 
             for pair in re.findall('(\(\d+,\s*\d+\))', row[3]):
                 data = re.findall('\d+', pair)
