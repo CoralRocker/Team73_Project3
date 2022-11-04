@@ -27,8 +27,16 @@ a{
     text-decoration: none;
 }
 
+a:hover {
+    color: var(--starbucks-green);
+}
+
 ul{
     list-style: none;
+}
+
+.btn-success {
+    background-color: var(--starbucks-green);
 }
 
 .container {
@@ -123,9 +131,11 @@ ul{
     transition: .3s;
     opacity: 0;
 }
+
 .header_bxmenu{
     display: none;
 }
+
 .header_bxmenu-menu{
     margin-left: 10px;
     font-size: 26px;
@@ -141,6 +151,7 @@ ul{
     display: flex;
     align-items: center;
 }
+
 .intro_body{
     display: flex;
     align-items: center;
