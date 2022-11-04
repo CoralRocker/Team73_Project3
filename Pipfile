@@ -6,6 +6,9 @@ name = "pypi"
 [packages]
 django = "*"
 django-debug-toolbar = "*"
+psycopg2-binary = "*"
+django-crispy-forms = "*"
+django-unicorn = "*"
 
 [dev-packages]
 

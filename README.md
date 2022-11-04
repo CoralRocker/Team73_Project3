@@ -4,6 +4,60 @@
 
 - used as an admin interface for the project after the project has been created using the django-admin commands.
 - So instead of using django-admin, use 'python manage.py (command) (command arguments)' once the project has been created
+
+### Available subcommands
+
+- Type 'manage.py help \<subcommand\>' for help on a specific subcommand.
+
+#### [auth]
+
+- changepassword
+- createsuperuser
+
+#### [contenttypes]
+
+- remove_stale_contenttypes
+
+#### [debug_toolbar]
+
+- debugsqlshell
+
+#### [django]
+
+- check
+- compilemessages
+- createcachetable
+- dbshell
+- diffsettings
+- dumpdata
+- flush
+- inspectdb
+- loaddata
+- makemessages
+- makemigrations
+- migrate
+- optimizemigration
+- sendtestemail
+- shell
+- showmigrations
+- sqlflush
+- sqlmigrate
+- sqlsequencereset
+- squashmigrations
+- startapp
+- startproject
+- test
+- testserver
+
+#### [sessions]
+
+- clearsessions
+  
+#### [staticfiles]
+
+- collectstatic
+- findstatic
+- runserver
   
 ## app (project level directory)
 
@@ -25,9 +79,18 @@
 - tests.py used for writing test cases
 - urls.py an array of endpoints that are contained within the application and that can be inherited by the project level directory
 
+## accounts (application directory)
+
+- similar structure to storefront directory
+- used for log in, log out, and sign up functionality
+
 ## templates
 
-- contains html files
+- This is where html files go
+
+## static
+
+- Contains directories for css and js files
 
 ## Pipfile / Pipfile.lock
 

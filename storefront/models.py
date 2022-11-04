@@ -7,7 +7,7 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
-class Customizations(models.Model):
+class Customization(models.Model):
     id = models.BigAutoField(primary_key=True)
     cost = models.TextField()  # This field type is a guess.
     type = models.TextField()
@@ -22,7 +22,7 @@ class Customizations(models.Model):
         return self.name[:50]
 
  
-class Finances(models.Model):
+class Finance(models.Model):
     date = models.DateField(primary_key=True)
     orders = models.TextField()  # This field type is a guess.
     revenue = models.DecimalField(max_digits=65535, decimal_places=65535)
@@ -37,7 +37,7 @@ class Finances(models.Model):
         return self.orders[:50]
 
 
-class Inventory(models.Model):
+class InventoryItem(models.Model):
     id = models.BigIntegerField(primary_key=True)
     name = models.TextField()
     price = models.DecimalField(max_digits=65535, decimal_places=65535)
@@ -52,7 +52,7 @@ class Inventory(models.Model):
         return self.name[:50]
 
 
-class Menu(models.Model):
+class MenuItem(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.TextField()
     price = models.DecimalField(max_digits=65535, decimal_places=65535)
@@ -67,7 +67,7 @@ class Menu(models.Model):
         return self.name[:50]
 
 
-class OrderItems(models.Model):
+class OrderItem(models.Model):
     id = models.BigAutoField(primary_key=True)
     order = models.ForeignKey('Orders', models.CASCADE, null=False, related_name='items')
     menu_item = models.ForeignKey(Menu, models.CASCADE, null=False) # models.BigIntegerField(blank=True, null=True)
@@ -81,7 +81,7 @@ class OrderItems(models.Model):
         return self.menu_id[:50]
 
 
-class Orders(models.Model):
+class Order(models.Model):
     id = models.BigAutoField(primary_key=True)
     cashier = models.TextField(blank=True, null=True)
     date = models.DateField(blank=True, null=True)
