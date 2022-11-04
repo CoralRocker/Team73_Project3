@@ -69,9 +69,9 @@ class MenuItem(models.Model):
 
 class OrderItem(models.Model):
     id = models.BigAutoField(primary_key=True)
-    order = models.ForeignKey('Orders', models.CASCADE, null=False, related_name='items')
-    menu_item = models.ForeignKey(Menu, models.CASCADE, null=False) # models.BigIntegerField(blank=True, null=True)
-    customizations = models.ManyToManyField(Customizations) # models.TextField(blank=True, null=True)  # This field type is a guess.
+    order = models.ForeignKey('Order', models.CASCADE, null=False, related_name='items')
+    menu_item = models.ForeignKey(MenuItem , models.CASCADE, null=False) # models.BigIntegerField(blank=True, null=True)
+    customizations = models.ManyToManyField(Customization) # models.TextField(blank=True, null=True)  # This field type is a guess.
     amount = models.IntegerField(blank=False, null=False)
 
     class Meta:
