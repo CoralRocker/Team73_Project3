@@ -17,7 +17,7 @@
       integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
     <title>{% block title %}Starbucks App{% endblock title %}</title>
   </head>
   
@@ -47,7 +47,12 @@
                     <a href="{% url 'logout' %}" title="logout" class="header-menu_link">Log out</a>
                   {% else %}
                     <a href="{% url 'login' %}" title="login" class="header-menu_link">Log In</a>
-                    <a href="{% url 'signup' %}" title="signup" class="header-menu_link">Sign Up</a>
+                  {% endif %}
+                </li>
+                <li class="header-menu_item">
+                  {% if user.is_authenticated%}
+                  {% else %}
+                    <a class="btn btn-success" href="{% url 'signup' %}" title="signup" class="header-menu_link">Sign Up</a>
                   {% endif %}
                 </li>
             </div>
