@@ -16,7 +16,6 @@ class Customizations(models.Model):
     ingredient = models.IntegerField()
 
     class Meta:
-        managed = False
         db_table = 'customizations'
 
     def __str__(self):
@@ -32,7 +31,6 @@ class Finances(models.Model):
     inventory_usage = models.TextField()  # This field type is a guess.
 
     class Meta:
-        managed = False
         db_table = 'finances'
     
     def __str__(self):
@@ -48,7 +46,6 @@ class Inventory(models.Model):
     amount_per_unit = models.FloatField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'inventory'
     
     def __str__(self):
@@ -64,7 +61,6 @@ class Menu(models.Model):
     type = models.TextField()
 
     class Meta:
-        managed = False
         db_table = 'menu'
     
     def __str__(self):
@@ -73,12 +69,12 @@ class Menu(models.Model):
 
 class OrderItems(models.Model):
     id = models.BigAutoField(primary_key=True)
-    menu_id = models.BigIntegerField(blank=True, null=True)
-    customizations = models.TextField(blank=True, null=True)  # This field type is a guess.
-    amount = models.IntegerField(blank=True, null=True)
+    order = models.ForeignKey('Orders', models.CASCADE, null=False, related_name='items')
+    menu_item = models.ForeignKey(Menu, models.CASCADE, null=False) # models.BigIntegerField(blank=True, null=True)
+    customizations = models.ManyToManyField(Customizations) # models.TextField(blank=True, null=True)  # This field type is a guess.
+    amount = models.IntegerField(blank=False, null=False)
 
     class Meta:
-        managed = False
         db_table = 'order_items'
     
     def __str__(self):
@@ -90,10 +86,9 @@ class Orders(models.Model):
     cashier = models.TextField(blank=True, null=True)
     date = models.DateField(blank=True, null=True)
     price = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
-    items = models.TextField(blank=True, null=True)  # This field type is a guess.
+    # items = models.TextField(blank=True, null=True)  # This field type is a guess.
 
     class Meta:
-        managed = False
         db_table = 'orders'
     
     def __str__(self):
