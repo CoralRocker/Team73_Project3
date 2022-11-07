@@ -19,6 +19,7 @@
     />
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
     <title>{% block title %}Starbucks App{% endblock title %}</title>
+    {% block extrahead %} {% endblock extrahead %}
   </head>
   
   <body>
@@ -63,7 +64,9 @@
 
     
 
-    {% block content %} {% endblock content %}
+    {% block content %} 
+
+    {% endblock content %}
   </body>
 </html>
 
