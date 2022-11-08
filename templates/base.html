@@ -56,6 +56,11 @@
                     <a class="btn btn-success" href="{% url 'signup' %}" title="signup" class="header-menu_link">Sign Up</a>
                   {% endif %}
                 </li>
+                <li class="header-menu_item">
+                  {% if user.is_staff %}
+                    <a href="/base/analytics" title="analytics" class="header-menu_link">Analytics</a>
+                  {% endif %}
+                </li>
             </div>
           </div>
         </div>
