@@ -9,7 +9,6 @@
     --basic-text-color: #484848;
 }
 
-/* water mode (regular/light mode) */
 *{
     margin: 0;
     padding: 0;
@@ -80,7 +79,7 @@ ul{
 
 .header {
     padding: 0;
-    height: 5vh;
+    height: 5%;
     background: var(--white-color);
     box-shadow: 0px -2px 10px rgba(0,0,0,.1);
     transition: .3s;
@@ -180,7 +179,7 @@ ul{
 
 .intro_title {
     font-weight: 600;
-    font-size: 64px;
+    font-size: 60px;
     line-height: 1.2;
     color: var(--basic-text-color);
     margin-bottom: 10px;
@@ -195,15 +194,25 @@ ul{
 .intro_position {
     display: block;
     font-weight: 500;
-    font-size: 24px;
+    font-size: 20px;
     color: var(--gray-color);
     margin-bottom: 25px;
 }
 
 .intro_text {
-    font-size: 16px;
+    font-size: 15px;
     line-height: 1.3;
     color: var(--basic-text-color);
     margin-bottom: 30px;
     transition: .3s;
+}
+
+
+.meowbuckslogo {
+    height:350px;
+    display: block;
+    opacity: 100;
+    position: absolute;
+    left: 60%;
+    top: 20%;
 }
