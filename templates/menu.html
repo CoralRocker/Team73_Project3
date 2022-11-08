@@ -2,59 +2,57 @@
 
 {% extends 'base.html' %}
 
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width-Neo, initial-scale-1.0">
-    <title>Starbucks</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz:wght@300&display=swap" rel="stylesheet">
-    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-  </head>
+{% block extrahead %}
+  <title>{% block title %}Starbucks{% endblock title %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Yanone+Kaffeesatz:wght@300&display=swap" rel="stylesheet">
+  <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+{% endblock extrahead %}
 
 {% block content %}
-  <body>
-    <header>
-      <ul>
-        <li class="header-menu_item">
-          <a href="menu.html" title="espressos" class="header-menu_link">
-            Espressos
-          </a>
-        </li>
-        <li class="header-menu_item">
-          <a href="menu.html" title="brewed" class="header-menu_link">
-            Brewed
-          </a>
-        </li>
-        <li class="header-menu_item">
-          <a href="menu.html" title="blended" class="header-menu_link">
-            Blended
-          </a>
-        </li>
-        <li class="header-menu_item">
-          <a href="menu.html" title="teas" class="header-menu_link">
-            Teas
-          </a>
-        </li>
-        <li class="header-menu_item">
-          <a href="menu.html" title="other" class="header-menu_link">
-            Other
-          </a>
-        </li>
-      </ul>
-    </header>
-      <div class="page_intro intro">
-        <div class="intro_container container">
-          <div class="intro_body">
-            <div class="intro_content">
-                <span class="intro_position">*MENU STUFF GOES HERE*</span>
-          </div>
+  <header>
+    <ul>
+      <li class="header-menu_item">
+        <p><br><br></p>
+        <a href="menu.html" title="espressos" class="header-menu_link">
+          Espressos
+        </a>
+      </li>
+      <li class="header-menu_item">
+        <p><br></p>
+        <a href="menu.html" title="brewed" class="header-menu_link">
+          Brewed
+        </a>
+      </li>
+      <li class="header-menu_item">
+        <p><br></p>
+        <a href="menu.html" title="blended" class="header-menu_link">
+          Blended
+        </a>
+      </li>
+      <li class="header-menu_item">
+        <p><br></p>
+        <a href="menu.html" title="teas" class="header-menu_link">
+          Teas
+        </a>
+      </li>
+      <li class="header-menu_item">
+        <p><br></p>
+        <a href="menu.html" title="other" class="header-menu_link">
+          Other
+        </a>
+      </li>
+    </ul>
+  </header>
+    <div class="page_intro intro">
+      <div class="intro_container container">
+        <div class="intro_body">
+          <div class="intro_content">
+              <span class="intro_position">*MENU STUFF GOES HERE*</span>
         </div>
       </div>
-  </body>
+    </div>
+  </div>
 {% endblock content %}
-</html>
