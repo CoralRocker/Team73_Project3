@@ -1,0 +1,51 @@
+<!-- templates/menu.html -->
+
+{% extends 'base.html' %}
+
+{% block extrahead %}
+<title>{% block title %}Starbucks ⚬ Menu {% endblock title %}</title>
+{% endblock extrahead %} 
+
+{% block content %}
+
+<div class="wrapper">
+  <nav class="sidebar">
+    <ul class="list-unstyled components active">
+      <li class="header-menu_item">
+        <p><br /><br /></p>
+        <a href="/menu/espresso/" title="espressos" class="header-menu_link">
+          Espresso
+        </a>
+      </li>
+      <li class="header-menu_item">
+        <p><br /></p>
+        <a href="/menu/brewed" title="brewed" class="header-menu_link">
+          Brewed
+        </a>
+      </li>
+      <li class="header-menu_item">
+        <p><br /></p>
+        <a href="/menu/blended" title="blended" class="header-menu_link">
+          Blended
+        </a>
+      </li>
+      <li class="header-menu_item">
+        <p><br /></p>
+        <a href="/menu/tea" title="teas" class="header-menu_link"> Tea </a>
+      </li>
+      <li class="header-menu_item">
+        <p><br /></p>
+        <a href="/menu/other" title="other" class="header-menu_link"> Other </a>
+      </li>
+      <li class="header-menu_item">
+        <p><br /></p>
+        <a href="/menu/tea" title="teas" class="header-menu_link"> Analytics </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+{% block items %}
+{% endblock items %}
+
+{% endblock content %}
