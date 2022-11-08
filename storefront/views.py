@@ -3,7 +3,7 @@ from django.views.generic import TemplateView, ListView
 from .models import *
 
 class HomePageView(TemplateView):
-    template_name = "home.html"
+   template_name = "home.html"
     
 class MenuPageView(ListView):
     model = Menu

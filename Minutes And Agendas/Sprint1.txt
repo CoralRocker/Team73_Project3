@@ -1,0 +1,26 @@
+SCRUM MEETING 1:
+
+Meeting Agenda Items
+    What software we are using.
+    Setting up the project repository and software.
+    Making sure everyone is connected to the software and repository and ready to go.
+
+Minutes: First, we discussed what kind of software we’d be using for backend and frontend. After talking about it, we decided to go with Django for both, using html with python and such. Then, we created a Github for the project and got everyone to be part of it. Lastly, we began talking about what needs to be done.
+
+SCRUM MEETING 2:
+
+Meeting Agenda Items
+    How we are going to use Django
+    Discuss what items need to be completed 
+    Discuss who is assigned to what items.
+
+Minutes: We discussed how we wanted to make the front end. We decided to go with a home/welcome page, a menu page, and a login page for the server. If the login is an admin/manager login then it takes them to the manager page of the website. The menu page will be where one can find all the items and make their order and the login will be where they can create an account or login into an existing one.
+
+SCRUM MEETING 3:
+
+Meeting Agenda Items
+    What we have done so far and where we are at.
+    What needs to be worked on right now.
+
+
+Minutes: We found we have a base home page and menu page for the Starbucks web app. The login system works well right now in the sense that it saves a username and password and the base login page is easy to understand. Also, the home page updates when someone logins with a username. The backend is able to pull the inventory and menu items from the database. Backend has started and is continuing the process to pull customizations from the database to be used to make orders. We have to start working on a base manager page today, as well as adding drink pictures and names to the menu page of our web application to allow customers to choose drinks to add to an order.
