@@ -90,6 +90,11 @@ ul{
     width: 100%;
 }
 
+.menu-header {
+    color: var(--basic-text-color);
+    font-size: 48px;
+}
+
 .header_body {
     display: flex;
     justify-content: space-between;
