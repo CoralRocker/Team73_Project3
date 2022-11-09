@@ -133,6 +133,10 @@ ul{
     transition: .3s;
 }
 
+.green {
+    color: var(--starbucks-green);
+}
+
 .header-menu_link:after{
     content: '';
     position: absolute;
