@@ -3,7 +3,7 @@
         <div class="card">
 
         {% comment %} src="" will be replaced with src="{{ product.image }}" {% endcomment %}
-        <img class="card-img-top" src="/static/assets/Espresso/Caffe_Americano.jpeg" alt="Card image {{ product.name }}">
+        <img class="card-img-top" src="../../{{ product.image }}" alt="Card image {{ product.name }}">
             <div class="card-body">
                 <p class="card-title">{{ product.name }}</p>
             </div>
