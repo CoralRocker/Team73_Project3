@@ -34,4 +34,4 @@ def OtherPageView(request):
 
 @staff_member_required
 def ManagerPageView(request):
-    return render(request, 'manager.html')
+    return render(request, 'analytics.html')
