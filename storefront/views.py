@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
+from django.contrib.admin.views.decorators import staff_member_required
 from .models import *
+
 
 class HomePageView(TemplateView):
    template_name = "home.html"
@@ -28,3 +30,7 @@ def TeaPageView(request):
 def OtherPageView(request):
     products = Menu.objects.filter(type__iexact="other", size__iexact="grande")
     return render(request, 'other.html', {'products':products})
+
+@staff_member_required
+def AnalyticsPageView(request):
+    return render(request, 'analytics.html')

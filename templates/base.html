@@ -28,21 +28,27 @@
       <div class="header_container container">
         <div class="header_body">
           <div class="header_leftside">
-            <a href="{% url 'home' %}" title="" class="header_initials"> SB </a>
+            <a href="{% url 'home' %}" title="" class="header_initials"> STARBUCKS </a>
           </div>
           <div class="header_rightside">
             <div class="header_menu header-menu">
               <ul class="header-menu_list">
                 <li class="header-menu_item">
-                  <a href="{% url 'home' %}" title="home" class="header-menu_link">
-                    Home
-                  </a>
+                  <a href="{% url 'home' %}" title="home" class="header-menu_link">Home</a>
                 </li>
                 <li class="header-menu_item">
-                  <a href="{% url 'menu' %}" title="menu" class="header-menu_link">
-                    Menu
-                  </a>
+                  <a href="{% url 'menu' %}" title="menu" class="header-menu_link">Menu</a>
                 </li>
+
+                {% if user.is_staff %}
+                <li class="header-menu_item">
+                    <a href="{% url 'analytics' %}" title="analytics" class="header-menu_link">Analytics</a>
+                </li>
+                <li class="header-menu_item">
+                  <a href="/admin" title="Admin" class="header-menu_link">Admin</a>
+                </li>
+                {% endif %}
+
                 <li class="header-menu_item">
                   {% if user.is_authenticated %}
                     <a href="{% url 'logout' %}" title="logout" class="header-menu_link">Log out</a>
