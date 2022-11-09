@@ -12,7 +12,7 @@ class MenuPageView(ListView):
     template_name = "menu.html"
 
 def EspressoPageView(request):
-    products = Menu.objects.filter(type__iexact="espresso", size__iexact="grande")
+    products = Menu.objects.filter(type__iexact="espresso", size__iexact="grande") | Menu.objects.filter(type__iexact="espresso", size__iexact="doppio")
     return render(request, 'espresso.html', {'products':products})
 
 def BrewedPageView(request):

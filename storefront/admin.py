@@ -11,7 +11,7 @@ from .models import (
 )
 
 class MenuAdmin(admin.ModelAdmin):
-    search_fields = ['id', 'name__icontains', 'size', 'price', 'type']
+    search_fields = ['id', 'name__icontains', 'size__iexact', 'price', 'type__iexact']
 
 # Register your models here.
 admin.site.register(Customization)
