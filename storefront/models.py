@@ -59,7 +59,7 @@ class Menu(models.Model):
     size = models.TextField(blank=False, null=False)
     type = models.TextField()
     
-    image_asset = models.FilePathField()
+    image = models.TextField(null=True)
 
 
     @classmethod
