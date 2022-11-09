@@ -2,9 +2,8 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
 from django.contrib.admin.views.decorators import staff_member_required
 from .models import *
-class AnalyticsView(TemplateView):
-    template_name = "analytics.html"
-    
+
+
 class HomePageView(TemplateView):
    template_name = "home.html"
     
@@ -33,5 +32,5 @@ def OtherPageView(request):
     return render(request, 'other.html', {'products':products})
 
 @staff_member_required
-def ManagerPageView(request):
+def AnalyticsPageView(request):
     return render(request, 'analytics.html')
