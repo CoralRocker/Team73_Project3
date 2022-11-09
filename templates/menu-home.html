@@ -1,0 +1,56 @@
+{% extends 'menu.html' %}
+
+{% block extrahead %}
+<title>{% block title %}Starbucks ⚬ Menu {% endblock title %}</title>
+{% endblock extrahead %} 
+
+
+{% block items %}
+<div class="products menu-home">
+    <a href="{% url 'espresso' %}" class="card-title">
+        <div class="card">
+            <img class="card-img-top" src="/static/assets/Espresso/Espresso.jpeg" alt="Card image Espresso">
+            <div class="card-body">
+                <p class="card-title">Espresso</p>
+            </div>
+        </div>
+    </a>
+
+    <a href="{% url 'brewed' %}" class="card-title">
+        <div class="card">
+            <img class="card-img-top" src="/static/assets/Brewed/Cold_Brew.jpeg" alt="Card image Brewed">
+            <div class="card-body">
+                <p class="card-title">Brewed</p>
+            </div>
+        </div>
+    </a>
+
+    <a href="{% url 'blended' %}" class="card-title">
+        <div class="card">
+            <img class="card-img-top" src="/static/assets/Blended/Caffe_Vanilla_Blended.jpeg" alt="Card image Blended">
+            <div class="card-body">
+                <p class="card-title">Blended</p>
+            </div>
+        </div>
+    </a>
+
+    <a href="{% url 'tea' %}" class="card-title">
+        <div class="card">
+            <img class="card-img-top" src="/static/assets/Tea/Chai_Tea.jpg" alt="Card image Tea">
+            <div class="card-body">
+                <p class="card-title">Tea</p>
+            </div>
+        </div>
+    </a>
+
+    <a href="{% url 'other' %}" class="card-title">
+        <div class="card">
+            <img class="card-img-top" src="/static/assets/Other/Hot_Chocolate.jpeg" alt="Card image Other">
+            <div class="card-body">
+                <p class="card-title">Other</p>
+            </div>
+        </div>
+    </a>
+</div>
+
+{% endblock items %}

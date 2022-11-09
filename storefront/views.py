@@ -11,6 +11,9 @@ class MenuPageView(ListView):
     model = Menu
     template_name = "menu.html"
 
+def MenuHomePageView(request):
+    return render(request, 'menu-home.html')
+
 def EspressoPageView(request):
     products = Menu.objects.filter(type__iexact="espresso", size__iexact="grande") | Menu.objects.filter(type__iexact="espresso", size__iexact="doppio")
     return render(request, 'espresso.html', {'products':products})

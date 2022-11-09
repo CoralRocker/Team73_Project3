@@ -6,6 +6,7 @@ urlpatterns = [
     path('', HomePageView.as_view(), name='home'),
     path('analytics/', views.AnalyticsPageView, name='analytics'),
     path('menu/', MenuPageView.as_view(), name='menu'),  
+    path('menu/menu-home', views.MenuHomePageView, name='menu-home'),
     path('menu/espresso/', views.EspressoPageView, name='espresso'),
     path('menu/brewed/', views.BrewedPageView, name='brewed'),
     path('menu/blended/', views.BlendedPageView, name='blended'),
