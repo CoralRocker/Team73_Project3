@@ -12,10 +12,10 @@
 ### NOTE: Tables will be wiped before being repopulated unless {table}_append is true
 
 # Repopulation Variables. Set these to True to repopulate the corresponding table
-inventory_repopulate = False # Set to true to modify the inventory table
+inventory_repopulate = True # Set to true to modify the inventory table
 inventory_append = False # Set to true to append items to the inventory.
 
-menu_repopulate = False # Set to true to modify the menu table
+menu_repopulate = True # Set to true to modify the menu table
 menu_append = False  # Set to true to append data to the menu instead of clearing it
 
 # Repopulation Files. Set these to the path to the TSV file with the data
