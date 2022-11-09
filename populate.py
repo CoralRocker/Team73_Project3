@@ -15,12 +15,16 @@
 inventory_repopulate = False # Set to true to modify the inventory table
 inventory_append = False # Set to true to append items to the inventory.
 
-menu_repopulate = True # Set to true to modify the menu table
+menu_repopulate = False # Set to true to modify the menu table
 menu_append = False  # Set to true to append data to the menu instead of clearing it
+
+customization_repopulate = True # Set to true to modify the customizations table
+customization_append = False # Set to true to append data to the customizations instead of clearing it
 
 # Repopulation Files. Set these to the path to the TSV file with the data
 inventory_file = '../Inventory.tsv'
 menu_file = '../Menu.tsv'
+customizations_file = '../Customizations.tsv'
 
 #####
 #
@@ -117,3 +121,37 @@ if menu_repopulate:
         else:
             print(f"Replaced Menu with {count} items")
 
+
+###
+### Customizations Repopulation
+### 
+### Expected TSV header: id, name, price, amount, type, ingredient
+
+if customization_repopulate:
+    if not customization_append:
+        Customization.objects.all().delete() # Delete objects
+        print("Replacing all Customizations")
+    else:
+        print("Adding to Customizations")
+
+    with open(customizations_file) as tsvfile:
+        reader = csv.reader(tsvfile, delimiter='\t')
+        next(reader) # Skip Header
+        count = 0;
+        for row in reader:
+            name = row[1]
+            price = float(row[2])
+            amount = float(row[3])
+            type = row[4]
+            __ing = int(row[5])
+            ingredient = Inventory.objects.get(pk=__ing)
+
+            cust = Customization(name=name, cost=price, type=type, amount=amount, ingredient=ingredient)
+            cust.save()
+            count += 1
+            print(f"\r\033[2KFinished ID {cust.id}", end='')
+        print("")
+        if customization_append:
+            print(f"Appended {count} items to Customization")
+        else:
+            print(f"Replaced Customization with {count} items")

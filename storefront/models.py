@@ -138,6 +138,13 @@ class OrderItem(models.Model):
     # Amount of item requested
     amount = models.IntegerField(blank=False, null=False)
 
+    def getPrice(self) -> float:
+        custs = list(self.itemcustomization_set.all()) 
+
+        print(custs)
+
+        return 0.0
+
     class Meta:
         db_table = 'order_items'
 
