@@ -12,7 +12,7 @@
 ### NOTE: Tables will be wiped before being repopulated unless {table}_append is true
 
 # Repopulation Variables. Set these to True to repopulate the corresponding table
-inventory_repopulate = True # Set to true to modify the inventory table
+inventory_repopulate = False # Set to true to modify the inventory table
 inventory_append = False # Set to true to append items to the inventory.
 
 menu_repopulate = True # Set to true to modify the menu table
@@ -78,7 +78,7 @@ if inventory_repopulate:
 ###
 ### Menu Repopulation
 ### 
-### Expected TSV header: id, name, price, ingredients, size, type
+### Expected TSV header: id, name, price, ingredients, size, type, image asset
 
 if menu_repopulate:
     if not menu_append:
@@ -96,8 +96,12 @@ if menu_repopulate:
             price = float(row[2])
             size = row[4]
             type = row[5]
+            image = row[6]
 
-            item = Menu.create(name, price, size, type)
+            if not os.path.exists(image):
+                print(f"\nPath {image} does not exist for item {name}")
+
+            item = Menu.create(name, price, size, type, image)
 
             for pair in re.findall('(\(\d+,\s*\d+\))', row[3]):
                 data = re.findall('\d+', pair)

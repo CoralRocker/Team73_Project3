@@ -63,8 +63,8 @@ class Menu(models.Model):
 
 
     @classmethod
-    def create(cls, name, price, size, type):
-        item = cls(name=str(name), price=float(price), size=str(size), type=str(type))
+    def create(cls, name, price, size, type, image):
+        item = cls(name=str(name), price=float(price), size=str(size), type=str(type), image=image)
         item.save()
         return item
     
@@ -125,19 +125,39 @@ class Ingredient(models.Model):
 
 class OrderItem(models.Model):
     id = models.BigAutoField(primary_key=True)
-    order = models.ForeignKey('Order', models.CASCADE, null=False, related_name='items')
-    menu_item = models.ForeignKey(Menu, models.CASCADE, null=False) # models.BigIntegerField(blank=True, null=True)
-    customizations = models.ManyToManyField(Customization) # models.TextField(blank=True, null=True)  # This field type is a guess.
+
+    # Order this item belongs to
+    order = models.ForeignKey('Order', models.CASCADE, null=False)
+
+    # Menu Item that this item represents
+    menu_item = models.ForeignKey(Menu, models.CASCADE, null=False) 
+
+    # Customizations Added to the item
+    customizations = models.ManyToManyField(Customization, through='ItemCustomization') 
+
+    # Amount of item requested
     amount = models.IntegerField(blank=False, null=False)
 
     class Meta:
         db_table = 'order_items'
 
+class ItemCustomization(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    
+    order_item = models.ForeignKey(OrderItem, models.CASCADE)
+    customization = models.ForeignKey(Customization, models.CASCADE)
+
+    amount = models.IntegerField(null=False, blank=False)
+
+
 class Order(models.Model):
     id = models.BigAutoField(primary_key=True)
     cashier = models.TextField(blank=True, null=True)
     date = models.DateField(blank=True, null=True)
-    price = models.DecimalField(max_digits=11, decimal_places=2, blank=True, null=True)
+
+    items = models.ManyToManyField(Menu, through='OrderItem')
+
+    # price = models.DecimalField(max_digits=11, decimal_places=2, blank=True, null=True)
     # items = models.TextField(blank=True, null=True)  # This field type is a guess.
 
     class Meta:
