@@ -34,6 +34,10 @@ def OtherPageView(request):
     products = Menu.objects.filter(type__iexact="other", size__iexact="grande")
     return render(request, 'other.html', {'products':products})
 
+def ItemDetailView(request,pk):
+    item = Menu.objects.get(pk = pk)
+    return render(request, 'item-detail.html', {'item': item})
+
 @staff_member_required
 def AnalyticsPageView(request):
     return render(request, 'analytics.html')

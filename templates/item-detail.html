@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+<title>{% block title %}Starbucks | {{ item.name }} {% endblock title %}</title>
+{% block content %}
+    <div class="container my-4">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="row">
+                    <img class="item-img" src="../../{{ item.image }}" alt="Card image {{ item.name }}"/>
+                    <button class="btn btn-success mx-2 my-2 "> Add To Cart </button>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <h1 class="">{{ item.name }}</h1>
+            </div>
+        </div>
+    </div>
+{% endblock %}

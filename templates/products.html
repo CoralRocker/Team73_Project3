@@ -1,12 +1,12 @@
 <div class = "products">
     {% for product in products %}
-        <div class="card">
-
-        {% comment %} src="" will be replaced with src="{{ product.image }}" {% endcomment %}
-        <img class="card-img-top" src="../../{{ product.image }}" alt="Card image {{ product.name }}">
-            <div class="card-body">
-                <p class="card-title">{{ product.name }}</p>
+        <a href="{% url 'item-detail' product.id %}">
+            <div class="card">
+                <img class="card-img-top" src="../../{{ product.image }}" alt="Card image {{ product.name }}">
+                <div class="card-body">
+                    <p class="card-title">{{ product.name }}</p>
+                </div>
             </div>
-        </div>
+        </a>
     {% endfor %}
 </div>

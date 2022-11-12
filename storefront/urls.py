@@ -12,4 +12,5 @@ urlpatterns = [
     path('menu/blended/', views.BlendedPageView, name='blended'),
     path('menu/tea/', views.TeaPageView, name='tea'),
     path('menu/other/', views.OtherPageView, name='other'),
+    path('menu/<int:pk>/', views.ItemDetailView, name='item-detail'),
 ]
