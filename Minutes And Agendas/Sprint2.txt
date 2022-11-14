@@ -1,0 +1,28 @@
+SCRUM MEETING 1:
+
+Meeting Agenda Items
+    What software we are using.
+    Setting up the project repository and software.
+    Making sure everyone is connected to the software and repository and ready to go.
+
+Minutes: We discussed connection between the backend and frontend, mainly finding a better way to hold the directory location of the images for each item. 
+It was deduced that they should be put in the menu table. Then, we discussed what should be done this sprint. We concluded that the main tasks to be done for this 
+sprint are creating functioning order, store location, translation, and manager inventory/menu systems. Taking into account those items, we reviewed how to start.
+
+SCRUM MEETING 2:
+
+Meeting Agenda Items
+    Discuss the User Study Report
+    Find where we are at with our ordering functionality
+    Find where we are at with our API use
+    FInd what the backend has done to see if we can implement orders and manager side
+
+Minutes: 
+
+SCRUM MEETING 3:
+
+Meeting Agenda Items
+    
+
+
+Minutes:
