@@ -17,7 +17,9 @@ Meeting Agenda Items
     Find where we are at with our API use
     FInd what the backend has done to see if we can implement orders and manager side
 
-Minutes: 
+Minutes: Discussed if we have everything ready on the backend side to start creating our orders functionality. We found out that we can allow the customer to make
+choices with regards to size and customization, but are not ready to send orders to the database yet. The team reviewed how we will be implementing the APIs exactly 
+with regards to code. Lastly, we concluded who we will be conducting interviews/observations with for our user study report as well as questions we will be asking.
 
 SCRUM MEETING 3:
 
