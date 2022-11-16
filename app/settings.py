@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'crispy_forms',
     'django_unicorn',
-    'google_translate',
     
     # Local
     'storefront.apps.StorefrontConfig',
