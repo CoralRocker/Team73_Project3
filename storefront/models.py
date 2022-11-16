@@ -6,11 +6,14 @@ class Customization(models.Model):
     cost = models.DecimalField(max_digits=11, decimal_places=2) # Store money up to 999,999,99.99
     type = models.TextField()
     amount = models.FloatField()
-    name = models.TextField()
+    name = models.TextField(default='')
     ingredient = models.ForeignKey('Inventory', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'customizations'
+        
+    def __str__(self):
+        return f"{self.name} ({self.id})"
 
 # Do we need/want a finance table???
 class Finance(models.Model):
@@ -44,7 +47,7 @@ class Inventory(models.Model):
         db_table = 'inventory'
     
     def __str__(self):
-        return f"Inventory item {self.name} x {self.stock}"
+        return f"{self.name} x {self.stock}"
 
 
 class Menu(models.Model):
@@ -103,7 +106,7 @@ class Menu(models.Model):
         db_table = 'menu'
 
     def __str__(self):
-        return f"Menu Item {self.id} : {self.size} {self.name}"
+        return f"{self.id} : {self.size} {self.name}"
 
 
 class Ingredient(models.Model):
@@ -120,17 +123,17 @@ class Ingredient(models.Model):
         return float(self.inventory.price) * (self.amount / self.inventory.amount_per_unit)
 
     def __str__(self):
-        return f"Ingredient for {self.menu_item.name} :> {self.inventory.name} x {self.amount}"
+        return f"{self.menu_item.name} :> {self.inventory.name} x {self.amount}"
 
 
 class OrderItem(models.Model):
     id = models.BigAutoField(primary_key=True)
 
     # Order this item belongs to
-    order = models.ForeignKey('Order', models.CASCADE, null=False)
+    order = models.ForeignKey('Order', on_delete=models.CASCADE, null=False)
 
     # Menu Item that this item represents
-    menu_item = models.ForeignKey(Menu, models.CASCADE, null=False) 
+    menu_item = models.ForeignKey(Menu, on_delete=models.CASCADE, null=False) 
 
     # Customizations Added to the item
     customizations = models.ManyToManyField(Customization, through='ItemCustomization') 
@@ -147,6 +150,9 @@ class OrderItem(models.Model):
 
     class Meta:
         db_table = 'order_items'
+        
+    def __str__(self):
+        return f"{self.menu_item} : {self.amount}"
 
 class ItemCustomization(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -169,3 +175,6 @@ class Order(models.Model):
 
     class Meta:
         db_table = 'orders'
+
+    def __str__(self):
+        return f"{self.date}"

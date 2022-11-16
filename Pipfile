@@ -9,6 +9,7 @@ django-debug-toolbar = "*"
 psycopg2-binary = "*"
 django-crispy-forms = "*"
 django-unicorn = "*"
+django-google-translate = "*"
 
 [dev-packages]
 
