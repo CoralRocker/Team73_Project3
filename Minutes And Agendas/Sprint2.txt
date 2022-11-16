@@ -24,7 +24,14 @@ with regards to code. Lastly, we concluded who we will be conducting interviews/
 SCRUM MEETING 3:
 
 Meeting Agenda Items
+    Find where we are at and what has been done with the API setups
+    Find where we are at and what has been done with the backend functionality
+    Find where we are at and what has been done with the manager report views
+    Find where we are at and what has been done with the cart/checkout functionality
     
 
 
-Minutes:
+Minutes: Since Gaultier was not at the meeting, we weren't able to get a detailed update on the backend. We are looking into how to setup the APIs as well as the 
+checkout and cart. There is some confusion with installing the django google translation as of right now that we worked on fixing. We discussed figuring out a 
+solution to the issue with cart where, when changing to different htmls, there is an issue with saving the cart and when an item will be removed it refreshes the
+entire page. It was also found that, thanks to Django’s admin page, the manager is already able to change and add to the database.
