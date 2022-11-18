@@ -20,7 +20,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
     <title>{% block title %}Starbucks App{% endblock title %}</title>
     {% block extrahead %} {% endblock extrahead %}
-
   </head>
   
   <body>
@@ -29,11 +28,26 @@
       <div class="header_container container">
         <div class="header_body">
           <div class="header_leftside">
+            <div id="google_translate_element"></div>
             <a href="{% url 'home' %}" title="" class="header_initials"> STARBUCKS </a>
+
+
           </div>
           <div class="header_rightside">
             <div class="header_menu header-menu">
               <ul class="header-menu_list">
+                <li class="header-menu_item">
+                  <!-- LANGUAGE TRANSLATION SWITCH BUTTON ............................... START-->
+                  <div id="google_translate_element"></div>
+
+                  <script type="text/javascript">
+                  function googleTranslateElementInit() {
+                    new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+                  }
+                  </script>
+                  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+                  <!-- LANGUAGE TRANSLATION SWITCH BUTTON ................................. END-->
+                </li>
                 <li class="header-menu_item">
                   <a href="{% url 'home' %}" title="home" class="header-menu_link">Home</a>
                 </li>
