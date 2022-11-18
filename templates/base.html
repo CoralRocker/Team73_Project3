@@ -21,6 +21,19 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
     <title>{% block title %}Starbucks App{% endblock title %}</title>
     {% block extrahead %} {% endblock extrahead %}
+
+    <!-- Google Translate Function -->
+    <script type="text/javascript">
+      function loading(){
+        document.getElementById("loading").style.display = "block";
+        document.getElementById("content").style.display = "none";
+      }
+      function googleTranslateElementInit(){
+        new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+      }
+      </script>
+      <script src="//translate.google.com/translate_a/element.js?cd=googleTranslateElementInit." type="text/javascript"></script>
+
   </head>
   
   <body>
@@ -29,6 +42,7 @@
       <div class="header_container container">
         <div class="header_body">
           <div class="header_leftside">
+            {% google_translate type='vertical' language='en' %}
             <a href="{% url 'home' %}" title="" class="header_initials"> STARBUCKS </a>
           </div>
           <div class="header_rightside">
