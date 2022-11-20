@@ -38,6 +38,9 @@ def ItemDetailView(request,pk):
     item = Menu.objects.get(pk = pk)
     return render(request, 'item-detail.html', {'item': item})
 
+def LocationView(request):
+    return render(request,'locations.html')
+
 @staff_member_required
 def AnalyticsPageView(request):
     return render(request, 'analytics.html')

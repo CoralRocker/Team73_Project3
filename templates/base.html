@@ -55,7 +55,7 @@
                   <a href="{% url 'menu-home' %}" title="menu" class="header-menu_link">Menu</a>
                 </li>
                 <li class="header-menu_item">
-                  <a href="locations.html" title="locations" class="header-menu_link">Locations</a>
+                  <a href="{% url 'locations' %}" title="locations" class="header-menu_link">Locations</a>
                 </li>
 
                 {% if user.is_staff %}
