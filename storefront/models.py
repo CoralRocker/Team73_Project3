@@ -13,7 +13,7 @@ class Customization(models.Model):
         db_table = 'customizations'
         
     def __str__(self):
-        return f"{self.name} ({self.id})"
+        return f"{self.name}"
 
 # Do we need/want a finance table???
 class Finance(models.Model):

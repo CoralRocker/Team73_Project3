@@ -13,8 +13,9 @@
             </div>
             <div class="col-md-8">
                 <h1 class="">{{ item.name }}</h1>
-                <form method="post" class="my-class">
-                    {{ my_formset|crispy }}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
                 </form>
             </div>
         </div>
