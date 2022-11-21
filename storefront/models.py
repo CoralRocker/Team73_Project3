@@ -141,12 +141,61 @@ class OrderItem(models.Model):
     # Amount of item requested
     amount = models.IntegerField(blank=False, null=False)
 
+    def getInventoryUsage(self) -> dict[Inventory, float]:
+        # Get Item Usage
+        menu_usage = self.menu_item.getInventoryUsage()
+
+        # Add customization usages
+        for cust in self.itemcustomization_set.all():
+            cust_obj = cust.customization
+
+            if cust_obj.ingredient in menu_usage:
+                menu_usage[cust_obj.ingredient] += cust.amount * cust_obj.amount
+            else:
+                menu_usage[cust_obj.ingredient] = cust_obj.amount * cust.amount
+
+        
+        # Add amount multiplier
+        for key in menu_usage:
+            menu_usage[key] *= self.amount
+
+        return menu_usage
+
+
+
+
+    def getCustomizationPrice(self) -> float:
+
+        foundFoam = False
+        foundSauce = False
+        foundSyrup = False
+
+        custCost = 0.0
+
+        for cust in self.itemcustomization_set.all():
+            cust = cust.customization
+
+            if not foundSyrup and cust.type.lower() == "syrup":
+                foundSyrup = True
+                custCost += float(cust.cost)
+            elif not foundSauce and cust.type.lower() == 'sauce':
+                foundSauce = True
+                custCost += float(cust.cost)
+            elif not foundFoam and cust.type.lower() == 'foam':
+                foundFoam = True
+                custCost += float(cust.cost)
+            else:
+                custCost += float(cust.cost)
+
+        return custCost
+
     def getPrice(self) -> float:
-        custs = list(self.itemcustomization_set.all()) 
+        return self.amount * (self.getCustomizationPrice() + float(self.menu_item.price))
 
-        print(custs)
-
-        return 0.0
+    def addCustomization(self, cust :Customization, amount :float):
+        newCust = ItemCustomization(order_item=self, customization=cust, amount=amount)
+        newCust.save()
+        return
 
     class Meta:
         db_table = 'order_items'
@@ -162,6 +211,8 @@ class ItemCustomization(models.Model):
 
     amount = models.IntegerField(null=False, blank=False)
 
+    def __str__(self):
+        return f"{self.order_item.menu_item.name} :> {self.customization.name} {self.customization.type} x {self.amount}"
 
 class Order(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -173,8 +224,34 @@ class Order(models.Model):
     # price = models.DecimalField(max_digits=11, decimal_places=2, blank=True, null=True)
     # items = models.TextField(blank=True, null=True)  # This field type is a guess.
 
+    def getInventoryUsage(self) -> dict[Inventory, float]:
+        inv = dict()
+        for item in self.orderitem_set.all():
+            invSum(inv, item.getInventoryUsage())
+
+        return inv
+            
+    def getPrice(self) -> float:
+        price = 0.0
+        for item in self.orderitem_set.all():
+            price += item.getPrice()
+
+        return price
+
+
     class Meta:
         db_table = 'orders'
 
     def __str__(self):
         return f"{self.date}"
+
+'''
+Add two Inventory dictionaries. Add inv to out. Doesn't return anything. Modifies out.
+'''
+def invSum(out :dict[Inventory,float], inv :dict[Inventory, float]):
+
+    for key in inv:
+        if key in out:
+            out[key] += inv[key]
+        else:
+            out[key] = inv[key]
