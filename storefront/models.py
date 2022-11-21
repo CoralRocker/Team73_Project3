@@ -140,6 +140,29 @@ class OrderItem(models.Model):
     # Amount of item requested
     amount = models.IntegerField(blank=False, null=False)
 
+    def getInventoryUsage(self) -> dict[Inventory, float]:
+        # Get Item Usage
+        menu_usage = self.menu_item.getInventoryUsage()
+
+        # Add customization usages
+        for cust in self.itemcustomization_set.all():
+            cust_obj = cust.customization
+
+            if cust_obj.ingredient in menu_usage:
+                menu_usage[cust_obj.ingredient] += cust.amount * cust_obj.amount
+            else:
+                menu_usage[cust_obj.ingredient] = cust_obj.amount * cust.amount
+
+        
+        # Add amount multiplier
+        for key in menu_usage:
+            menu_usage[key] *= self.amount
+
+        return menu_usage
+
+
+
+
     def getCustomizationPrice(self) -> float:
 
         foundFoam = False
