@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Customization(models.Model):
     id = models.BigAutoField(primary_key=True)
     cost = models.DecimalField(max_digits=11, decimal_places=2) # Store money up to 999,999,99.99
@@ -223,8 +224,34 @@ class Order(models.Model):
     # price = models.DecimalField(max_digits=11, decimal_places=2, blank=True, null=True)
     # items = models.TextField(blank=True, null=True)  # This field type is a guess.
 
+    def getInventoryUsage(self) -> dict[Inventory, float]:
+        inv = dict()
+        for item in self.orderitem_set.all():
+            invSum(inv, item.getInventoryUsage())
+
+        return inv
+            
+    def getPrice(self) -> float:
+        price = 0.0
+        for item in self.orderitem_set.all():
+            price += item.getPrice()
+
+        return price
+
+
     class Meta:
         db_table = 'orders'
 
     def __str__(self):
         return f"{self.date}"
+
+'''
+Add two Inventory dictionaries. Add inv to out. Doesn't return anything. Modifies out.
+'''
+def invSum(out :dict[Inventory,float], inv :dict[Inventory, float]):
+
+    for key in inv:
+        if key in out:
+            out[key] += inv[key]
+        else:
+            out[key] = inv[key]
