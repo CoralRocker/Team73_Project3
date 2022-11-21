@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
 from django.contrib.admin.views.decorators import staff_member_required
 from .models import *
-
+from .forms import CustomizationForm
 
 class HomePageView(TemplateView):
    template_name = "home.html"
@@ -34,9 +34,25 @@ def OtherPageView(request):
     products = Menu.objects.filter(type__iexact="other", size__iexact="grande")
     return render(request, 'other.html', {'products':products})
 
-def ItemDetailView(request,pk):
+def ItemDetailView(request, pk):
     item = Menu.objects.get(pk = pk)
-    return render(request, 'item-detail.html', {'item': item})
+    
+    # If it is a POST request we will process the form data
+    if request.method == 'POST':
+        # create a form and populate with data from the request
+        form = CustomizationForm(request.POST)
+        
+        # check if the form is valid
+        if form.is_valid():
+            return
+    # If method is GET create a blank form
+    else:
+        form = CustomizationForm()
+        
+    return render(request, 'item-detail.html', {'item': item, 'form':form})
+
+def LocationView(request):
+    return render(request,'locations.html')
 
 @staff_member_required
 def AnalyticsPageView(request):
