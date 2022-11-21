@@ -9,6 +9,7 @@ Minutes: We discussed connection between the backend and frontend, mainly findin
 It was deduced that they should be put in the menu table. Then, we discussed what should be done this sprint. We concluded that the main tasks to be done for this 
 sprint are creating functioning order, store location, translation, and manager inventory/menu systems. Taking into account those items, we reviewed how to start.
 
+
 SCRUM MEETING 2:
 
 Meeting Agenda Items
@@ -21,6 +22,7 @@ Minutes: Discussed if we have everything ready on the backend side to start crea
 choices with regards to size and customization, but are not ready to send orders to the database yet. The team reviewed how we will be implementing the APIs exactly 
 with regards to code. Lastly, we concluded who we will be conducting interviews/observations with for our user study report as well as questions we will be asking.
 
+
 SCRUM MEETING 3:
 
 Meeting Agenda Items
@@ -28,10 +30,20 @@ Meeting Agenda Items
     Find where we are at and what has been done with the backend functionality
     Find where we are at and what has been done with the manager report views
     Find where we are at and what has been done with the cart/checkout functionality
-    
-
 
 Minutes: Since Gaultier was not at the meeting, we weren't able to get a detailed update on the backend. We are looking into how to setup the APIs as well as the 
 checkout and cart. There is some confusion with installing the django google translation as of right now that we worked on fixing. We discussed figuring out a 
 solution to the issue with cart where, when changing to different htmls, there is an issue with saving the cart and when an item will be removed it refreshes the
 entire page. It was also found that, thanks to Django’s admin page, the manager is already able to change and add to the database.
+
+
+SCRUM MEETING 4:
+
+Meeting Agenda Items
+    Discuss progress on ordering/checkout
+    Discuss progress on APIs
+    Discuss how to do ordering and checkout
+
+Minutes: We marked off the API functionalities for Google Maps, showing our store's location, and Google Translate, allowing the language of the webpage to be chosen.
+Gaultier described how the backend works for ordering and Hayden demonstrated the base showing of customizations forms. Then, we talked about a solution for adding 
+the customizations and sizes to orders and how that will work with the checkout page. For example, removing an item form the checkout page removes it from the order.
