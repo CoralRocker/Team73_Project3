@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class Customization(models.Model):
     id = models.BigAutoField(primary_key=True)
     cost = models.DecimalField(max_digits=11, decimal_places=2) # Store money up to 999,999,99.99
@@ -141,12 +140,38 @@ class OrderItem(models.Model):
     # Amount of item requested
     amount = models.IntegerField(blank=False, null=False)
 
+    def getCustomizationPrice(self) -> float:
+
+        foundFoam = False
+        foundSauce = False
+        foundSyrup = False
+
+        custCost = 0.0
+
+        for cust in self.itemcustomization_set.all():
+            cust = cust.customization
+
+            if not foundSyrup and cust.type.lower() == "syrup":
+                foundSyrup = True
+                custCost += float(cust.cost)
+            elif not foundSauce and cust.type.lower() == 'sauce':
+                foundSauce = True
+                custCost += float(cust.cost)
+            elif not foundFoam and cust.type.lower() == 'foam':
+                foundFoam = True
+                custCost += float(cust.cost)
+            else:
+                custCost += float(cust.cost)
+
+        return custCost
+
     def getPrice(self) -> float:
-        custs = list(self.itemcustomization_set.all()) 
+        return self.amount * (self.getCustomizationPrice() + float(self.menu_item.price))
 
-        print(custs)
-
-        return 0.0
+    def addCustomization(self, cust :Customization, amount :float):
+        newCust = ItemCustomization(order_item=self, customization=cust, amount=amount)
+        newCust.save()
+        return
 
     class Meta:
         db_table = 'order_items'
@@ -162,6 +187,8 @@ class ItemCustomization(models.Model):
 
     amount = models.IntegerField(null=False, blank=False)
 
+    def __str__(self):
+        return f"{self.order_item.menu_item.name} :> {self.customization.name} {self.customization.type} x {self.amount}"
 
 class Order(models.Model):
     id = models.BigAutoField(primary_key=True)
