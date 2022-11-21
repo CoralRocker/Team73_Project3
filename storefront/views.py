@@ -41,10 +41,12 @@ def ItemDetailView(request, pk):
     if request.method == 'POST':
         # create a form and populate with data from the request
         form = CustomizationForm(request.POST)
-        
+ 
         # check if the form is valid
         if form.is_valid():
-            return
+
+
+            return render(request, 'menu-home.html')
     # If method is GET create a blank form
     else:
         form = CustomizationForm()

@@ -48,6 +48,8 @@ class CustomizationForm(forms.Form):
     cust_juice.insert(0, ('', ''))
     
     milk = forms.ChoiceField(required=False, choices=cust_milk, initial='')
+    milk_amt = forms.IntegerField(min_value=0, required=False)
+
     splash = forms.ChoiceField(required=False, choices=cust_splash, initial='')
     syrup = forms.ChoiceField(required=False, choices=cust_syrups, initial='')
     sauce = forms.ChoiceField(required=False, choices=cust_sauces, initial='')
@@ -62,12 +64,15 @@ class CustomizationForm(forms.Form):
     chai = forms.ChoiceField(required=False, choices=cust_chai, initial='')
     juice = forms.ChoiceField(required=False, choices=cust_juice, initial='')
     
+
+
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(
-                Column('milk', css_class='form-group col-md-6 mb-0'),
+                Column('milk', 'milk_amt', css_class='form-group col-md-6 mb-0'),
                 Column('syrup', css_class='form-group col-md-6 mb-0'),
                 Column('sauce', css_class='form-group col-md-6 mb-0'),
                 Column('drizzle', css_class='form-group col-md-6 mb-0'),
@@ -76,7 +81,7 @@ class CustomizationForm(forms.Form):
                 Column('mix', css_class='form-group col-md-6 mb-0'),
                 Column('foam', css_class='form-group col-md-6 mb-0'),
                 Column('sweetener', css_class='form-group col-md-6 mb-0'),
-                Column('sweetener packet', css_class='form-group col-md-6 mb-0'),
+                Column('sweetener_packet', css_class='form-group col-md-6 mb-0'),
                 Column('inclusion', css_class='form-group col-md-6 mb-0'),
                 Column('chai', css_class='form-group col-md-6 mb-0'),
                 Column('juice', css_class='form-group col-md-6 mb-0'),
