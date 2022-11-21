@@ -162,6 +162,42 @@ class OrderItem(models.Model):
         return menu_usage
 
 
+    def getPriceList(self):
+        plist = dict()
+
+        foundFoam = False
+        foundSauce = False
+        foundSyrup = False
+
+        custCost = 0.0
+
+        for cust_obj in self.itemcustomization_set.all():
+            cust = cust_obj.customization
+
+            if cust.type.lower() == "syrup":
+                if foundSyrup:
+                    plist[cust_obj] = 0.0
+                else:
+                    foundSyrup = True
+                    plist[cust_obj] = float(cust.cost)
+
+            elif cust.type.lower() == 'sauce':
+                if foundSauce:
+                    plist[cust_obj] = 0.0
+                else:
+                    foundSauce = True
+                    plist[cust_obj] = float(cust.cost)
+            elif cust.type.lower() == 'foam':
+                if foundFoam:
+                    plist[cust_obj] = 0.0
+                else:
+                    foundFoam = True
+                    plist[cust_obj] = float(cust.cost)
+            else:
+                plist[cust_obj] = float(cust.cost)
+
+
+        return plist
 
 
     def getCustomizationPrice(self) -> float:
