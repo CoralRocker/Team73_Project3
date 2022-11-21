@@ -233,3 +233,13 @@ ul{
     left: 60%;
     top: 20%;
 }
+
+.item-name-price{
+    white-space: nowrap;
+    overflow-x: auto;
+}
+
+.customization-info{
+    white-space: nowrap;
+    overflow-x: auto;
+}

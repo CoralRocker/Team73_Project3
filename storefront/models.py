@@ -247,6 +247,27 @@ class ItemCustomization(models.Model):
 
     amount = models.IntegerField(null=False, blank=False)
 
+    def getCustomizationPrice(self) -> float:
+
+        custCost = 0.0
+
+        for i in range(self.amount):
+            cust = self.customization
+
+            if cust.type.lower() == "syrup":
+                custCost = float(cust.cost)
+                break
+            elif cust.type.lower() == 'sauce':
+                custCost = float(cust.cost)
+                break
+            elif cust.type.lower() == 'foam':
+                custCost = float(cust.cost)
+                break;
+            else:
+                custCost += float(cust.cost)
+
+        return custCost
+
     def __str__(self):
         return f"{self.order_item.menu_item.name} :> {self.customization.name} {self.customization.type} x {self.amount}"
 

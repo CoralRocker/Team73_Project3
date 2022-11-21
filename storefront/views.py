@@ -59,3 +59,7 @@ def LocationView(request):
 @staff_member_required
 def AnalyticsPageView(request):
     return render(request, 'analytics.html')
+
+def CheckoutPageView(request,pk):
+    order = Order.objects.get(id=pk)
+    return render(request, {'order': order})

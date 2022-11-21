@@ -14,4 +14,5 @@ urlpatterns = [
     path('menu/other/', views.OtherPageView, name='other'),
     path('menu/<int:pk>/', views.ItemDetailView, name='item-detail'),
     path('locations/', views.LocationView, name='locations'),
+    path('checkout/', views.CheckoutPageView, name='checkout'),
 ]
