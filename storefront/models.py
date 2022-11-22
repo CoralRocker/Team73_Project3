@@ -39,6 +39,16 @@ class Inventory(models.Model):
     amount_per_unit = models.FloatField(blank=False, null=False)
 
     @classmethod
+    def removeFromInv(cls, inv):
+        objs = list()
+        for key in inv:
+            objs.append(key)
+            key.stock -= inv[key]
+
+        cls.objects.bulk_update(objs, ['stock'])
+
+
+    @classmethod
     def create(cls, id, name, price, stock, amount_per_unit):
         item = cls(id=id, name=name, price=price, stock=stock, ordered=0, amount_per_unit=amount_per_unit)
         item.save()
