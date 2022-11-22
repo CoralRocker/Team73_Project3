@@ -1,16 +1,23 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, ListView
 from django.contrib.admin.views.decorators import staff_member_required
 
 from .models import *
 from .forms import CustomizationForm
-
-class HomePageView(TemplateView):
-   template_name = "home.html"
     
 class MenuPageView(ListView):
     model = Menu
     template_name = "menu.html"
+
+def HomePageView(request):
+    hasCart = False
+    try:
+        if 'cart' in request.session:
+            Order.objects.get(pk=request.session['cart'])
+            hasCart = True
+    except:
+        print("Either no cart exists or it is invalid")
+    return render(request, 'home.html', {'hasCart': hasCart})
 
 def MenuHomePageView(request):
     if 'item-in-view' in request.session:
@@ -173,7 +180,14 @@ def ItemDetailView(request, pk):
     return render(request, 'item-detail.html', {'item': item, 'form':form, 'hasCart':hasCart})
 
 def LocationView(request):
-    return render(request,'locations.html')
+    hasCart = False
+    try:
+        if 'cart' in request.session:
+            Order.objects.get(pk=request.session['cart'])
+            hasCart = True
+    except:
+        print("Either no cart exists or it is invalid")
+    return render(request,'locations.html', {'hasCart': hasCart})
 
 @staff_member_required
 def AnalyticsPageView(request):
@@ -184,8 +198,11 @@ def CheckoutPageView(request):
     # Remove unadded items from cart
     if request.method == 'POST':
         data = request.POST
-        item = data.get("remove-id")
-        OrderItem.objects.get(id=int(item)).delete()
-    
-    
+        if "remove-id" in data:
+            item = data.get("remove-id")
+            OrderItem.objects.get(id=int(item)).delete()
+        elif "checkingout" in data:
+            del request.session['cart']
+            return redirect('home')
+      
     return render(request, 'checkout.html', {'order': order, 'hasCart':False})

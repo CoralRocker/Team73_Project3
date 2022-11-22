@@ -28,6 +28,12 @@
     </div>
     {% endfor %}
     <div class="total">Total     ${{order.getPrice}}</div>
+    <div class="checkout-button">
+        <form method="POST", action="">
+            {% csrf_token %}
+            <button class="delete-cart-item" name="checkingout">Checkout ${{order.getPrice}}</button>
+        </form>
+    </div>
 </div>
 
 {% endblock content %}
