@@ -49,10 +49,10 @@ class CustomizationForm(forms.Form):
     cust_juice.insert(0, ('', ''))
     
     milk = forms.ChoiceField(required=False, choices=cust_milk, initial='')
-    milk_amt = forms.IntegerField(min_value=0, required=False)
 
     splash = forms.ChoiceField(required=False, choices=cust_splash, initial='')
     syrup = forms.ChoiceField(required=False, choices=cust_syrups, initial='')
+    amt_syrup = forms.IntegerField(min_value=0, max_value=12, required=False)
     sauce = forms.ChoiceField(required=False, choices=cust_sauces, initial='')
     drizzle = forms.ChoiceField(required=False, choices=cust_drizzle, initial='')
     lining = forms.ChoiceField(required=False, choices=cust_lining, initial='')

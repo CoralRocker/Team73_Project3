@@ -14,7 +14,11 @@
         </div>
         {% for customizationItem in item.itemcustomization_set.all %}
         <div class="customization-info">
+            {% if customizationItem.customization.type != 'milk' %}
             <div class="customization-output">{{customizationItem.amount}} {{customizationItem.customization.type}}(s) of {{customizationItem.customization.name}} <b>+${{customizationItem.getCustomizationPrice}}</b></div>
+            {% else %}
+            <div class="customization-output">{{customizationItem.customization.name}} milk <b>+${{customizationItem.getCustomizationPrice}}</b></div>
+            {% endif %}
             <div class="customization-price"></div>
         </div>
         {% endfor %}

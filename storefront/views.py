@@ -167,9 +167,18 @@ def ItemDetailView(request, pk):
         form = CustomizationForm(request.POST)
         # check if the form is valid
         if form.is_valid():
+            amount = 1
+            size = 'grande'
             for key, value in form.cleaned_data.items():
-                if value and value != '':
-                    OrderItem.objects.get(pk=request.session['item-in-view']).addCustomization(Customization.objects.get(id=value),1)
+                if key == 'size':
+                    if value and value != '':
+                        size
+                elif key[0:3] != 'amt':
+                    if value and value != '':
+                        if value != 'milk':
+                            amount_string = 'amt_' + value
+                            amount = form.cleaned_data[amount_string]
+                        OrderItem.objects.get(pk=request.session['item-in-view']).addCustomization(Customization.objects.get(id=value),amount)
             del request.session['item-in-view']
 
             return render(request, 'menu-home.html', {'hasCart':hasCart})
