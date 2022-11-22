@@ -14,8 +14,8 @@
         </div>
         {% for customizationItem in item.itemcustomization_set.all %}
         <div class="customization-info">
-            <div class="customization-output">{{customizationItem.amount}} {{customizationItem.customization.type}}(s) of {{customizationItem.customization.name}}</div>
-            <div class="customization-price"><b>+${{customizationItem.getCustomizationPrice}}</b></div>
+            <div class="customization-output">{{customizationItem.amount}} {{customizationItem.customization.type}}(s) of {{customizationItem.customization.name}} <b>+${{customizationItem.getCustomizationPrice}}</b></div>
+            <div class="customization-price"></div>
         </div>
         {% endfor %}
         <div class="total-item-price">Total Price of Item is ${{item.getPrice}}</div>

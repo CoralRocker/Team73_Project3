@@ -146,7 +146,7 @@ def ItemDetailView(request, pk):
 
         # Delete Previous Items
         if 'item-in-view' in request.session:
-            OrderItem.get(pk=request.session['item-in-view']).delete()
+            OrderItem.objects.get(pk=request.session['item-in-view']).delete()
 
         order = int(request.session['cart'])
         request.session['item-in-view'] = OrderItem.create(
@@ -158,11 +158,11 @@ def ItemDetailView(request, pk):
     if request.method == 'POST':
         # create a form and populate with data from the request
         form = CustomizationForm(request.POST)
-        for field in form:
-            if(field != ''):
-                request.session['item-in-view'].addCustomization(field,1)
         # check if the form is valid
         if form.is_valid():
+            for key, value in form.cleaned_data.items():
+                if value and value != '':
+                    OrderItem.objects.get(pk=request.session['item-in-view']).addCustomization(Customization.objects.get(id=value),1)
             del request.session['item-in-view']
 
             return render(request, 'menu-home.html', {'hasCart':hasCart})
