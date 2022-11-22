@@ -180,10 +180,12 @@ def AnalyticsPageView(request):
     return render(request, 'analytics.html', {'hasCart':False})
 
 def CheckoutPageView(request):
-    # Remove unadded items from cart
-    if 'item-in-view' in request.session:
-        OrderItem.objects.get(pk=request.session['item-in-view']).delete()
-        del request.session['item-in-view']
-    
     order = Order.objects.get(pk=request.session['cart'])
+    # Remove unadded items from cart
+    if request.method == 'POST':
+        data = request.POST
+        item = data.get("remove-id")
+        OrderItem.objects.get(id=int(item)).delete()
+    
+    
     return render(request, 'checkout.html', {'order': order, 'hasCart':False})
