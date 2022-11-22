@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 
 class Customization(models.Model):
@@ -133,13 +134,19 @@ class OrderItem(models.Model):
     order = models.ForeignKey('Order', on_delete=models.CASCADE, null=False)
 
     # Menu Item that this item represents
-    menu_item = models.ForeignKey(Menu, on_delete=models.CASCADE, null=False) 
+    menu_item = models.ForeignKey(Menu, on_delete=models.DO_NOTHING, null=False) 
 
     # Customizations Added to the item
     customizations = models.ManyToManyField(Customization, through='ItemCustomization') 
 
     # Amount of item requested
     amount = models.IntegerField(blank=False, null=False)
+
+    @classmethod
+    def create(cls, order, menu_item, amount=1):
+        item = cls(order=order, menu_item=menu_item, amount=amount)
+        item.save()
+        return item
 
     def getInventoryUsage(self) -> dict[Inventory, float]:
         # Get Item Usage
@@ -278,6 +285,7 @@ class Order(models.Model):
 
     items = models.ManyToManyField(Menu, through='OrderItem')
 
+
     # price = models.DecimalField(max_digits=11, decimal_places=2, blank=True, null=True)
     # items = models.TextField(blank=True, null=True)  # This field type is a guess.
 
@@ -294,6 +302,12 @@ class Order(models.Model):
             price += item.getPrice()
 
         return price
+
+    @classmethod
+    def create(cls, cashier :str, date = datetime.datetime.now()):
+        ordr = cls(cashier=cashier, date=date)
+        ordr.save()
+        return ordr
 
 
     class Meta:

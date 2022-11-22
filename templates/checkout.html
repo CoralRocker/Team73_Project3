@@ -3,25 +3,25 @@
 {% block content %}
 
 <div class="checkout-container">
-    {% for item in order.items %}
+    {% for item in order.orderitem_set.all %}
     <div class="checkout-orders-container">
         <div class="item-name-price">
             <div class="item-name">{{item.menu_item.name}}</div>    
-            <div class="item-price"><b>${{item.menu_item.getInventoryPrice(item.menu_item)}}</b></div>
+            <div class="item-price"><b>${{item.menu_item.getInventoryPrice}}</b></div>
         </div>
         <div class="item-size">
             <p>{{item.menu_item.size}}</p>
         </div>
-        {% for customizationItem in item.customizations %}
+        {% for customizationItem in item.itemcustomization_set.all %}
         <div class="customization-info">
             <div class="customization-output">{{customizationItem.amount}} {{customizationItem.customization.type}}(s) of {{customizationItem.customization.name}}</div>
-            <div class="customization-price"><b>+${{customizationItem.getCustomizationPrice(customizationItem)</b></div>
+            <div class="customization-price"><b>+${{customizationItem.getCustomizationPrice}}</b></div>
         </div>
         {% endfor %}
-        <div class="total-item-price">Total Price of Item is ${{item.getPrice(item)}}</div>
+        <div class="total-item-price">Total Price of Item is ${{item.getPrice}}</div>
     </div>
     {% endfor %}
-    <div class="total">Total     ${{order.getPrice(order)</div>
+    <div class="total">Total     ${{order.getPrice}}</div>
 </div>
 
 {% endblock content %}

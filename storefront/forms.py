@@ -1,6 +1,7 @@
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column
+from crispy_forms.layout import *
+from crispy_forms.bootstrap import *
 from .models import Customization
 
 class CustomizationForm(forms.Form):
