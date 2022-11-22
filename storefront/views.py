@@ -158,7 +158,9 @@ def ItemDetailView(request, pk):
     if request.method == 'POST':
         # create a form and populate with data from the request
         form = CustomizationForm(request.POST)
- 
+        for field in form:
+            if(field != ''):
+                request.session['item-in-view'].addCustomization(field,1)
         # check if the form is valid
         if form.is_valid():
             del request.session['item-in-view']

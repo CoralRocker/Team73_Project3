@@ -95,7 +95,7 @@ class Menu(models.Model):
                                              output_field=models.FloatField()) *
                     (models.F('amount') / models.F('inventory__amount_per_unit'))
                 )
-        return self.ingredient_set.aggregate(val=price_aggregator)['val']
+        return round(self.ingredient_set.aggregate(val=price_aggregator)['val'],2)
 
     def getInventoryUsage(self) -> dict[Inventory, float]:
         usage = dict()
@@ -121,7 +121,7 @@ class Ingredient(models.Model):
     amount = models.FloatField()
 
     def getPrice(self) -> float:
-        return float(self.inventory.price) * (self.amount / self.inventory.amount_per_unit)
+        return round(float(self.inventory.price) * (self.amount / self.inventory.amount_per_unit),2)
 
     def __str__(self):
         return f"{self.menu_item.name} :> {self.inventory.name} x {self.amount}"
@@ -230,10 +230,10 @@ class OrderItem(models.Model):
             else:
                 custCost += float(cust.cost)
 
-        return custCost
+        return round(custCost,2)
 
     def getPrice(self) -> float:
-        return self.amount * (self.getCustomizationPrice() + float(self.menu_item.price))
+        return round(self.amount * (self.getCustomizationPrice() + float(self.menu_item.price)),2)
 
     def addCustomization(self, cust :Customization, amount :float):
         newCust = ItemCustomization(order_item=self, customization=cust, amount=amount)
@@ -273,7 +273,7 @@ class ItemCustomization(models.Model):
             else:
                 custCost += float(cust.cost)
 
-        return custCost
+        return round(custCost,2)
 
     def __str__(self):
         return f"{self.order_item.menu_item.name} :> {self.customization.name} {self.customization.type} x {self.amount}"
@@ -301,7 +301,7 @@ class Order(models.Model):
         for item in self.orderitem_set.all():
             price += item.getPrice()
 
-        return price
+        return round(price,2)
 
     @classmethod
     def create(cls, cashier :str, date = datetime.datetime.now()):

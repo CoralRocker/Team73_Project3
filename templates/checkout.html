@@ -6,8 +6,8 @@
     {% for item in order.orderitem_set.all %}
     <div class="checkout-orders-container">
         <div class="item-name-price">
-            <div class="item-name">{{item.menu_item.name}}</div>    
-            <div class="item-price"><b>${{item.menu_item.getInventoryPrice}}</b></div>
+            <div class="item-name">{{item.menu_item.name}}    <b>${{item.menu_item.price}}</b></div>    
+            <div class="item-price"></div>
         </div>
         <div class="item-size">
             <p>{{item.menu_item.size}}</p>
@@ -19,6 +19,7 @@
         </div>
         {% endfor %}
         <div class="total-item-price">Total Price of Item is ${{item.getPrice}}</div>
+        <hr>
     </div>
     {% endfor %}
     <div class="total">Total     ${{order.getPrice}}</div>
