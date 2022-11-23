@@ -10,6 +10,9 @@ class Customization(models.Model):
     name = models.TextField(default='')
     ingredient = models.ForeignKey('Inventory', on_delete=models.CASCADE)
 
+    def getInventoryPrice(self) -> float:
+        return self.amount / self.ingredient.amount_per_unit * float(self.ingredient.price)
+
     class Meta:
         db_table = 'customizations'
         
@@ -19,11 +22,32 @@ class Customization(models.Model):
 # Do we need/want a finance table???
 class Finance(models.Model):
     date = models.DateField(primary_key=True)
-    orders = models.TextField()  # This field type is a guess.
+
     revenue = models.DecimalField(max_digits=11, decimal_places=2)
     expenses = models.DecimalField(max_digits=11, decimal_places=2)
     profit = models.DecimalField(max_digits=11, decimal_places=2)
-    inventory_usage = models.TextField()  # This field type is a guess.
+    
+    @classmethod
+    def create(cls, date=datetime.date.today()):
+        try:
+            item = Finance(date=date, revenue=0,expenses=0,profit=0)
+            item.save()
+            return item
+        except:
+            return Finance.objects.get(pk=date)
+
+    def getOrders(self):
+        return Order.objects.filter(date=self.pk)
+
+    def getExpenses(self):
+        invPrice = models.Sum(models.ExpressionWrapper(
+            models.F('orderitem__menu_item__ingredients__price'),
+            output_field=models.FloatField()) * 
+                              (models.F('orderitem__menu_item__ingredient__amount') /
+                              models.F('orderitem__menu_item__ingredients__amount_per_unit'))
+            )
+        return self.getOrders().aggregate(price=invPrice)['price']
+
 
     class Meta:
         db_table = 'finances'
@@ -37,6 +61,16 @@ class Inventory(models.Model):
     stock = models.FloatField()
     ordered = models.FloatField(blank=True, null=False)
     amount_per_unit = models.FloatField(blank=False, null=False)
+
+    @classmethod
+    def removeFromInv(cls, inv):
+        objs = list()
+        for key in inv:
+            objs.append(key)
+            key.stock -= inv[key]
+
+        cls.objects.bulk_update(objs, ['stock'])
+
 
     @classmethod
     def create(cls, id, name, price, stock, amount_per_unit):
@@ -95,7 +129,7 @@ class Menu(models.Model):
                                              output_field=models.FloatField()) *
                     (models.F('amount') / models.F('inventory__amount_per_unit'))
                 )
-        return round(self.ingredient_set.aggregate(val=price_aggregator)['val'],2)
+        return self.ingredient_set.aggregate(val=price_aggregator)['val']
 
     def getInventoryUsage(self) -> dict[Inventory, float]:
         usage = dict()
@@ -147,6 +181,13 @@ class OrderItem(models.Model):
         item = cls(order=order, menu_item=menu_item, amount=amount)
         item.save()
         return item
+
+    def getInventoryPrice(self) -> float:
+        custPrice = 0.0
+        for cust in self.customizations.all():
+            custPrice += cust.getInventoryPrice() 
+
+        return self.amount * (self.menu_item.getInventoryPrice() + custPrice)
 
     def getInventoryUsage(self) -> dict[Inventory, float]:
         # Get Item Usage
@@ -230,10 +271,10 @@ class OrderItem(models.Model):
             else:
                 custCost += float(cust.cost)
 
-        return round(custCost,2)
+        return custCost
 
     def getPrice(self) -> float:
-        return round(self.amount * (self.getCustomizationPrice() + float(self.menu_item.price)),2)
+        return self.amount * (self.getCustomizationPrice() + float(self.menu_item.price))
 
     def addCustomization(self, cust :Customization, amount :float):
         newCust = ItemCustomization(order_item=self, customization=cust, amount=amount)
@@ -253,6 +294,9 @@ class ItemCustomization(models.Model):
     customization = models.ForeignKey(Customization, models.CASCADE)
 
     amount = models.IntegerField(null=False, blank=False)
+    
+    def getInventoryPrice(self) -> float:
+        return self.customization.getInventoryPrice() * self.amount
 
     def getCustomizationPrice(self) -> float:
 
@@ -296,6 +340,13 @@ class Order(models.Model):
 
         return inv
             
+    def getInventoryPrice(self) -> float:
+        invPrice = 0.0
+        for item in self.orderitem_set.all():
+            invPrice += item.getInventoryPrice()
+        return invPrice
+
+
     def getPrice(self) -> float:
         price = 0.0
         for item in self.orderitem_set.all():
