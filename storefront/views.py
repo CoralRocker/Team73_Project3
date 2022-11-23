@@ -187,7 +187,6 @@ def ItemDetailView(request, pk):
                             amount_string = 'amt_' + key
                             amount = form.cleaned_data[amount_string]
                         OrderItem.objects.get(pk=request.session['item-in-view']).addCustomization(Customization.objects.get(id=value),amount)
-            Inventory.rem
             del request.session['item-in-view']
 
             return render(request, 'menu-home.html', {'hasCart':hasCart})
@@ -223,6 +222,8 @@ def CheckoutPageView(request):
             item = data.get("remove-id")
             OrderItem.objects.get(id=int(item)).delete()
         elif "checkingout" in data:
+            for menuItem in order.orderitem_set.all():
+                Inventory.removeFromInv(menuItem.getInventoryUsage())
             del request.session['cart']
             return redirect('home')
       
