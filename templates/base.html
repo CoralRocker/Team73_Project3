@@ -75,16 +75,13 @@
                   {% endif %}
                 </li>
                 <li class="header-menu_item">
-                  {% if user.is_authenticated%}
+                  {% if user.is_authenticated and hasCart%}
+                    <a class='btn btn-success' href="{% url 'checkout' %}" title="checkout">Check Out</a>
+                  {% elif user.is_authenticated %}
                   {% else %}
                     <a class="btn btn-success" href="{% url 'signup' %}" title="signup" class="header-menu_link">Sign Up</a>
                   {% endif %}
                 </li>
-                {% if hasCart %}
-                <li class="header-menu_item">
-                  <a class='btn btn-success' href="{% url 'checkout' %}" title="checkout">CheckOut</a>
-                </li>
-                {% endif %}
             </div>
           </div>
         </div>
