@@ -38,6 +38,18 @@ def MenuHomePageView(request):
 
     return render(request, 'menu-home.html', {'hasCart': hasCart})
 
+def SrarchPageView(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    drinks = Menu.objects.filter(
+        (Q(name__icontains=q) |
+        Q(description__icontains=q)) &
+        (Q(size__iexact='grande') |
+         Q(size__iexact="doppio"))
+        
+    )
+    context = {'drinks': drinks}
+    return render(request,'search.html', context)
+
 def EspressoPageView(request):
     if 'item-in-view' in request.session:
         try:

@@ -48,6 +48,13 @@
                   <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
                   <!-- LANGUAGE TRANSLATION SWITCH BUTTON ................................. END-->
                 </li>
+                <li class="header-search">
+                  <form class="header__search" method="GET" action="{% url 'search' %}">
+                    <label>
+                      <input name="q" placeholder="Search for a drink..." />
+                    </label>
+                  </form>
+                </li>
                 <li class="header-menu_item">
                   <a href="{% url 'home' %}" title="home" class="header-menu_link">Home</a>
                 </li>
