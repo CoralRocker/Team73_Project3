@@ -46,7 +46,25 @@ class Finance(models.Model):
                               (models.F('orderitem__menu_item__ingredient__amount') /
                               models.F('orderitem__menu_item__ingredients__amount_per_unit'))
             )
-        return self.getOrders().aggregate(price=invPrice)['price']
+        
+        self.expenses = self.getOrders().aggregate(price=invPrice)['price']
+
+        return self.expenses
+
+    def getRevenue(self):
+        rev = models.Sum(models.ExpressionWrapper(models.F('orderitem__cost'),
+                                                  output_field=models.FloatField()))
+        self.revenue = self.getOrders().aggregate(price=rev)['price']
+
+        return self.revenue
+
+    def getProfit(self):
+        self.getExpenses()
+        self.getRevenue()
+        
+        self.profit = self.revenue - self.expenses
+
+        return self.profit
 
 
     class Meta:
@@ -176,9 +194,13 @@ class OrderItem(models.Model):
     # Amount of item requested
     amount = models.IntegerField(blank=False, null=False)
 
+    # Price paid by the customer
+    cost = models.DecimalField(max_digits=11, decimal_places=2)
+
     @classmethod
     def create(cls, order, menu_item, amount=1):
         item = cls(order=order, menu_item=menu_item, amount=amount)
+        item.cost = menu_item.cost * amount
         item.save()
         return item
 
@@ -274,11 +296,13 @@ class OrderItem(models.Model):
         return custCost
 
     def getPrice(self) -> float:
-        return self.amount * (self.getCustomizationPrice() + float(self.menu_item.price))
+        return float(self.cost)
 
     def addCustomization(self, cust :Customization, amount :float):
         newCust = ItemCustomization(order_item=self, customization=cust, amount=amount)
         newCust.save()
+
+        self.cost = self.amount * (self.getCustomizationPrice() + self.menu_item.price)
         return
 
     class Meta:
