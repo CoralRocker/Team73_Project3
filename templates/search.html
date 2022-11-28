@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class='search-container'>
+    {% for drink in drinks %}
+    <div class='search-drink-container'>
+        <a href="{% url 'item-detail' drink.id %}"><div class='drink-name'>{{drink.name}}</div></a>
+        <div class='drink-descritpion'><small>{{drink.description}}</small></div>
+    </div>
+    <hr>
+    {% endfor %}
+</div>
+
+{% endblock %}

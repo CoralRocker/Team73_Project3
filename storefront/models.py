@@ -107,6 +107,7 @@ class Menu(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.TextField()
     price = models.DecimalField(max_digits=11, decimal_places=2)
+    description = models.TextField(default="Lorem")
 
     
     ingredients = models.ManyToManyField(Inventory, through='Ingredient')
