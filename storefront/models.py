@@ -66,6 +66,9 @@ class Finance(models.Model):
 
         return self.profit
 
+    def getInventoryUsage(self):
+
+        return None
 
     class Meta:
         db_table = 'finances'
@@ -201,7 +204,7 @@ class OrderItem(models.Model):
     @classmethod
     def create(cls, order, menu_item, amount=1):
         item = cls(order=order, menu_item=menu_item, amount=amount)
-        item.cost = menu_item.cost * amount
+        item.cost = menu_item.price * amount
         item.save()
         return item
 
