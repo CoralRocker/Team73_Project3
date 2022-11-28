@@ -1,0 +1,11 @@
+client id: d4btnn6yPCcJQP75Lq7JXTEAZwKMMqskSu4M6TcH
+client secret: 9OkodoP48gIpbRdGjjIxT5HFOeqtO1hOabHi2aAOHfIl08wWKSixPE4HkjDrw7FO3LnzEdTsK1gN0YXkcezrx1ZZW0qdh4fzz3GqrYKqENmQlM5jqU9Fif50EkGC3Bmm4
+
+access token: 0uk7uIPZceHDc0akIGfbH3Ay0KjxP4
+refresh token: PrJVxNfBbip6D124pTgurGMPmDh9mo
+
+grab access token:
+curl -X POST -d "grant_type=password&username=hayden7f&password=<password>" -u"d4btnn6yPCcJQP75Lq7JXTEAZwKMMqskSu4M6TcH:9OkodoP48gIpbRdGjjIxT5HFOeqtO1hOabHi2aAOHfIl08wWKSixPE4HkjDrw7FO3LnzEdTsK1gN0YXkcezrx1ZZW0qdh4fzz3GqrYKqENmQlM5jqU9Fif50EkGC3Bmm" http://127.0.0.1:8000/o/token/
+
+renew access token:
+curl -X POST -d "grant_type=refresh_token&refresh_token=PrJVxNfBbip6D124pTgurGMPmDh9mo&client_id=d4btnn6yPCcJQP75Lq7JXTEAZwKMMqskSu4M6TcH&client_secret=9OkodoP48gIpbRdGjjIxT5HFOeqtO1hOabHi2aAOHfIl08wWKSixPE4HkjDrw7FO3LnzEdTsK1gN0YXkcezrx1ZZW0qdh4fzz3GqrYKqENmQlM5jqU9Fif50EkGC3Bmm4" http://127.0.0.1:8000/o/token/
