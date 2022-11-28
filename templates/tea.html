@@ -6,5 +6,9 @@
 
 {% block items %}
 <span class="products menu-header">Tea</span>
-    {% include 'products.html'%}
+{% if user.is_staff %}
+    {% include 'server-products.html'%} 
+{% else %}
+    {% include 'products.html'%}  
+{% endif %}
 {% endblock items %}
