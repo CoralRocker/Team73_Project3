@@ -30,8 +30,6 @@
           <div class="header_leftside">
             <div id="google_translate_element"></div>
             <a href="{% url 'home' %}" title="" class="header_initials"> MEOWBUCKS </a>
-
-
           </div>
           <div class="header_rightside">
             <div class="header_menu header-menu">
@@ -48,7 +46,7 @@
                   <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
                   <!-- LANGUAGE TRANSLATION SWITCH BUTTON ................................. END-->
                 </li>
-                <li class="header-search">
+                <li class="header-search mt-2">
                   <form class="header__search" method="GET" action="{% url 'search' %}">
                     <label>
                       <input name="q" placeholder="Search for a drink..." />

@@ -25,7 +25,7 @@
             <h1 class="intro_title"><br>Welcome to <span>Meowbucks</span> {{ user.username }}</h1>
               {% if user.is_authenticated %}
               {% else %}
-              <p class="intro_text"><strong>Login or signup to place an order.</strong></p>
+              <p class="intro_text"><strong>Login or sign up to place an order.</strong></p>
               {% endif %}
               <span class="intro_position">Refer to our <a href="{% url 'menu-home' %}" title="menu" class="header-menu_link green">menu</a> page to view our drink options.</span>
         </div>

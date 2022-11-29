@@ -10,6 +10,8 @@ psycopg2-binary = "*"
 django-crispy-forms = "*"
 django-unicorn = "*"
 django-google-translate = "*"
+django-oauth-toolkit = "*"
+djangorestframework = "*"
 
 [dev-packages]
 
