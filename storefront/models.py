@@ -67,12 +67,21 @@ class Finance(models.Model):
         return self.profit
 
     def getInventoryUsage(self):
+        inv = dict()
+        for order in self.getOrders():
+            invSum(inv, order.getInventoryUsage())
 
-        return None
+        return inv
 
     class Meta:
         db_table = 'finances'
 
+class InventoryUsage(models.Model):
+    id = models.BigAutoField(primary_key=True)
+
+    item = models.ForeignKey('Inventory', on_delete=models.DO_NOTHING)
+
+    amount_used  = models.FloatField()
 
 
 class Inventory(models.Model):
