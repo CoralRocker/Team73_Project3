@@ -38,7 +38,7 @@ def MenuHomePageView(request):
 
     return render(request, 'menu-home.html', {'hasCart': hasCart})
 
-def SrarchPageView(request):
+def SearchPageView(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     drinks = Menu.objects.filter(
         (Q(name__icontains=q) |
