@@ -1,0 +1,13 @@
+SCRUM MEETING 1:
+
+Meeting Agenda Items
+    Discuss what needs to be done for this sprint.
+    Discuss how to make the website public
+    Discuss where reports functionality is at
+    Discuss creating a server side of the website
+
+Minutes: First, Howie talked with Gaultier about where the report's functionality is at. He's started the process of how to go about coding the reports. The assignment to
+add these reports to the manager side was given to Noah. Afterwards, Howie told everyone about the plans to use heroku to make our website public and told them how it works.
+We discussed how we wanted our server side to look, using html still but getting rid of the pictures for the most part. This assignment was given to Haley. Lastly, we 
+decided we want our customization selection to look better so this, along with OAuth, was given to Hayden. To deal with more accessibility, there will be nutrition
+labels for each drink which is assigned to Howie.
