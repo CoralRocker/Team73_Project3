@@ -11,3 +11,22 @@ add these reports to the manager side was given to Noah. Afterwards, Howie told 
 We discussed how we wanted our server side to look, using html still but getting rid of the pictures for the most part. This assignment was given to Haley. Lastly, we 
 decided we want our customization selection to look better so this, along with OAuth, was given to Hayden. To deal with more accessibility, there will be nutrition
 labels for each drink which is assigned to Howie.
+
+SCRUM MEETING 2:
+
+Meeting Agenda Items
+    Status update on server
+    Status update on OAuth
+    Status update on reporting functionality
+
+Minutes: There wasn't much to discuss during this meeting. Hayden started putting up the OAuth API and told everyone how to download the required installations to get
+it to work. Gaultier said he started putting get functions to retrieve information for the reports. We saw from the git push that there is a basic server view in the 
+works. We started discussing how to make the customizations interface smoother and look better. One idea is to let the customer select a type and take them to a page
+where they can select multiple customizations and amounts for that type.
+
+SCRUM MEETING 3:
+
+Meeting Agenda Items
+
+
+Minutes: 
