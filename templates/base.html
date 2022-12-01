@@ -74,9 +74,9 @@
 
                 <li class="header-menu_item">
                   {% if user.is_authenticated %}
-                    {% comment %} <a href="{% url 'logout' %}" title="logout" class="header-menu_link">Log out</a> {% endcomment %}
+                    <a href="/accounts/logout/" title="logout" class="header-menu_link">Log out</a>
                   {% else %}
-                    {% comment %} <a href="{% url 'login' %}" title="login" class="header-menu_link">Log In</a> {% endcomment %}
+                    <a href="/accounts/login/" title="login" class="header-menu_link">Log In</a>
                   {% endif %}
                 </li>
                 <li class="header-menu_item">
@@ -84,7 +84,7 @@
                     <a class='btn btn-success' href="{% url 'checkout' %}" title="checkout">Check Out</a>
                   {% elif user.is_authenticated %}
                   {% else %}
-                    {% comment %} <a class="btn btn-success" href="{% url 'signup' %}" title="signup" class="header-menu_link">Sign Up</a> {% endcomment %}
+                    <a class="btn btn-success" href="/accounts/signup/" title="signup" class="header-menu_link">Sign Up</a>
                   {% endif %}
                 </li>
             </div>

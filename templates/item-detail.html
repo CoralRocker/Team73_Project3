@@ -16,7 +16,7 @@
             <form id="customization_form"  method="post">
                 <h1 class="">{{ item.name }}</h1>
                     {% csrf_token %}
-                    {% crispy form %}
+                    {{ form|crispy }}
             </form>
             </div>
         </div>

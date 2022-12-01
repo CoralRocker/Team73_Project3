@@ -1,0 +1,29 @@
+{% extends "../base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% if messages %}
+<div>
+  <h1>Messages</h1>
+  <ul>
+    {% for message in messages %}
+    <li>{{message}}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<div>
+  <ul>
+    {% if user.is_authenticated %}
+    <li><a href="{% url 'account_email' %}">Change E-mail</a></li>
+    <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
+    {% endif %}
+  </ul>
+</div>
+{% block extra_content %}
+{% endblock %}
+{% endblock %}
+
+{% block extra_body %}
+{% endblock %}

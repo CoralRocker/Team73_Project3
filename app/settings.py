@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     
     # Local
     'storefront.apps.StorefrontConfig',
-    'accounts.apps.AccountsConfig'
 ]
 
 MIDDLEWARE = [
@@ -75,7 +74,7 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'templates', 'accounts')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'accounts')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

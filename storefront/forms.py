@@ -7,7 +7,7 @@ from .models import Customization
 class EspressoCustomizationForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
+        self.helper = FormHelper(self)
         self.helper.layout = Layout(
             Row(
                 Column('size', css_class='form-group col-md-6 mb-0'),
@@ -101,7 +101,7 @@ class ElseCustomizationForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
+        self.helper = FormHelper(self)
         self.helper.layout = Layout(
             Row(
                 Column('size', css_class='form-group col-md-6 mb-0'),
