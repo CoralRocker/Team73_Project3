@@ -1,1 +1,1 @@
-web: gunicorn meowbucks.wsgi
+web: gunicorn app.wsgi
