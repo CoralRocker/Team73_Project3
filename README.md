@@ -78,6 +78,11 @@
 - views.py provides an interface for all of the views in forms of classes.
 - tests.py used for writing test cases
 - urls.py an array of endpoints that are contained within the application and that can be inherited by the project level directory
+- forms.py is used for creating forms
+- templatetags is a directory for storing functions that can be used within the django templates
+  - \_\_init\_\_.py denotes this directory as a python package
+  - auth_extras.py is a script used to check is a user belongs to a particular group
+- migrations is a directory that stores database information. It is managed automatically.
 
 ## accounts (application directory)
 
@@ -87,10 +92,19 @@
 ## templates
 
 - This is where html files go
+- account is a directory for all of the files that relate to the account/registration system
 
 ## static
 
-- Contains directories for css and js files
+- Contains directories for css, js, and media files
+
+## populate.py
+
+- A script to repopulate the database
+
+## Procfile
+
+- A file used for deployment to heroku
 
 ## Pipfile / Pipfile.lock
 
