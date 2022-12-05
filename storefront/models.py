@@ -1,26 +1,41 @@
 from django.db import models
 import datetime
 
-
-'''
-Customization Model Class
-
-The role of this model is to hold the information about each individual customization that
-is available to the customer.
-
-The model is related to the Inventory Model, which allows customizations to draw their
-ingredients from the store's inventory.
-'''
+## 
+# @brief Customization Model Class
+# 
+# The role of this model is to hold the information about each individual customization that
+# is available to the customer.
+# 
+# The model is related to the Inventory Model, which allows customizations to draw their
+# ingredients from the store's inventory.
 class Customization(models.Model):
+
+    ## ID of the customization
     id = models.BigAutoField(primary_key=True)
+
+    ## Cost of the customization
     cost = models.DecimalField(max_digits=11, decimal_places=2) # Store money up to 999,999,99.99
+
+    ## Internal type of the customization. Affects its price
     type = models.TextField()
+
+    ## Amount of the required ingredient to be used. Grams
     amount = models.FloatField()
+
+    ## Name of the customization that the customer sees
     name = models.TextField(default='')
+
+    ## Inventory item that the customization uses
     ingredient = models.ForeignKey('Inventory', on_delete=models.CASCADE)
 
-    def getInventoryPrice(self) -> float:
-        return self.amount / self.ingredient.amount_per_unit * float(self.ingredient.price)
+    ## 
+    # Get the cost to restock the given amount of the customization
+    # 
+    # @param cust_amount The amount of customizations to get the cost for.
+    def getInventoryPrice(self, cust_amount=1) -> float:
+
+        return cust_amount * (self.amount / self.ingredient.amount_per_unit) * float(self.ingredient.price)
 
     class Meta:
         db_table = 'customizations'
@@ -28,20 +43,29 @@ class Customization(models.Model):
     def __str__(self):
         return f"{self.name}"
 
-'''
-Finance Model Class
-
-The Finance Model contains useful aggregate functions which allow it to
-calculate various reports for the end user. This model stores a date, as
-well as the profit, revenue, and expenses for that date. 
-'''
+## Finance Model Class
+#
+# The Finance Model contains useful aggregate functions which allow it to
+# calculate various reports for the end user. This model stores a date, as
+# well as the profit, revenue, and expenses for that date. 
 class Finance(models.Model):
+
+    ## Date that the finance row represents
     date = models.DateField(primary_key=True)
 
+    ## Revenue in dollars for that day
     revenue = models.DecimalField(max_digits=11, decimal_places=2)
+
+    ## Expenses in dollars for that day
     expenses = models.DecimalField(max_digits=11, decimal_places=2)
+
+    ## Profit in dollars for that day
     profit = models.DecimalField(max_digits=11, decimal_places=2)
     
+    ##
+    # Create or fetch a Finance instance for the given day
+    #
+    # @param date The date to get an instance for
     @classmethod
     def create(cls, date=datetime.date.today()):
         try:
@@ -51,9 +75,17 @@ class Finance(models.Model):
         except:
             return Finance.objects.get(pk=date)
 
+    ## Get a QuerySet of all the orders in the day
+    #
+    # @return A QuerySet of all the orders
     def getOrders(self):
         return Order.objects.filter(date=self.pk)
 
+    ##
+    # @brief Calculate the expenses for the day
+    #
+    # Calculates the expenses and saves them to the database
+    # @return The expenses for the day
     def getExpenses(self):
         invPrice = models.Sum(models.ExpressionWrapper(
             models.F('orderitem__menu_item__ingredients__price'),
@@ -63,24 +95,45 @@ class Finance(models.Model):
             )
         
         self.expenses = self.getOrders().aggregate(price=invPrice)['price']
+        self.save()
 
         return self.expenses
 
+    ##
+    # @brief Calculate the revenue for the day
+    #
+    # Calculates the revenue and saves them to the database
+    # @return The revenue for the day
     def getRevenue(self):
         rev = models.Sum(models.ExpressionWrapper(models.F('orderitem__cost'),
                                                   output_field=models.FloatField()))
         self.revenue = self.getOrders().aggregate(price=rev)['price']
+        self.save()
 
         return self.revenue
 
+    ##
+    # @brief Calculate the profit for the day
+    #
+    # Calculates the profit and saves them to the database.
+    # It does this by calculating (and saving) the expenses 
+    # and revenue and returning the difference.
+    #
+    # @return The profit for the day
     def getProfit(self):
         self.getExpenses()
         self.getRevenue()
         
         self.profit = self.revenue - self.expenses
 
+        self.save()
+
         return self.profit
 
+    ##
+    # @brief Return a dictionary of Inventory instances and amount of each used in the day
+    #
+    # @returns A dictionary relating Inventory items to the amount used that day
     def getInventoryUsage(self):
         inv = dict()
         for order in self.getOrders():
