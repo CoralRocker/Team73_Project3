@@ -69,7 +69,7 @@ def EspressoPageView(request):
     products = Menu.objects.filter(type__iexact="espresso", size__iexact="grande") | Menu.objects.filter(type__iexact="espresso", size__iexact="doppio")
     return render(request, 'espresso.html', {'products':products, 'hasCart':hasCart})
 
-def BrewedPageView(request):
+def DrinksPageView(request,pk):
     if 'item-in-view' in request.session:
         try:
             OrderItem.objects.get(pk=request.session['item-in-view']).delete()
@@ -85,8 +85,8 @@ def BrewedPageView(request):
     except:
         print("Either no cart exists or it is invalid")
 
-    products = Menu.objects.filter(type__iexact="brewed", size__iexact="grande")
-    return render(request, 'brewed.html', {'products':products, 'hasCart':hasCart})
+    products = Menu.objects.filter(type__iexact=pk, size__iexact="grande")
+    return render(request, 'drinks.html', {'products':products, 'hasCart':hasCart, 'name':pk})
 
 def BlendedPageView(request):
     if 'item-in-view' in request.session:

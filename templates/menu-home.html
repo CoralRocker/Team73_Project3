@@ -7,7 +7,7 @@
 
 {% block items %}
 <div class="products menu-home">
-    <a href="{% url 'espresso' %}" class="card-title">
+    <a href="{% url 'drinks' "espresso" %}" class="card-title">
         <div class="card">
             <img class="card-img-top" src="/static/assets/Espresso/Espresso.jpeg" alt="Card image Espresso">
             <div class="card-body">
@@ -16,7 +16,7 @@
         </div>
     </a>
 
-    <a href="{% url 'brewed' %}" class="card-title">
+    <a href="{% url 'drinks' 'brewed' %}" class="card-title">
         <div class="card">
             <img class="card-img-top" src="/static/assets/Brewed/Pike_Place.jpeg" alt="Card image Brewed">
             <div class="card-body">
@@ -25,7 +25,7 @@
         </div>
     </a>
 
-    <a href="{% url 'blended' %}" class="card-title">
+    <a href="{% url 'drinks' 'blended' %}" class="card-title">
         <div class="card">
             <img class="card-img-top" src="/static/assets/Blended/Caffe_Vanilla_Frappuccino.jpeg" alt="Card image Blended">
             <div class="card-body">
@@ -34,7 +34,7 @@
         </div>
     </a>
 
-    <a href="{% url 'tea' %}" class="card-title">
+    <a href="{% url 'drinks' 'tea' %}" class="card-title">
         <div class="card">
             <img class="card-img-top" src="/static/assets/Tea/Chai_Tea.jpeg" alt="Card image Tea">
             <div class="card-body">
@@ -43,7 +43,7 @@
         </div>
     </a>
 
-    <a href="{% url 'other' %}" class="card-title">
+    <a href="{% url 'drinks' 'other' %}" class="card-title">
         <div class="card">
             <img class="card-img-top" src="/static/assets/Other/Hot_Chocolate.jpeg" alt="Card image Other">
             <div class="card-body">

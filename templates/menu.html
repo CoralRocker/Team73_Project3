@@ -13,29 +13,29 @@
     <ul class="list-unstyled components active">
       <li class="header-menu_item">
         <p><br /><br /><br /><br /></p>
-        <a href="/menu/espresso/" title="espressos" class="header-menu_link">
+        <a href="{% url 'drinks' "espresso" %}" title="espressos" class="header-menu_link">
           Espresso
         </a>
       </li>
       <li class="header-menu_item">
         <p><br /></p>
-        <a href="/menu/brewed" title="brewed" class="header-menu_link">
+        <a href="{% url 'drinks' "brewed" %}" title="brewed" class="header-menu_link">
           Brewed
         </a>
       </li>
       <li class="header-menu_item">
         <p><br /></p>
-        <a href="/menu/blended" title="blended" class="header-menu_link">
+        <a href="{% url 'drinks' "blended" %}" title="blended" class="header-menu_link">
           Blended
         </a>
       </li>
       <li class="header-menu_item">
         <p><br /></p>
-        <a href="/menu/tea" title="teas" class="header-menu_link"> Tea </a>
+        <a href="{% url 'drinks' "tea" %}" title="teas" class="header-menu_link"> Tea </a>
       </li>
       <li class="header-menu_item">
         <p><br /></p>
-        <a href="/menu/other" title="other" class="header-menu_link"> Other </a>
+        <a href="{% url 'drinks' "other" %}" title="other" class="header-menu_link"> Other </a>
       </li>
     </ul>
   </nav>
