@@ -1,14 +1,15 @@
 {% extends 'menu.html' %}
+{% load auth_extras %}
 
 {% block extrahead %}
 <title>{% block title %}Meowbucks ⚬ Other{% endblock title %}</title>
 {% endblock extrahead %} 
 
 {% block items %}
-<span class="products menu-header">Other</span>
-{% if user.is_staff %}
-    {% include 'server-products.html'%} 
-{% else %}
-    {% include 'products.html'%}  
-{% endif %}
+    <span class="products menu-header">Other</span>
+    {% if request.user|has_group:"Server" %} 
+        {% include 'server-products.html'%} 
+    {% else %}
+        {% include 'products.html'%}  
+    {% endif %}
 {% endblock items %}
