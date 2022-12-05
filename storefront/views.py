@@ -50,25 +50,6 @@ def SearchPageView(request):
     context = {'drinks': drinks}
     return render(request,'search.html', context)
 
-def EspressoPageView(request):
-    if 'item-in-view' in request.session:
-        try:
-            OrderItem.objects.get(pk=request.session['item-in-view']).delete()
-        except:
-            print("It looks like the orderitem is already deleted...")
-            del request.session['item-in-view']
-
-    hasCart = False
-    try:
-        if 'cart' in request.session:
-            Order.objects.get(pk=request.session['cart'])
-            hasCart = True
-    except:
-        print("Either no cart exists or it is invalid")
-
-    products = Menu.objects.filter(type__iexact="espresso", size__iexact="grande") | Menu.objects.filter(type__iexact="espresso", size__iexact="doppio")
-    return render(request, 'espresso.html', {'products':products, 'hasCart':hasCart})
-
 def DrinksPageView(request,pk):
     if 'item-in-view' in request.session:
         try:
@@ -87,63 +68,6 @@ def DrinksPageView(request,pk):
 
     products = Menu.objects.filter(type__iexact=pk, size__iexact="grande")
     return render(request, 'drinks.html', {'products':products, 'hasCart':hasCart, 'name':pk})
-
-def BlendedPageView(request):
-    if 'item-in-view' in request.session:
-        try:
-            OrderItem.objects.get(pk=request.session['item-in-view']).delete()
-        except:
-            print("It looks like the orderitem is already deleted...")
-            del request.session['item-in-view']
-
-    hasCart = False
-    try:
-        if 'cart' in request.session:
-            Order.objects.get(pk=request.session['cart'])
-            hasCart = True
-    except:
-        print("Either no cart exists or it is invalid")
-
-    products = Menu.objects.filter(type__iexact="blended", size__iexact="grande")
-    return render(request, 'blended.html', {'products':products, 'hasCart':hasCart})
-
-def TeaPageView(request):
-    if 'item-in-view' in request.session:
-        try:
-            OrderItem.objects.get(pk=request.session['item-in-view']).delete()
-        except:
-            print("It looks like the orderitem is already deleted...")
-            del request.session['item-in-view']
-    
-    hasCart = False
-    try:
-        if 'cart' in request.session:
-            Order.objects.get(pk=request.session['cart'])
-            hasCart = True
-    except:
-        print("Either no cart exists or it is invalid")
-    
-    products = Menu.objects.filter(type__iexact="tea", size__iexact="grande")
-    return render(request, 'tea.html', {'products':products, 'hasCart':hasCart})
-
-def OtherPageView(request):
-    if 'item-in-view' in request.session:
-        try:
-            OrderItem.objects.get(pk=request.session['item-in-view']).delete()
-        except:
-            print("It looks like the orderitem is already deleted...")
-            del request.session['item-in-view']
-    
-    hasCart = False
-    try:
-        if 'cart' in request.session:
-            Order.objects.get(pk=request.session['cart'])
-            hasCart = True
-    except:
-        print("Either no cart exists or it is invalid")
-
-    products = Menu.objects.filter(type__iexact="other", size__iexact="grande")
-    return render(request, 'other.html', {'products':products, 'hasCart':hasCart})
 
 def ItemDetailView(request, pk):
     item = Menu.objects.get(pk = pk)
