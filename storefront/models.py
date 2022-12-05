@@ -158,6 +158,12 @@ class Menu(models.Model):
     
     image = models.TextField(null=True)
 
+    def getPossibleSizes(self):
+        result = list()
+        for item in Menu.objects.filter(name=self.name):
+            result.append((item.pk, item.size))
+
+        return result
 
     @classmethod
     def create(cls, name, price, size, type, image):
@@ -254,6 +260,14 @@ class OrderItem(models.Model):
 
     # Price paid by the customer
     cost = models.DecimalField(max_digits=11, decimal_places=2)
+
+    def getPossibleSizes(self):
+        result = list()
+        for item in Menu.objects.filter(name=self.menu_item.name):
+            result.append((item.pk, item.size))
+
+        return result
+
 
     @classmethod
     def create(cls, order, menu_item, amount=1):

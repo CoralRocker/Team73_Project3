@@ -206,9 +206,12 @@ def ItemDetailView(request, pk):
     # If method is GET create a blank form
     else:
         if 'Espresso' in item.name:
-            form = EspressoCustomizationForm(request.POST)
+            form = ElseCustomizationForm(request.POST)
+            form.setSizes(item.getPossibleSizes())
         else:
             form = ElseCustomizationForm(request.POST)
+            form.setSizes(item.getPossibleSizes())
+            print(item.getPossibleSizes())
         
     return render(request, 'item-detail.html', {'item': item, 'form':form, 'hasCart':hasCart})
 

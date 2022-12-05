@@ -95,6 +95,8 @@ class EspressoCustomizationForm(forms.Form):
     juice = forms.ChoiceField(required=False, choices=cust_juice, initial='')
     amt_juice = forms.IntegerField(min_value=0, max_value=12, required=False)
     
+    def setSizes(self, sizes):
+        self.fields['size']._set_choices(sizes)
 
 
 class ElseCustomizationForm(forms.Form):
@@ -189,4 +191,6 @@ class ElseCustomizationForm(forms.Form):
     juice = forms.ChoiceField(required=False, choices=cust_juice, initial='')
     amt_juice = forms.IntegerField(min_value=0, max_value=12, required=False)
     
+    def setSizes(self, sizes):
+        self.fields['size']._set_choices(sizes)
 
