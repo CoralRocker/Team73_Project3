@@ -70,7 +70,7 @@ class EspressoCustomizationForm(forms.Form):
     cust_juice = [(item.id, item.name) for item in Customization.objects.filter(type__iexact="juice")]
     cust_juice.insert(0, ('', ''))
 
-    size = forms.ChoiceField(required=True, choices=[("Solo","Solo"),("Doppio","Doppio"),("Triple","Triple"),("Quad","Quad")], initial='')
+    size = forms.ChoiceField(required=True, choices=[("Solo","Solo"),("Doppio","Doppio"),("Triple","Triple"),("Quad","Quad")], initial='Doppio')
 
     milk = forms.ChoiceField(required=False, choices=cust_milk, initial='')
 
@@ -164,7 +164,7 @@ class ElseCustomizationForm(forms.Form):
     cust_juice = [(item.id, item.name) for item in Customization.objects.filter(type__iexact="juice")]
     cust_juice.insert(0, ('', ''))
 
-    size = forms.ChoiceField(required=True, choices=[("Short","Short"),("Tall","Tall"),("Grande","Grande"),("Venti","Venti"),("Trenta","Trenta")], initial='')
+    size = forms.ChoiceField(required=True, choices=[("Short","Short"),("Tall","Tall"),("Grande","Grande"),("Venti","Venti"),("Trenta","Trenta")], initial='Grande')
 
     milk = forms.ChoiceField(required=False, choices=cust_milk, initial='')
 

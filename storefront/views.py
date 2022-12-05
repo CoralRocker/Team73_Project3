@@ -187,6 +187,7 @@ def ItemDetailView(request, pk):
             size = form.cleaned_data['size']
             print(size)
             item_name  = OrderItem.objects.get(pk=request.session['item-in-view']).menu_item.name
+            print(item_name)
             item =  Menu.objects.get(Q(name=item_name) & Q(size=size))
             OrderItem.objects.get(pk=request.session['item-in-view']).delete()
             request.session['item-in-view'] = OrderItem.create(
