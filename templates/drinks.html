@@ -1,11 +1,11 @@
 {% extends 'menu.html' %}
 
 {% block extrahead %}
-<title>{% block title %}Meowbucks ⚬ Blended{% endblock title %}</title>
+<title>{% block title %}Meowbucks ⚬ {{name}}{% endblock title %}</title>
 {% endblock extrahead %} 
 
 {% block items %}
-<span class="products menu-header">Blended</span>
+<span class="products menu-header">{{name}}</span>
 {% if user.is_staff %}
     {% include 'server-products.html'%} 
 {% else %}
