@@ -2,6 +2,15 @@ from django.db import models
 import datetime
 
 
+'''
+Customization Model Class
+
+The role of this model is to hold the information about each individual customization that
+is available to the customer.
+
+The model is related to the Inventory Model, which allows customizations to draw their
+ingredients from the store's inventory.
+'''
 class Customization(models.Model):
     id = models.BigAutoField(primary_key=True)
     cost = models.DecimalField(max_digits=11, decimal_places=2) # Store money up to 999,999,99.99
@@ -19,7 +28,13 @@ class Customization(models.Model):
     def __str__(self):
         return f"{self.name}"
 
-# Do we need/want a finance table???
+'''
+Finance Model Class
+
+The Finance Model contains useful aggregate functions which allow it to
+calculate various reports for the end user. This model stores a date, as
+well as the profit, revenue, and expenses for that date. 
+'''
 class Finance(models.Model):
     date = models.DateField(primary_key=True)
 
@@ -76,14 +91,21 @@ class Finance(models.Model):
     class Meta:
         db_table = 'finances'
 
+'''
+TODO
+'''
 class InventoryUsage(models.Model):
-    id = models.BigAutoField(primary_key=True)
-
+    date = models.DateField(primary_key=True)
     item = models.ForeignKey('Inventory', on_delete=models.DO_NOTHING)
-
     amount_used  = models.FloatField()
 
+'''
+Inventory Model Class
 
+The inventory model holds information about each ingredient that must be stocked by the 
+store. It contains the price per ordered unit of ingredient, the number of grams in stock,
+the amount of grams per unit purchased, and the name of the ingredient. 
+'''
 class Inventory(models.Model):
     id = models.BigIntegerField(primary_key=True)
     name = models.TextField()
@@ -114,7 +136,13 @@ class Inventory(models.Model):
     def __str__(self):
         return f"{self.name} x {self.stock}"
 
+'''
+Menu Model Class
 
+The menu contains every orderable item on the menu, along with it's price, description, and image.
+Along with these user-facing details, the model is also related to the Inventory model through an
+intermediate Ingredient Model. This allows the menu item to contain its own pseudo-recipe.
+'''
 class Menu(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.TextField()
@@ -174,7 +202,14 @@ class Menu(models.Model):
     def __str__(self):
         return f"{self.id} : {self.size} {self.name}"
 
+'''
+Ingredient Model Class
 
+The Ingredient Model is an intermediate model between the Menu and the Inventory. It
+contains a menu item, an inventory item which is an ingredient for the menu item, and 
+a float which represents how many grams of the inventory item are required for the menu 
+item to be made. 
+'''
 class Ingredient(models.Model):
     id = models.BigAutoField(primary_key=True)
 
@@ -191,7 +226,17 @@ class Ingredient(models.Model):
     def __str__(self):
         return f"{self.menu_item.name} :> {self.inventory.name} x {self.amount}"
 
+'''
+OrderItem Model Class
 
+An OrderItem is a single menu item which belongs to an order. The OrderItem may have 
+as many customizations added to it as the customer wants, and as many as desired can
+be ordered. 
+
+The model is related to the Menu Model, the Order Model, and the Customizations Model.
+The model uses an intermediate ItemCustomization model to handle the customizations for
+each item.
+'''
 class OrderItem(models.Model):
     id = models.BigAutoField(primary_key=True)
 
@@ -324,6 +369,13 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.menu_item} : {self.amount}"
 
+'''
+ItemCustomization Model Class
+
+The ItemCustomization Model is an intermediate model between an OrderItem and a
+Customization. It contains how much of the customization is to be added to the
+OrderItem. 
+'''
 class ItemCustomization(models.Model):
     id = models.BigAutoField(primary_key=True)
     
@@ -359,6 +411,13 @@ class ItemCustomization(models.Model):
     def __str__(self):
         return f"{self.order_item.menu_item.name} :> {self.customization.name} {self.customization.type} x {self.amount}"
 
+'''
+Order Model Class
+
+The Order Model allows users to collect multiple menu items, add
+customizations to each item as desired, and then place the order
+by removing the used ingredients from the DB. 
+'''
 class Order(models.Model):
     id = models.BigAutoField(primary_key=True)
     cashier = models.TextField(blank=True, null=True)
