@@ -1,0 +1,24 @@
+{% extends 'analytics.html' %}
+
+{% block items %}
+
+<div class="sales-form-container">
+    <style>
+        label {
+          display: inline-block;
+          width: 350px;
+          padding: 20px;
+          margin: 30px;
+        }
+    </style>
+    <form id="sales-form" method="post">
+        {% csrf_token %}
+        <label for="start_date">Enter Start Date as (yyyy-mm-dd):</label>
+        <input id="start_date" name="start_date" type="text"/>
+        <label for="end_date">Enter End Date as (yyyy-mm-dd):</label>
+        <input id="end_date" name="end_date" type="text"/>
+    </form>
+    <button class="btn btn-success mx-2 my-2 " type="submit" form="sales-form" > Generate Sales Report </button>
+</div>
+
+{% endblock items %}

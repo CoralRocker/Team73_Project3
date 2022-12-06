@@ -27,6 +27,10 @@ where they can select multiple customizations and amounts for that type.
 SCRUM MEETING 3:
 
 Meeting Agenda Items
+    Status update for everyone
+    Talk about code documentation
+    Discuss getting ready for the presentation and group retrospective
 
-
-Minutes: 
+Minutes: Firstly, Howie described how he made the website public and shared the url with everyone. Then, we discussed how to change the form sizes based on the 
+drink. How to go about making customizations look was a major focus of this meeting. We came to the conclusion of having server side customizations look exactly
+the same as menu in that you can choose a type and then the customizations for that type will show up. We may do the same thing for the customer side as well.

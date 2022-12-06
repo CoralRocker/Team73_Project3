@@ -1,0 +1,22 @@
+{% extends 'analytics.html' %}
+
+{% block items %}
+
+<div class="excess-form-container">
+    <style>
+        label {
+          display: inline-block;
+          width: 350px;
+          padding: 20px;
+          margin: 30px;
+        }
+    </style>
+    <form id="sales-form" method="post">
+        {% csrf_token %}
+        <label for="timestamp">Enter Timestamp as (yyyy-mm-dd):</label>
+        <input id="timestamp" name="timestamp" type="text"/>
+    </form>
+    <button class="btn btn-success mx-2 my-2 " type="submit" form="sales-form" > Generate Excess Report </button>
+</div>
+
+{% endblock items %}

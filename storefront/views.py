@@ -4,7 +4,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Q
 
 from .models import *
-from .forms import EspressoCustomizationForm, ElseCustomizationForm
+from .forms import CustomizationForm
     
 class MenuPageView(ListView):
     model = Menu
@@ -101,10 +101,7 @@ def ItemDetailView(request, pk):
     # If it is a POST request we will process the form data
     if request.method == 'POST':
         # create a form and populate with data from the request
-        if 'Espresso' in item.name:
-            form = EspressoCustomizationForm(request.POST)
-        else:
-            form = ElseCustomizationForm(request.POST)
+        form = CustomizationForm(request.POST)
         # check if the form is valid
         if form.is_valid():
             order = int(request.session['cart'])
@@ -129,13 +126,9 @@ def ItemDetailView(request, pk):
             return render(request, 'menu-home.html', {'hasCart':hasCart})
     # If method is GET create a blank form
     else:
-        if 'Espresso' in item.name:
-            form = ElseCustomizationForm(request.POST)
-            form.setSizes(item.getPossibleSizes())
-        else:
-            form = ElseCustomizationForm(request.POST)
-            form.setSizes(item.getPossibleSizes())
-            print(item.getPossibleSizes())
+        form = CustomizationForm(request.POST)
+        form.setSizes(item.getPossibleSizes())
+
         
     return render(request, 'item-detail.html', {'item': item, 'form':form, 'hasCart':hasCart})
 
@@ -168,3 +161,27 @@ def CheckoutPageView(request):
             return redirect('home')
       
     return render(request, 'checkout.html', {'order': order, 'hasCart':False})
+
+def SalesPageView(request):
+    if request.method == 'POST':
+        data = request.POST
+
+    return render(request,'analytics/sales.html')
+
+def ExcessPageView(request):
+    if request.method == 'POST':
+        data = request.POST
+
+    return render(request,'analytics/excess.html')
+
+def FrequentPageView(request):
+    if request.method == 'POST':
+        data = request.POST
+
+    return render(request,'analytics/frequent.html')
+
+def RestockPageView(request):
+    if request.method == 'POST':
+        data = request.POST
+
+    return render(request,'analytics/restock.html')
