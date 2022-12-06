@@ -144,29 +144,51 @@ class Finance(models.Model):
     class Meta:
         db_table = 'finances'
 
-'''
-TODO
-'''
+##
+# @brief Model to track the usage of Inventory items per day
+#
 class InventoryUsage(models.Model):
+    ## Date that the usage represents
     date = models.DateField(primary_key=True)
+
+    ## Inventory item that the usage represents
     item = models.ForeignKey('Inventory', on_delete=models.DO_NOTHING)
+    
+    ## Amount of the item used in the day
     amount_used  = models.FloatField()
 
-'''
-Inventory Model Class
 
-The inventory model holds information about each ingredient that must be stocked by the 
-store. It contains the price per ordered unit of ingredient, the number of grams in stock,
-the amount of grams per unit purchased, and the name of the ingredient. 
-'''
+##
+# @brief Inventory Model Class
+# 
+# The inventory model holds information about each ingredient that must be stocked by the 
+# store. It contains the price per ordered unit of ingredient, the number of grams in stock,
+# the amount of grams per unit purchased, and the name of the ingredient. 
+#
 class Inventory(models.Model):
+    ## The ID of the item
     id = models.BigIntegerField(primary_key=True)
+    
+    ## The name of the item
     name = models.TextField()
+
+    ## The price for a single unit of restock
     price = models.DecimalField(max_digits=11, decimal_places=2) # Up to 999,999,999.99
+
+    ## The current amount of grams in stock
     stock = models.FloatField()
+
+    ## The amount of grams of the item on order
     ordered = models.FloatField(blank=True, null=False)
+
+    ## The amount of the item that is purchased per unit of restock
     amount_per_unit = models.FloatField(blank=False, null=False)
 
+    ##
+    # @brief Remove the given dictionary of Inventory instances and floats from each instance's stock
+    #
+    # @param inv A dictionary of [Inventory, float] representing the amount of each item used
+    #
     @classmethod
     def removeFromInv(cls, inv):
         objs = list()
@@ -176,7 +198,14 @@ class Inventory(models.Model):
 
         cls.objects.bulk_update(objs, ['stock'])
 
-
+    ##
+    # @brief Create a new Inventory item with the given information
+    #
+    # @param id The integer ID to give to the item
+    # @param name The name of the Inventory item
+    # @param price The price per restock
+    # @param stock The starting stock of the item
+    # @param amount_per_unit The amount of the item purchased per unit of restock
     @classmethod
     def create(cls, id, name, price, stock, amount_per_unit):
         item = cls(id=id, name=name, price=price, stock=stock, ordered=0, amount_per_unit=amount_per_unit)
@@ -189,28 +218,42 @@ class Inventory(models.Model):
     def __str__(self):
         return f"{self.name} x {self.stock}"
 
-'''
-Menu Model Class
-
-The menu contains every orderable item on the menu, along with it's price, description, and image.
-Along with these user-facing details, the model is also related to the Inventory model through an
-intermediate Ingredient Model. This allows the menu item to contain its own pseudo-recipe.
-'''
+## 
+# @brief Menu Model Class
+# 
+# The menu contains every orderable item on the menu, along with it's price, description, and image.
+# Along with these user-facing details, the model is also related to the Inventory model through an
+# intermediate Ingredient Model. This allows the menu item to contain its own pseudo-recipe.
 class Menu(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    name = models.TextField()
-    price = models.DecimalField(max_digits=11, decimal_places=2)
-    description = models.TextField(default="Lorem")
 
+    ## The ID of the Menu item
+    id = models.BigAutoField(primary_key=True)
+
+    ## The name of the item
+    name = models.TextField()
+
+    ## The price of the item for the customer
+    price = models.DecimalField(max_digits=11, decimal_places=2)
+
+    ## A short description of the item for the customer
+    description = models.TextField(default="Lorem")
     
+    ## The Inventory items used to make the Menu item. Related through the Ingredient model
     ingredients = models.ManyToManyField(Inventory, through='Ingredient')
-    #models.TextField()  # This field type is a guess.
     
+    ## The size of the drink that this Menu item represents
     size = models.TextField(blank=False, null=False)
+
+    ## The classification of the item
     type = models.TextField()
     
+    ## The path to the image asset for this Menu item
     image = models.TextField(null=True)
 
+    ##
+    # @brief Gets all the sizes possible for this specific drink
+    #
+    # @returns A list of 2-tuples of the Menu item ids and sizes
     def getPossibleSizes(self):
         result = list()
         for item in Menu.objects.filter(name=self.name):
@@ -218,12 +261,29 @@ class Menu(models.Model):
 
         return result
 
+    ##
+    # @brief Create a new Menu item
+    #
+    # @param name The name of the new item
+    # @param size The size of the new item
+    # @param type The type classification of the new item
+    # @param image The path to the image asset for the item
+    # @return An instance of the new Menu item
     @classmethod
     def create(cls, name, price, size, type, image):
         item = cls(name=str(name), price=float(price), size=str(size), type=str(type), image=image)
         item.save()
         return item
     
+    ##
+    # @brief Adds the given amount of the given Inventory item as an Ingredient. 
+    # 
+    # If the Inventory item already exists as an Ingredient, this adds the given
+    # amount to the Ingredient.
+    #
+    # @param ingredient The Inventory item to add
+    # @param amount The amount in grams of the item to add
+    #
     def addIngredient(self, ingredient: Inventory, amount : float):
         if amount <= 0:
             raise Exception(f"Invalid Argument in Menu.addIngredient: given amount is <=0!")
@@ -238,9 +298,18 @@ class Menu(models.Model):
             _ing.amount = amount
             _ing.save()
 
+    ##
+    # @brief Return the amount of the given Inventory item in the Menu item
+    #
+    # @param ingredient The Inventory item to return the amount of
+    # @return The amount of the requested Inventory item
     def getIngredientAmount(self, ingredient: Inventory) -> float:
         return self.ingredient_set.get(inventory=ingredient).amount
 
+    ##
+    # @brief Get the price of this Menu item to restock
+    # 
+    # @returns The price of the ingredients for one of the Menu item
     def getInventoryPrice(self) -> float:
         price_aggregator = models.Sum(
                     models.ExpressionWrapper(models.F('inventory__price'),
@@ -249,11 +318,22 @@ class Menu(models.Model):
                 )
         return self.ingredient_set.aggregate(val=price_aggregator)['val']
 
-    def getInventoryUsage(self) -> dict[Inventory, float]:
-        usage = dict()
-        for ingredient in self.ingredient_set.all():
-            usage[ingredient.inventory] = ingredient.amount
-        return usage
+    ##
+    # @brief Remove the Menu item from the Inventory stock
+    #
+    #
+    def removeFromInventory(self):
+        amount_query = self.ingredient_set.filter(inventory=models.OuterRef('id'))
+        Inventory.objects.filter(id__in=self.ingredient_set.values('inventory')).update(
+                stock=models.F('stock')-models.Subquery(amount_query.values('amount'))
+                )
+        
+    ##
+    # @brief Return the amount of each ingredient used in the Menu item
+    #
+    # @returns A dictionary of Inventory item ids and float amounts of the item used
+    def getInventoryUsage(self) :
+        return dict(self.ingredient_set.all().values_list('inventory', 'amount'))
 
     class Meta:
         db_table = 'menu'
@@ -261,59 +341,70 @@ class Menu(models.Model):
     def __str__(self):
         return f"{self.id} : {self.size} {self.name}"
 
-'''
-Ingredient Model Class
-
-The Ingredient Model is an intermediate model between the Menu and the Inventory. It
-contains a menu item, an inventory item which is an ingredient for the menu item, and 
-a float which represents how many grams of the inventory item are required for the menu 
-item to be made. 
-'''
+## 
+# @brief Ingredient Model Class
+# 
+# The Ingredient Model is an intermediate model between the Menu and the Inventory. It
+# contains a menu item, an inventory item which is an ingredient for the menu item, and 
+# a float which represents how many grams of the inventory item are required for the menu 
+# item to be made. 
 class Ingredient(models.Model):
+
+    ## The ID of the Ingredient
     id = models.BigAutoField(primary_key=True)
 
-    # Models Involved in this ingredient
+    # Models Involved in this Ingredient
+    ## The Menu item that this Ingredient is for
     menu_item = models.ForeignKey(Menu, on_delete=models.CASCADE)
+
+    ## The Inventory item that this Ingredient represents
     inventory = models.ForeignKey(Inventory, on_delete=models.CASCADE)
 
-    # Extra Information
+    ## The amount of the Inventory item used
     amount = models.FloatField()
 
+    ## 
+    # @brief Get the price of the Ingredient in the inventory
+    # @returns The price to restock one ingredient
     def getPrice(self) -> float:
         return round(float(self.inventory.price) * (self.amount / self.inventory.amount_per_unit),2)
 
     def __str__(self):
         return f"{self.menu_item.name} :> {self.inventory.name} x {self.amount}"
 
-'''
-OrderItem Model Class
-
-An OrderItem is a single menu item which belongs to an order. The OrderItem may have 
-as many customizations added to it as the customer wants, and as many as desired can
-be ordered. 
-
-The model is related to the Menu Model, the Order Model, and the Customizations Model.
-The model uses an intermediate ItemCustomization model to handle the customizations for
-each item.
-'''
+## 
+# @brief OrderItem Model Class
+# 
+# An OrderItem is a single menu item which belongs to an order. The OrderItem may have 
+# as many customizations added to it as the customer wants, and as many as desired can
+# be ordered. 
+# 
+# The model is related to the Menu Model, the Order Model, and the Customizations Model.
+# The model uses an intermediate ItemCustomization model to handle the customizations for
+# each item.
 class OrderItem(models.Model):
+    ## The ID of the OrderItem
     id = models.BigAutoField(primary_key=True)
 
-    # Order this item belongs to
+    ## The Order this item belongs to
     order = models.ForeignKey('Order', on_delete=models.CASCADE, null=False)
 
-    # Menu Item that this item represents
+    ## Menu Item that this item represents
     menu_item = models.ForeignKey(Menu, on_delete=models.DO_NOTHING, null=False) 
 
-    # Customizations Added to the item
+    ## Customization objects added to the item
     customizations = models.ManyToManyField(Customization, through='ItemCustomization') 
 
-    # Amount of item requested
+    ## Amount of item requested
     amount = models.IntegerField(blank=False, null=False)
 
-    # Price paid by the customer
+    ## Price paid by the customer
     cost = models.DecimalField(max_digits=11, decimal_places=2)
 
+    ##
+    # @brief Get list of the different sizes available for the current Menu item
+    # 
+    # @returns a list of 2-tuples of the Menu item's ID and the size
     def getPossibleSizes(self):
         result = list()
         for item in Menu.objects.filter(name=self.menu_item.name):
@@ -321,7 +412,13 @@ class OrderItem(models.Model):
 
         return result
 
-
+    ##
+    # @brief Create a new OrderItem
+    #
+    # @param order The Order item that this will belong to
+    # @param menu_item The Menu item that the OrderItem will contain
+    # @param amount The amount of the Menu item that is desired
+    # @return The created OrderItem
     @classmethod
     def create(cls, order, menu_item, amount=1):
         item = cls(order=order, menu_item=menu_item, amount=amount)
@@ -329,6 +426,10 @@ class OrderItem(models.Model):
         item.save()
         return item
 
+    ##
+    # @brief Get the price of the item and customizations in the inventory
+    #
+    # @returns The price to restock after the OrderItem is purchased
     def getInventoryPrice(self) -> float:
         custPrice = 0.0
         for cust in self.customizations.all():
@@ -336,6 +437,10 @@ class OrderItem(models.Model):
 
         return self.amount * (self.menu_item.getInventoryPrice() + custPrice)
 
+    ##
+    # @brief Get the usage of each Inventory item in the OrderItem
+    # 
+    # @return A dictionary of Inventory items and the amount of the item used
     def getInventoryUsage(self) -> dict[Inventory, float]:
         # Get Item Usage
         menu_usage = self.menu_item.getInventoryUsage()
@@ -357,6 +462,11 @@ class OrderItem(models.Model):
         return menu_usage
 
 
+    ##
+    # @brief Returns a list of the prices of each customization applied
+    #
+    # @return A dictionary with each ItemCustomization applied and the cost 
+    # of the customization
     def getPriceList(self):
         plist = dict()
 
@@ -395,6 +505,10 @@ class OrderItem(models.Model):
         return plist
 
 
+    ##
+    # @brief Get the total price of all the customizations
+    #
+    # @returns The total price of all the customizations
     def getCustomizationPrice(self) -> float:
 
         foundFoam = False
@@ -420,9 +534,19 @@ class OrderItem(models.Model):
 
         return custCost
 
+    ##
+    # @brief Because the cost is a function of the customizations applied, this retrieves
+    # the cost to the customer
+    #
+    # @returns The cost to the customer
     def getPrice(self) -> float:
         return float(self.cost)
 
+    ##
+    # @brief Add the given amount of the given Customization
+    #
+    # @param cust The Customization to add
+    # @param amount The amount of the customization to add
     def addCustomization(self, cust :Customization, amount :float):
         newCust = ItemCustomization(order_item=self, customization=cust, amount=amount)
         newCust.save()
