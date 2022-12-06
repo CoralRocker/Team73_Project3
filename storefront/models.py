@@ -548,10 +548,13 @@ class OrderItem(models.Model):
     # @param cust The Customization to add
     # @param amount The amount of the customization to add
     def addCustomization(self, cust :Customization, amount :float):
-        newCust = ItemCustomization(order_item=self, customization=cust, amount=amount)
-        newCust.save()
+        if self.itemcustomization_set.filter(customization=cust).count() > 0:
+            self.itemcustomization_set.filter(customization=cust).update(amount=models.F('amount') + amount)
+        else:
+            newCust = ItemCustomization(order_item=self, customization=cust, amount=amount)
+            newCust.save()
 
-        self.cost = self.amount * (self.getCustomizationPrice() + self.menu_item.price)
+        self.cost = self.amount * (self.getCustomizationPrice() + float(self.menu_item.price))
         return
 
     class Meta:
@@ -560,44 +563,40 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.menu_item} : {self.amount}"
 
-'''
-ItemCustomization Model Class
-
-The ItemCustomization Model is an intermediate model between an OrderItem and a
-Customization. It contains how much of the customization is to be added to the
-OrderItem. 
-'''
+## 
+# @brief ItemCustomization Model Class
+# 
+# The ItemCustomization Model is an intermediate model between an OrderItem and a
+# Customization. It contains how much of the customization is to be added to the
+# OrderItem. 
 class ItemCustomization(models.Model):
+
+    ## The ID of the ItemCustomization
     id = models.BigAutoField(primary_key=True)
     
+    ## The OrderItem associated with this customization
     order_item = models.ForeignKey(OrderItem, models.CASCADE)
+    
+    ## The Customization associated with this
     customization = models.ForeignKey(Customization, models.CASCADE)
 
+    ## The amount of the Customization added
     amount = models.IntegerField(null=False, blank=False)
     
+    ## 
+    # @brief Get the price to restock after this customization has been ordered
+    #
+    # @return The price to restock
     def getInventoryPrice(self) -> float:
         return self.customization.getInventoryPrice() * self.amount
 
-    def getCustomizationPrice(self) -> float:
-
-        custCost = 0.0
-
-        for i in range(self.amount):
-            cust = self.customization
-
-            if cust.type.lower() == "syrup":
-                custCost = float(cust.cost)
-                break
-            elif cust.type.lower() == 'sauce':
-                custCost = float(cust.cost)
-                break
-            elif cust.type.lower() == 'foam':
-                custCost = float(cust.cost)
-                break;
-            else:
-                custCost += float(cust.cost)
-
-        return round(custCost,2)
+    ##
+    # @brief Get the price of the customization(s)
+    #
+    # @return The price of the customization(s)
+    def getCustomizationPrice(self) -> float: 
+        return round(float(cust.cost*cust.amount),2)
+        
 
     def __str__(self):
         return f"{self.order_item.menu_item.name} :> {self.customization.name} {self.customization.type} x {self.amount}"
