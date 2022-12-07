@@ -221,7 +221,6 @@ def FrequentPageView(request):
         data = request.POST
 
     return render(request,'analytics/frequent.html')
-
 # @brief generates the page to view the restock report
 #
 #
