@@ -70,8 +70,13 @@ ul{
     margin-top: 20px;
     margin-left: 10vw;
     margin-right: 10vw;
-    grid-template-columns: repeat(4, minmax(150px, 300px));
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-gap: 20px;
+}
+
+.menu-container{
+    display: grid;
+    grid-template-columns: 1fr 20fr;
 }
 
 .menu-home {

@@ -7,10 +7,9 @@
 {% endblock extrahead %} 
 
 {% block content %}
-
-<div class="wrapper">
-  <nav class="sidebar">
-    <ul class="list-unstyled components active">
+<div class="menu-container">
+  <div class="wrapper">
+    <ul class="list-unstyled components active"> 
       <li class="header-menu_item">
         <p><br /><br /><br /><br /></p>
         <a href="{% url 'drinks' "espresso" %}" title="espressos" class="header-menu_link">
@@ -37,11 +36,11 @@
         <p><br /></p>
         <a href="{% url 'drinks' "other" %}" title="other" class="header-menu_link"> Other </a>
       </li>
-    </ul>
-  </nav>
+      </ul>
+  </div>
+  <div>
+  {% block items %}
+  {% endblock items %}
+  </div>
 </div>
-
-{% block items %}
-{% endblock items %}
-
 {% endblock content %}
