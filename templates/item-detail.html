@@ -13,6 +13,17 @@
                         <img class="item-img" src="../../{{ item.image }}" alt="Card image {{ item.name }}"/>
                         <button class="btn btn-success mx-2 my-2 " type="submit" form="customization_form"> Add To Cart </button>
                         <div class="item-description">{{item.description}}</div>
+                        <div class="item-ingredients">
+                        <p></p>
+                        <p></p>
+                        <p></p>
+                        <p>
+                        <b> INGREDIENTS: </b>
+                        {% for ingredient in item.ingredients.all %}
+                            <b>{{ingredient.name}}</b>, 
+                        {% endfor %}
+                        </p>
+                        </div>
                     {% endif %}
                 </div>
             </div>
