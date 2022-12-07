@@ -20,7 +20,11 @@
                         <p>
                         <b> INGREDIENTS: </b>
                         {% for ingredient in item.ingredients.all %}
+                            {% if ingredient != item.ingredients.first %}
                             <b>{{ingredient.name}}</b>, 
+                            {% else %}
+                            <b>{{ingredient.name}}</b>
+                            {% endif %}
                         {% endfor %}
                         </p>
                         </div>
