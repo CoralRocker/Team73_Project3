@@ -161,6 +161,9 @@ class Finance(Model):
 # @brief Model to track the usage of Inventory items per day
 #
 class InventoryUsage(Model):
+    
+    id = BigAutoField(primary_key=True)
+
     ## Date that the usage represents
     date = DateField()
 
@@ -192,6 +195,9 @@ class InventoryUsage(Model):
             inv.amount_used += amount_used
             inv.save()
             return inv
+
+    def __str__(self):
+        return f"Usage of {self.item.name} on date {self.date} : {self.amount_used}"
 
 ##
 # @brief Inventory Model Class
