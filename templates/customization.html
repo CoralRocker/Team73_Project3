@@ -3,6 +3,8 @@
 
 
 {% block content %}
+
+<div class="mx-lg-5">
     <h1 class="mx-5 my-4">{{name}}</h1>
     {% for customization in customizations %}
     <div class="customization-wrapper mx-5">
@@ -17,19 +19,19 @@
     </div>
     </br>
     {% endfor %}
-    <a class="btn btn-success mx-5" href="javascript:history.back()">Done</a>
+    <a class="btn btn-success btn-done" href="javascript:history.back()">Done</a>
+</div>
+
 <script>
-    //initialising a variable name data
     var data = 0;
     
     document.getElementById("counting").innerText = data;
 
-    //creation of increment function
     function increment() {
         data = data + 1;
         document.getElementById("counting").innerText = data;
     }
-    //creation of decrement function
+
     function decrement() {
         if (data == 0) {
             data = 0;

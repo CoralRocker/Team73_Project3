@@ -8,10 +8,10 @@
             <div class="col-md-4">
                 <div class="row">
                     {% if request.user.is_staff %}
-                        <button class="btn btn-success mx-2 my-2 " type="submit" form="customization_form"> Add To Cart </button>
+                        <button class="btn btn-success mx-2 my-2 add-to-cart" type="submit" form="customization_form"> Add To Cart </button>
                     {% else %}
                         <img class="item-img" src="../../{{ item.image }}" alt="Card image {{ item.name }}"/>
-                        <button class="btn btn-success mx-2 my-2 " type="submit" form="customization_form"> Add To Cart </button>
+                        <button class="btn btn-success mx-2 my-2 add-to-cart" type="submit" form="customization_form"> Add To Cart </button>
                         <div class="item-description">{{item.description}}</div>
                         <div class="item-ingredients">
                         <p></p>
@@ -33,6 +33,9 @@
                     {% csrf_token %}
                     {{ form|crispy }}
             </form> {% endcomment %}
+            <a class="btn btn-success mx-2 my-2" href="{% url 'customization' 'milk' %}">Milk</a>
+            <a class="btn btn-success mx-2 my-2" href="{% url 'customization' 'syrup' %}">Syrup</a>
+            <a class="btn btn-success mx-2 my-2" href="{% url 'customization' 'sauce' %}">Sauce</a>
             <a class="btn btn-success mx-2 my-2" href="{% url 'customization' 'milk' %}">Milk</a>
             </div>
         </div>

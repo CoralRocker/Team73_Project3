@@ -270,9 +270,25 @@ ul{
 
 .customization-name {
     font-size: 18px;
+    font-weight: bold;
 }
 
 .btn-counter {
     height: 30px;
     width: 25px;
+}
+
+.btn-done {
+    scale: 125%;
+    margin-left: 3.5em;
+}
+
+.add-to-cart {
+    width: 96%;
+}
+
+.align-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
