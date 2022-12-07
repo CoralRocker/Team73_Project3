@@ -158,6 +158,72 @@ class Finance(Model):
         db_table = 'finances'
 
 ##
+# @brief Return a date +/- a certain number of days
+#
+# @param day The starting date to add/subtract from
+# @param delta The number of days to add or subtract
+# @return The date which is day plus delta days
+def deltaDate(day, delta):
+    return datetime.date.fromordinal(day.toordinal() + int(delta))
+
+##
+# @brief A class to provide analytics functions over multiple
+# financial days
+#
+#
+class FinanceView():
+
+    ##
+    # @brief Create a FinancialView for the date range given
+    #
+    # The date range given is inclusive of both the start and the end.
+    # The start and end dates don't have to be in the database. As long
+    # as the parameters are valid dates, the class will work.
+    #
+    # If you set the object to have an end date past the current day, 
+    # you will have to call updateOrders and updateFinances to update
+    # the class' information before rerunning reports and analytics.
+    #
+    # @param start The start date for the view
+    # @param end The end for the view
+    def __init__(self, start :datetime.date, end :datetime.date):
+        self.start_date = start
+        self.end_date = end
+
+        self.orders_set = Order.objects.filter(date__gte=self.start_date, date__lte=self.end_date)
+        self.finance_set = Finance.objects.filter(date__gte=self.start_date, date__lte=self.end_date)
+
+    ##
+    # @brief Get the set of Order objects for this view
+    #
+    # @return A QuerySet of Order objects
+    def getOrders(self):
+        return self.orders_set
+
+    ##
+    # @brief Update the set of Order objects and return it
+    #
+    # @return A QuerySet of Order objects
+    def updateOrders(self):
+        self.orders_set = Order.objects.filter(date__gte=self.start_date, date__lte=self.end_date)
+        return self.orders_set
+
+    ##
+    # @brief Return the set of finance objects for this view
+    # 
+    # @return A QuerySet of Finance objects for the days in view
+    def getFinances(self):
+        return self.finance_set
+
+    ##
+    # @brief Update the set of Finance Objects
+    # 
+    # @return The updated QuerySet of Finance objects
+    def updateFinances(self):
+        self.finance_set = Finance.objects.filter(date__gte=self.start_date, date__lte=self.end_date)
+        return self.finance_set
+
+##
 # @brief Model to track the usage of Inventory items per day
 #
 class InventoryUsage(Model):
