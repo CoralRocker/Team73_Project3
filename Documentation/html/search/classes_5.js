@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['order_0',['Order',['../classstorefront_1_1models_1_1Order.html',1,'storefront::models']]],
-  ['orderitem_1',['OrderItem',['../classstorefront_1_1models_1_1OrderItem.html',1,'storefront::models']]]
+  ['simpletests_149',['SimpleTests',['../classstorefront_1_1tests_1_1SimpleTests.html',1,'storefront::tests']]],
+  ['storefrontconfig_150',['StorefrontConfig',['../classstorefront_1_1apps_1_1StorefrontConfig.html',1,'storefront::apps']]]
 ];
