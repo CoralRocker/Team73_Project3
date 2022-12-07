@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['test_5fhome_5fpage_5fstatus_5fcode_0',['test_home_page_status_code',['../classstorefront_1_1tests_1_1SimpleTests.html#a94db6adfb5ca8f1c1203d60738ede756',1,'storefront::tests::SimpleTests']]]
+  ['removefrominv_193',['removeFromInv',['../classstorefront_1_1models_1_1Inventory.html#a0a7b3a85dcf2f9fa878ed10460bec285',1,'storefront::models::Inventory']]],
+  ['removefrominventory_194',['removeFromInventory',['../classstorefront_1_1models_1_1Menu.html#aa38abc872183406f1e1512a999830a54',1,'storefront::models::Menu']]],
+  ['restockpageview_195',['RestockPageView',['../namespacestorefront_1_1views.html#a3e49942936389b6e893ffe506e167768',1,'storefront::views']]]
 ];

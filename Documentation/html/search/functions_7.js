@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['locationview_0',['LocationView',['../namespacestorefront_1_1views.html#a17865a40df50df5baf841a4ead8a6abf',1,'storefront::views']]]
+  ['homepageview_188',['HomePageView',['../namespacestorefront_1_1views.html#a1fa534426701d222c4f9c9c841e4b39a',1,'storefront::views']]]
 ];
