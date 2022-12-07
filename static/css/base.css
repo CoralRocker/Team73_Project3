@@ -250,14 +250,29 @@ ul{
     overflow-x: auto;
 }
 
-.customization-container {
+.customization-wrapper {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     flex-direction: column;
     max-width: 400px;
+    border-radius: 15px;
     border: 3px solid var(--starbucks-green);
 }
 
-.customization-count {
+.customization-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.customization-count .customization-name {
     display: inline-block;
+}
+
+.customization-name {
+    font-size: 18px;
+}
+
+.btn-counter {
+    height: 30px;
+    width: 25px;
 }

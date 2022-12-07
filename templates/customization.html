@@ -3,21 +3,21 @@
 
 
 {% block content %}
-    <span class="mx-5 my-4">{{name}}</span>
+    <h1 class="mx-5 my-4">{{name}}</h1>
     {% for customization in customizations %}
-    <div class="customization-container mx-5 my-4">
-        <span class="">
-            <span> {{customization.name}} </span>
+    <div class="customization-wrapper mx-5">
+        <div class="customization-container p-3">
+            <span class="customization-name"> {{customization.name}} </span>
             <span class="customization-count">
-                <button class="btn btn-sm btn-success" onclick="increment()">+</button>
+                <button class="btn btn-sm btn-success btn-counter" onclick="decrement()">-</button>
                 <span id="counting">0</span>
-                <button class="btn btn-sm btn-success" onclick="decrement()">-</button>
+                <button class="btn btn-sm btn-success btn-counter" onclick="increment()">+</button>
             </span>
-            </br>
-        </span>
+        </div>
     </div>
+    </br>
     {% endfor %}
-</div>
+    <a class="btn btn-success mx-5" href="javascript:history.back()">Done</a>
 <script>
     //initialising a variable name data
     var data = 0;
