@@ -12,6 +12,7 @@ urlpatterns = [
     path('menu/menu-home', views.MenuHomePageView, name='menu-home'),
     path('menu/drinks/<str:pk>', views.DrinksPageView, name='drinks'),
     path('menu/<int:pk>/', views.ItemDetailView, name='item-detail'),
+    path('customization/<str:pk>', views.CustomizationDetailView, name='customization'),
     path('locations/', views.LocationView, name='locations'),
     path('checkout/', views.CheckoutPageView, name='checkout'),
     path('search/', views.SearchPageView, name='search'),
