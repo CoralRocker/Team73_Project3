@@ -1,3 +1,5 @@
+""" this is the page that generates what is seen"""
+
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, ListView
 from django.contrib.admin.views.decorators import staff_member_required
@@ -10,6 +12,10 @@ class MenuPageView(ListView):
     model = Menu
     template_name = "menu.html"
 
+# @brief generates the home page
+#
+#
+# @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def HomePageView(request):
     hasCart = False
     try:
@@ -20,6 +26,10 @@ def HomePageView(request):
         print("Either no cart exists or it is invalid")
     return render(request, 'home.html', {'hasCart': hasCart})
 
+# @brief generates the base page for menu
+#
+#
+# @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def MenuHomePageView(request):
     if 'item-in-view' in request.session:
         try:
@@ -38,6 +48,10 @@ def MenuHomePageView(request):
 
     return render(request, 'menu-home.html', {'hasCart': hasCart})
 
+# @brief generates the search page
+# shows results on word(s) that are in a name/description
+#
+# @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def SearchPageView(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     drinks = Menu.objects.filter(
@@ -50,6 +64,10 @@ def SearchPageView(request):
     context = {'drinks': drinks}
     return render(request,'search.html', context)
 
+# @brief generates the page based on the type of drink selected
+#
+#
+# @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def DrinksPageView(request,pk):
     if 'item-in-view' in request.session:
         try:
@@ -69,6 +87,10 @@ def DrinksPageView(request,pk):
     products = Menu.objects.filter(type__iexact=pk, size__iexact="grande")
     return render(request, 'drinks.html', {'products':products, 'hasCart':hasCart, 'name':pk})
 
+# @brief generates the page where the customer can see the drink and can what type of customization to add
+#
+#
+# @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def ItemDetailView(request, pk):
     item = Menu.objects.get(pk = pk)
     
@@ -132,6 +154,10 @@ def ItemDetailView(request, pk):
         
     return render(request, 'item-detail.html', {'item': item, 'form':form, 'hasCart':hasCart})
 
+# @brief generates the location of the stgore on a page
+#
+#
+# @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def LocationView(request):
     hasCart = False
     try:
@@ -146,6 +172,10 @@ def LocationView(request):
 def AnalyticsPageView(request):
     return render(request, 'analytics.html', {'hasCart':False})
 
+# @brief generates the page to checkout
+#
+#
+# @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def CheckoutPageView(request):
     order = Order.objects.get(pk=request.session['cart'])
     # Remove unadded items from cart
@@ -162,24 +192,40 @@ def CheckoutPageView(request):
       
     return render(request, 'checkout.html', {'order': order, 'hasCart':False})
 
+# @brief generates the page to view the sales report
+#
+#
+# @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def SalesPageView(request):
     if request.method == 'POST':
         data = request.POST
 
     return render(request,'analytics/sales.html')
 
+# @brief generates the page to view the excess report
+#
+#
+# @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def ExcessPageView(request):
     if request.method == 'POST':
         data = request.POST
 
     return render(request,'analytics/excess.html')
 
+# @brief generates the page to view the frequent report
+#
+#
+# @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def FrequentPageView(request):
     if request.method == 'POST':
         data = request.POST
 
     return render(request,'analytics/frequent.html')
 
+# @brief generates the page to view the restock report
+#
+#
+# @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def RestockPageView(request):
     if request.method == 'POST':
         data = request.POST
