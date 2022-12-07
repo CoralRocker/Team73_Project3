@@ -771,10 +771,18 @@ class Order(Model):
 
         return Inventory.objects.filter(query).annotate(stock_used=stmt)
     
+    ##
+    # @brief Finalize an order by removing its stock from the Inventory
+    # and by placing the Inventory used into the InventoryUsage table.
+    #
     def checkout(self):
         usage = self.getInventoryUsageQuerySet()
         for inv in usage:
+            # Save the used stock for the day's count
             InventoryUsage.create(self.date, inv, inv.stock_used)
+            
+        # Update the Inventory stock
+        usage.update(stock=F('stock')-F('stock_used'))
 
 
     ##
