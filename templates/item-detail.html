@@ -17,11 +17,12 @@
                 </div>
             </div>
             <div class="col-md-8">
-            <form id="customization_form"  method="post">
+            {% comment %} <form id="customization_form"  method="post">
                 <h1 class="">{{ item.name }}</h1>
                     {% csrf_token %}
                     {{ form|crispy }}
-            </form>
+            </form> {% endcomment %}
+            <a class="btn btn-success mx-2 my-2" href="{% url 'customization' 'milk' %}">Milk</a>
             </div>
         </div>
     </div>

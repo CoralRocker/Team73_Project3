@@ -1,6 +1,43 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 
-<form>
 
-</form>
+{% block content %}
+    <span class="mx-5 my-4">{{name}}</span>
+    {% for customization in customizations %}
+    <div class="customization-container mx-5 my-4">
+        <span class="">
+            <span> {{customization.name}} </span>
+            <span class="customization-count">
+                <button class="btn btn-sm btn-success" onclick="increment()">+</button>
+                <span id="counting">0</span>
+                <button class="btn btn-sm btn-success" onclick="decrement()">-</button>
+            </span>
+            </br>
+        </span>
+    </div>
+    {% endfor %}
+</div>
+<script>
+    //initialising a variable name data
+    var data = 0;
+    
+    document.getElementById("counting").innerText = data;
+
+    //creation of increment function
+    function increment() {
+        data = data + 1;
+        document.getElementById("counting").innerText = data;
+    }
+    //creation of decrement function
+    function decrement() {
+        if (data == 0) {
+            data = 0;
+        }
+        else {
+            data = data - 1;
+        }
+        document.getElementById("counting").innerText = data;
+    }
+</script>
+{% endblock content %}

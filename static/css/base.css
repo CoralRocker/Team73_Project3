@@ -249,3 +249,15 @@ ul{
     white-space: nowrap;
     overflow-x: auto;
 }
+
+.customization-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    max-width: 400px;
+    border: 3px solid var(--starbucks-green);
+}
+
+.customization-count {
+    display: inline-block;
+}
