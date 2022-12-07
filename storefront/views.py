@@ -14,7 +14,7 @@ class MenuPageView(ListView):
 
 # @brief generates the home page
 #
-#
+# @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def HomePageView(request):
     hasCart = False
@@ -28,12 +28,13 @@ def HomePageView(request):
 
 # @brief generates the base page for menu
 #
-#
+# @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def MenuHomePageView(request):
     if 'item-in-view' in request.session:
         try:
             OrderItem.objects.get(pk=request.session['item-in-view']).delete()
+            del request.session['item-in-view']
         except:
             print("It looks like the orderitem is already deleted...")
             del request.session['item-in-view']
@@ -51,6 +52,7 @@ def MenuHomePageView(request):
 # @brief generates the search page
 # shows results on word(s) that are in a name/description
 #
+# @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def SearchPageView(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -66,7 +68,8 @@ def SearchPageView(request):
 
 # @brief generates the page based on the type of drink selected
 #
-#
+# @param pk The Primary Key for the drink requested 
+# @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def DrinksPageView(request,pk):
     if 'item-in-view' in request.session:
@@ -89,7 +92,8 @@ def DrinksPageView(request,pk):
 
 # @brief generates the page where the customer can see the drink and can what type of customization to add
 #
-#
+# @param pk The Primary Key for the drink requested 
+# @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def ItemDetailView(request, pk):
     item = Menu.objects.get(pk = pk)
@@ -156,7 +160,7 @@ def ItemDetailView(request, pk):
 
 # @brief generates the location of the stgore on a page
 #
-#
+# @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def LocationView(request):
     hasCart = False
@@ -174,7 +178,7 @@ def AnalyticsPageView(request):
 
 # @brief generates the page to checkout
 #
-#
+# @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def CheckoutPageView(request):
     order = Order.objects.get(pk=request.session['cart'])
@@ -193,7 +197,7 @@ def CheckoutPageView(request):
 
 # @brief generates the page to view the sales report
 #
-#
+# @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def SalesPageView(request):
     if request.method == 'POST':
@@ -203,7 +207,7 @@ def SalesPageView(request):
 
 # @brief generates the page to view the excess report
 #
-#
+# @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def ExcessPageView(request):
     if request.method == 'POST':
@@ -213,7 +217,7 @@ def ExcessPageView(request):
 
 # @brief generates the page to view the frequent report
 #
-#
+# @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def FrequentPageView(request):
     if request.method == 'POST':
@@ -222,7 +226,7 @@ def FrequentPageView(request):
     return render(request,'analytics/frequent.html')
 # @brief generates the page to view the restock report
 #
-#
+# @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def RestockPageView(request):
     if request.method == 'POST':
