@@ -81,7 +81,7 @@ ul{
 
 .menu-home {
     margin-top: 25vh;
-    grid-template-columns: repeat(5, 200px);
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-gap: 20px;
 }
 
