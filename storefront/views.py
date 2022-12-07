@@ -185,8 +185,7 @@ def CheckoutPageView(request):
             item = data.get("remove-id")
             OrderItem.objects.get(id=int(item)).delete()
         elif "checkingout" in data:
-            for menuItem in order.orderitem_set.all():
-                Inventory.removeFromInv(menuItem.getInventoryUsage())
+            order.checkout()
             del request.session['cart']
             return redirect('home')
       
