@@ -90,6 +90,11 @@ def DrinksPageView(request,pk):
     products = Menu.objects.filter(type__iexact=pk, size__iexact="grande")
     return render(request, 'drinks.html', {'products':products, 'hasCart':hasCart, 'name':pk})
 
+
+def CustomizationDetailView(request, pk):
+    customizations = Customization.objects.filter(type__iexact=pk)
+    return render(request, 'customization.html', {'customizations':customizations, 'name':pk})
+
 # @brief generates the page where the customer can see the drink and can what type of customization to add
 #
 # @param pk The Primary Key for the drink requested 
