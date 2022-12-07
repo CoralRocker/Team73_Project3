@@ -170,7 +170,6 @@ def deltaDate(day, delta):
 # @brief A class to provide analytics functions over multiple
 # financial days
 #
-#
 class FinanceView():
 
     ##
@@ -222,6 +221,32 @@ class FinanceView():
     def updateFinances(self):
         self.finance_set = Finance.objects.filter(date__gte=self.start_date, date__lte=self.end_date)
         return self.finance_set
+    
+    ##
+    # @brief Get a QuerySet representing the inventory usage for these days
+    # 
+    # @return A QuerySet of Inventory items used, with a 'stock_used' column appended to it
+    def getInventoryUsage(self):
+        usage = InventoryUsage.objects.filter(date__gte=self.start_date, date__lte=self.end_date)
+
+        # Get the sum total of each item used
+        amount_query = usage.filter(item=OuterRef('id')).values('amount_used').annotate(amount=Sum('amount_used')).values('amount')
+
+        return Inventory.objects.filter(id__in=usage.values('item')).annotate(
+                stock_used=Subquery(amount_query))
+    
+    ##
+    # @brief Return a QuerySet of the Menu items sold, with a 'sales' column annotated
+    # 
+    # Items which sold nothing have 'sales' set to 0.
+    #
+    # @return A QuerySet of Menu items with a new column describing how many were sold
+    def salesByItem(self):
+        items = OrderItem.objects.filter(id__in=self.orders_set.values('id'))
+
+        sum_query = items.filter(menu_item=OuterRef('id')).order_by().annotate(num=Value(1)).values('num').annotate(total=Sum('num', default=0)).values('total')
+
+        return Menu.objects.annotate(sales=Subquery(sum_query)).order_by('-sales')
 
 ##
 # @brief Model to track the usage of Inventory items per day
