@@ -54,16 +54,27 @@ class Finance(Model):
     date = DateField(primary_key=True)
 
     ## Revenue in dollars for that day
-    revenue = DecimalField(max_digits=11, decimal_places=2)
+    revenue = DecimalField(blank=True, max_digits=11, decimal_places=2)
 
     ## Expenses in dollars for that day
-    expenses = DecimalField(max_digits=11, decimal_places=2)
+    expenses = DecimalField(blank=True, max_digits=11, decimal_places=2)
 
     ## Profit in dollars for that day
-    profit = DecimalField(max_digits=11, decimal_places=2)
-    
+    profit = DecimalField(blank=True, max_digits=11, decimal_places=2)
+
     ##
-    # Create or fetch a Finance instance for the given day
+    # @brief Create Finance instances for each day where there 
+    # was an order
+    #
+    # Note that this method calculates the profit for all the days requested.
+    @classmethod
+    def createAll(cls):
+        for date in Order.objects.distinct('date').values('date'):
+            fin = cls.create(date['date'])
+            fin.getProfit()
+
+    ##
+    # @brief Create or fetch a Finance instance for the given day
     #
     # @param date The date to get an instance for
     @classmethod
@@ -95,7 +106,8 @@ class Finance(Model):
             )
         
         self.expenses = self.getOrders().aggregate(price=invPrice)['price']
-        self.save()
+        if self.expenses == None:
+            self.expenses = 0.00
 
         return self.expenses
 
@@ -108,7 +120,8 @@ class Finance(Model):
         rev = Sum(ExpressionWrapper(F('orderitem__cost'),
                                                   output_field=FloatField()))
         self.revenue = self.getOrders().aggregate(price=rev)['price']
-        self.save()
+        if self.revenue == None:
+            self.revenue = 0.00
 
         return self.revenue
 
@@ -149,7 +162,7 @@ class Finance(Model):
 #
 class InventoryUsage(Model):
     ## Date that the usage represents
-    date = DateField(primary_key=True)
+    date = DateField()
 
     ## Inventory item that the usage represents
     item = ForeignKey('Inventory', on_delete=DO_NOTHING)
@@ -157,6 +170,28 @@ class InventoryUsage(Model):
     ## Amount of the item used in the day
     amount_used  = FloatField()
 
+    ##
+    # @brief Get or Create an InventoryUsage row
+    # 
+    # If the requested row does not exist, it is created with the given
+    # information. Otherwise, the row's amount used is increased by the 
+    # given amount
+    #
+    # @param date The date to track the Inventory for
+    # @param item The Inventory item that is being tracked
+    # @param amount_used The amount of the item that was used in grams
+    # @return The InventoryUsage item fetched or created
+    @classmethod
+    def create(cls, date, item, amount_used):
+        try:
+            inv = cls(date=date, item=item, amount_used=amount_used)
+            inv.save()
+            return inv
+        except:
+            inv = cls.objects.get(date=date)
+            inv.amount_used += amount_used
+            inv.save()
+            return inv
 
 ##
 # @brief Inventory Model Class
@@ -493,7 +528,7 @@ class OrderItem(Model):
                 Q(id__in=cust_usage.values('id')) |
                 Q(id__in=menu_usage.values('id'))
             ).annotate(
-                    stock_used =
+                    stock_used = 
                     Case(
                         When(id__in=menu_usage.values('id'), 
                              then=Subquery(menu_usage.filter(id=OuterRef('id'))
@@ -705,53 +740,36 @@ class Order(Model):
         self.price = price
         return round(price,2)
 
+    ## 
+    # @brief Get the Inventory usage for the entire order as a
+    # QuerySet of the Inventory table with the 'stock_used' column annotated onto it
+    def getInventoryUsageQuerySet(self):
+        query = Q()
+        stmt = Case()
+        for index, item in enumerate(self.orderitem_set.all()):
+            q = item.getInventoryUsageQuerySet()
+            query |= Q(id__in=q.values('id'))
+
+            case_stmt = Case(
+                    When(
+                        id__in=q.values('id'),
+                        then=Subquery(q.filter(id=OuterRef('id')).values('stock_used'))
+                        ),
+                    default=0.0
+                    )
+
+            if index == 0:
+                stmt = case_stmt
+            else:
+                stmt += case_stmt
+
+        return Inventory.objects.filter(query).annotate(stock_used=stmt)
+    
     def checkout(self):
+        usage = self.getInventoryUsageQuerySet()
+        for inv in usage:
+            InventoryUsage.create(self.date, inv, inv.stock_used)
 
-        oi_item = OrderItem.objects.last()
-        # Get the inventory usage QuerySet of a single Menu Item
-        # Usage is labeled 'stock_used'
-        m_item = oi_item.menu_item 
-        
-        menu_usage = Inventory.objects.filter(
-                id__in=Menu.filter(id=OuterRef(OuterRef('menu_item').ingredient_set.values('inventory')).annotate(
-                stock_used=(Subquery(m_item.ingredient_set.filter(
-                    inventory=OuterRef('id')).values('amount')))
-                )
-
-        # Get the inventory usage QuerySet of a single Customization
-        an_set = oi_item.itemcustomization_set.annotate( #Get an annotated set of the ingredient usage 
-            ingredient=F('customization__ingredient'),
-                      stock_used=F('customization__amount')*F('amount'))
-
-        # QuerySet of Inventory with stock_used annotated with Ingredients used for
-        # customizations
-        cust_usage = Inventory.objects.filter(id__in=an_set.values('ingredient')).annotate(
-                stock_used=Subquery(an_set.filter(
-                    ingredient=OuterRef('id')
-                    ).values('stock_used'))
-                )
-        
-        full_usage = Inventory.objects.filter(
-                Q(id__in=cust_usage.values('id')) |
-                Q(id__in=menu_usage.values('id'))
-            ).annotate(
-                    new_stock=F('stock')-
-                    Case(
-                        When(id__in=menu_usage.values('id'), 
-                             then=Subquery(menu_usage.filter(id=OuterRef('id'))
-                                           .values('stock_used'))
-                             ),
-                        default = 0.0) -
-                    Case(
-                        When(id__in=cust_usage.values('id'), 
-                             then=Subquery(cust_usage.filter(id=OuterRef('id'))
-                                           .values('stock_used'))
-                             ),
-                        default = 0.0))
-                    
-
-        return full_usage
-                        
 
     ##
     # @brief Create a new order
