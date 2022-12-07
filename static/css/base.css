@@ -283,12 +283,11 @@ ul{
     margin-left: 3.5em;
 }
 
-.add-to-cart {
-    width: 96%;
+.btn-customization {
+    width: 160px;
+    height: 40px;
 }
 
-.align-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.add-to-cart {
+    width: 96%;
 }

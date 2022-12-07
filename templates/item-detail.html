@@ -27,16 +27,24 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="col-md-8">
-            {% comment %} <form id="customization_form"  method="post">
-                <h1 class="">{{ item.name }}</h1>
-                    {% csrf_token %}
-                    {{ form|crispy }}
-            </form> {% endcomment %}
-            <a class="btn btn-success mx-2 my-2" href="{% url 'customization' 'milk' %}">Milk</a>
-            <a class="btn btn-success mx-2 my-2" href="{% url 'customization' 'syrup' %}">Syrup</a>
-            <a class="btn btn-success mx-2 my-2" href="{% url 'customization' 'sauce' %}">Sauce</a>
-            <a class="btn btn-success mx-2 my-2" href="{% url 'customization' 'milk' %}">Milk</a>
+            <div class="col-md-1 mx-5">
+                <a class="btn btn-success mx-2 my-2 btn-customization" href="{% url 'customization' 'milk' %}">Milk</a>
+                <a class="btn btn-success mx-2 my-2 btn-customization" href="{% url 'customization' 'coffee' %}">Extra Shot</a>
+                <a class="btn btn-success mx-2 my-2 btn-customization" href="{% url 'customization' 'syrup' %}">Syrup</a>
+                <a class="btn btn-success mx-2 my-2 btn-customization" href="{% url 'customization' 'sauce' %}">Sauce</a>
+                <a class="btn btn-success mx-2 my-2 btn-customization" href="{% url 'customization' 'drizzle' %}">Drizzle</a>
+                <a class="btn btn-success mx-2 my-2 btn-customization" href="{% url 'customization' 'lining' %}">Lining</a>
+                <a class="btn btn-success mx-2 my-2 btn-customization" href="{% url 'customization' 'foam' %}">Foam</a>
+                <a class="btn btn-success mx-2 my-2 btn-customization" href="{% url 'customization' 'splash' %}">Splash</a>
+            </div>
+            <div class="col-md-1 mx-5">
+                <a class="btn btn-success mx-2 my-2 btn-customization" href="{% url 'customization' 'topping' %}">Topping</a>
+                <a class="btn btn-success mx-2 my-2 btn-customization" href="{% url 'customization' 'mix' %}">Mix</a>
+                <a class="btn btn-success mx-2 my-2 btn-customization" href="{% url 'customization' 'sweetener' %}">Sweetener</a>
+                <a class="btn btn-success mx-2 my-2 btn-customization" href="{% url 'customization' 'sweetener-pack' %}">Sweetener Packet</a>
+                <a class="btn btn-success mx-2 my-2 btn-customization" href="{% url 'customization' 'inclusion' %}">Inclusion</a>
+                <a class="btn btn-success mx-2 my-2 btn-customization" href="{% url 'customization' 'chai' %}">Chai</a>
+                <a class="btn btn-success mx-2 my-2 btn-customization" href="{% url 'customization' 'juice' %}">Juice</a>
             </div>
         </div>
     </div>
