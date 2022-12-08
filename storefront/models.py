@@ -561,6 +561,7 @@ class OrderItem(Model):
     def addOrder(self,order):
         print(order)
         self.order = order
+        self.save()
         return
     ##
     # @brief Get the price of the item and customizations in the inventory
