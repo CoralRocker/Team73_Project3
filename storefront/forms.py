@@ -3,6 +3,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import *
 from crispy_forms.bootstrap import *
 from .models import Customization
+from django.forms import MultipleChoiceField, ChoiceField
 
 class CustomizationForm(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -97,3 +98,12 @@ class CustomizationForm(forms.Form):
     
     def setSizes(self, sizes):
         self.fields['size']._set_choices(sizes)
+        
+class SplashForm(forms.Form):
+    SPLASH_CHOICES = ((item.id, item.name) for item in Customization.objects.filter(type__iexact="splash"))
+    splahes = MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=SPLASH_CHOICES, required=False)
+    
+class MilkForm(forms.Form):
+    MILK_CHOICES = ((item.id, item.name) for item in Customization.objects.filter(type__iexact="milk"))
+    splahes = ChoiceField(label="Milk:", choices=MILK_CHOICES, required=False)
+

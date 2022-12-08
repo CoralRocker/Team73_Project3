@@ -552,12 +552,16 @@ class OrderItem(Model):
     # @param amount The amount of the Menu item that is desired
     # @return The created OrderItem
     @classmethod
-    def create(cls, order, menu_item, amount=1):
-        item = cls(order=order, menu_item=menu_item, amount=amount)
+    def create(cls, menu_item, amount=1):
+        item = cls(menu_item=menu_item, amount=amount)
         item.cost = menu_item.price * amount
         item.save()
         return item
 
+    def addOrder(self,order):
+        print(order)
+        self.order = order
+        return
     ##
     # @brief Get the price of the item and customizations in the inventory
     #

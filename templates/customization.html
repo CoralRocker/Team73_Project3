@@ -6,23 +6,17 @@
 
 <div class="m-5">
     <h1 class="mx-5 my-4">{{name}}</h1>
-    {% for customization in customizations %}
-    <div class="customization-wrapper mx-5">
-        <div class="customization-container p-3">
-            <span class="customization-name"> {{customization.name}} </span>
-            <span class="customization-count">
-                <button class="btn btn-sm btn-success btn-counter" onclick="decrement()">-</button>
-                <span id="counting">0</span>
-                <button class="btn btn-sm btn-success btn-counter" onclick="increment()">+</button>
-            </span>
-        </div>
-    </div>
-    </br>
-    {% endfor %}
-    <a class="btn btn-success btn-done" href="javascript:history.back()">Done</a>
+    <form id="custom_form"  method="post">
+        <h1 class="">{{ item.name }}</h1>
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="hidden" name="next" value="{{ request.path }}">
+    </form>
+    <button class="btn btn-success mx-2 my-2 add-to-cart" type="submit" form="custom_form"> Add To Drink </button>
+    {% comment %} <a class="btn btn-success btn-done" href="javascript:history.back()">Done</a> {% endcomment %}
 </div>
 
-<script>
+{% comment %} <script>
     var data = 0;
     document.getElementById("counting").innerText = data;
 
@@ -55,5 +49,5 @@
         const currentDiv = document.getElementById("div1");
         document.body.insertBefore(newDiv, currentDiv);
       }
-</script>
+</script> {% endcomment %}
 {% endblock content %}

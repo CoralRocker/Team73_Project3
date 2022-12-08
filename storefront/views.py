@@ -6,7 +6,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Q
 
 from .models import *
-from .forms import CustomizationForm
+from .forms import CustomizationForm, SplashForm, MilkForm
     
 class MenuPageView(ListView):
     model = Menu
@@ -18,6 +18,7 @@ class MenuPageView(ListView):
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def HomePageView(request):
     hasCart = False
+    order = SET_NULL
     try:
         if 'cart' in request.session:
             order = Order.objects.get(pk=request.session['cart'])
@@ -31,6 +32,7 @@ def HomePageView(request):
 # @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def MenuHomePageView(request):
+    order = SET_NULL
     if 'item-in-view' in request.session:
         try:
             OrderItem.objects.get(pk=request.session['item-in-view']).delete()
@@ -79,7 +81,7 @@ def SearchPageView(request):
 # @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def DrinksPageView(request,pk):
-    order = Order.objects.get(pk=request.session['cart'])
+    order = SET_NULL
     if 'item-in-view' in request.session:
         try:
             OrderItem.objects.get(pk=request.session['item-in-view']).delete()
@@ -90,7 +92,7 @@ def DrinksPageView(request,pk):
     hasCart = False
     try:
         if 'cart' in request.session:
-            Order.objects.get(pk=request.session['cart'])
+            order = Order.objects.get(pk=request.session['cart'])
             hasCart = True
     except:
         print("Either no cart exists or it is invalid")
@@ -101,8 +103,15 @@ def DrinksPageView(request,pk):
 
 def CustomizationDetailView(request, pk):
     order = Order.objects.get(pk=request.session['cart'])
+    orderItem = OrderItem.objects.get(pk=request.session['item-in-view'])
     customizations = Customization.objects.filter(type__iexact=pk)
-    return render(request, 'customization.html', {'customizations':customizations, 'name':pk, 'hasCart':True, 'order':order})
+    if pk == 'splash':
+        form = SplashForm(request.POST)
+    elif pk == 'milk':
+        form = MilkForm(request.POST)
+    if request.method == "post":
+        return redirect('')
+    return render(request, 'customization.html', {'customizations':customizations, 'name':pk, 'hasCart':True, 'order':order, 'form':form})
 
 # @brief generates the page where the customer can see the drink and can what type of customization to add
 #
@@ -113,6 +122,10 @@ def ItemDetailView(request, pk):
     item = Menu.objects.get(pk = pk)
     
     hasCart = False
+    
+    # Create Cart if it doesn't exist
+    if 'cart' not in request.session:
+        request.session['cart'] = Order.create('user-created').pk
     try:
         if 'cart' in request.session:
             order1 = Order.objects.get(pk=request.session['cart'])
@@ -120,9 +133,7 @@ def ItemDetailView(request, pk):
     except:
         print("Either no cart exists or it is invalid")
 
-    # Create Cart if it doesn't exist
-    if 'cart' not in request.session:
-        request.session['cart'] = Order.create('user-created').pk
+
 
     # Create Temporary Item Session
     # Create if item is different than previous, or if doesn't exist
@@ -133,10 +144,9 @@ def ItemDetailView(request, pk):
             OrderItem.objects.get(pk=request.session['item-in-view']).delete()
 
         order = int(request.session['cart'])
-    #     request.session['item-in-view'] = OrderItem.create(
-    #             Order.objects.get(pk=order), # Create orderItem belonging to cart
-    #             item).pk # Create with menu item selected
-    # orderItem = OrderItem.objects.get(pk=request.session['item-in-view'])
+        request.session['item-in-view'] = OrderItem.create( # Create orderItem belonging to cart
+                item).pk # Create with menu item selected
+    orderItem = OrderItem.objects.get(pk=request.session['item-in-view'])
     size = 'grande'    
     # If it is a POST request we will process the form data
     if request.method == 'POST':
@@ -145,20 +155,14 @@ def ItemDetailView(request, pk):
         form.setSizes(item.getPossibleSizes())
         # check if the form is valid
         if form.is_valid():
-            print(form.cleaned_data)
             order = int(request.session['cart'])
-            request.session['item-in-view'] = OrderItem.create(
-                Order.objects.get(pk=order), # Create orderItem belonging to cart
-                item).pk # Create with menu item selected
-            orderItem = OrderItem.objects.get(pk=request.session['item-in-view'])
+            orderItem.addOrder(Order.objects.get(pk=order))
             size = form.cleaned_data['size']
             print(size)
             item_name  = OrderItem.objects.get(pk=request.session['item-in-view']).menu_item.name
             print(item_name)
             item =  Menu.objects.get(Q(name=item_name) & Q(size=size))
             OrderItem.objects.get(pk=request.session['item-in-view']).delete()
-            request.session['item-in-view'] = OrderItem.create(
-                Order.objects.get(pk=order), item).pk# Create orderItem belonging to cart
             for key, value in form.cleaned_data.items():
                 amount = 1
                 if value and value != '':
