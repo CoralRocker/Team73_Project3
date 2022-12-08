@@ -81,7 +81,7 @@
                 </li>
                 <li class="header-menu_item">
                   {% if user.is_authenticated and hasCart%}
-                    <a class='btn btn-success' href="{% url 'checkout' %}" title="checkout">Check Out</a>
+                    <a class='btn btn-success' href="{% url 'checkout' %}" title="checkout">Check Out ({{order.items.count}})</a>
                   {% elif user.is_authenticated %}
                   {% else %}
                     <a class="btn btn-success" href="/accounts/signup/" title="signup" class="header-menu_link">Sign Up</a>

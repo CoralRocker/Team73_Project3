@@ -24,12 +24,11 @@
 
 <script>
     var data = 0;
-    
     document.getElementById("counting").innerText = data;
 
     function increment() {
         data = data + 1;
-        document.getElementById("counting").innerText = data;
+        document.getElementById("counting-{{customization.name}}").innerText = data;
     }
 
     function decrement() {
@@ -41,5 +40,20 @@
         }
         document.getElementById("counting").innerText = data;
     }
+
+    function addElement() {
+        // create a new div element
+        const newDiv = document.createElement("div");
+      
+        // and give it some content
+        const newContent = document.createTextNode("Hi there and greetings!");
+      
+        // add the text node to the newly created div
+        newDiv.appendChild(newContent);
+      
+        // add the newly created element and its content into the DOM
+        const currentDiv = document.getElementById("div1");
+        document.body.insertBefore(newDiv, currentDiv);
+      }
 </script>
 {% endblock content %}

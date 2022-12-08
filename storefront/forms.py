@@ -70,7 +70,7 @@ class CustomizationForm(forms.Form):
     cust_juice = [(item.id, item.name) for item in Customization.objects.filter(type__iexact="juice")]
     cust_juice.insert(0, ('', ''))
 
-    size = forms.ChoiceField(required=True, choices=[("Solo","Solo"),("Doppio","Doppio"),("Triple","Triple"),("Quad","Quad")], initial='Doppio')
+    size = forms.ChoiceField(required=True)
 
     milk = forms.ChoiceField(required=False, choices=cust_milk, initial='')
 

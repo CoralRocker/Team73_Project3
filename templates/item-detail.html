@@ -4,7 +4,7 @@
 <title>{% block title %}Meowbucks | {{ item.name }} {% endblock title %}</title>
 {% block content %}
     <div class="container my-4">
-        <h1>{{ item.name }}</h1>
+        {% comment %} <h1>{{ item.name }}</h1> {% endcomment %}
         <div class="row">
             <div class="col-md-4">
                 <div class="row">
@@ -13,10 +13,9 @@
                     {% else %}
                         <img class="item-img" src="../../{{ item.image }}" alt="Card image {{ item.name }}"/>
                         <button class="btn btn-success mx-2 my-2 add-to-cart" type="submit" form="customization_form"> Add To Cart </button>
+                        {% comment %} <div class="order-price"><font size="6"><b>PRICE: ${{item.price}}</b></font></p></div> {% endcomment %}
                         <div class="item-description">{{item.description}}</div>
                         <div class="item-ingredients">
-                        <p></p>
-                        <p></p>
                         <p></p>
                         <p>
                         <b> INGREDIENTS: </b>
@@ -27,6 +26,13 @@
                         </div>
                     {% endif %}
                 </div>
+            </div>
+            <div class="col-md-8">
+                <form id="customization_form"  method="post">
+                    <h1 class="">{{ item.name }}</h1>
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                </form>
             </div>
             <div class="col-md-1 mx-5">
                 <a class="btn btn-success mx-2 my-2 btn-customization" href="{% url 'customization' 'milk' %}">Milk</a>

@@ -389,7 +389,7 @@ class Menu(Model):
     def getPossibleSizes(self):
         result = list()
         for item in Menu.objects.filter(name=self.name):
-            result.append((item.pk, item.size))
+            result.append((item.size, item.size))
 
         return result
 

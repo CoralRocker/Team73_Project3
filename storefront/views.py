@@ -20,11 +20,11 @@ def HomePageView(request):
     hasCart = False
     try:
         if 'cart' in request.session:
-            Order.objects.get(pk=request.session['cart'])
+            order = Order.objects.get(pk=request.session['cart'])
             hasCart = True
     except:
         print("Either no cart exists or it is invalid")
-    return render(request, 'home.html', {'hasCart': hasCart})
+    return render(request, 'home.html', {'hasCart': hasCart, 'order':order})
 
 # @brief generates the base page for menu
 #
@@ -42,12 +42,12 @@ def MenuHomePageView(request):
     hasCart = False
     try:
         if 'cart' in request.session:
-            Order.objects.get(pk=request.session['cart'])
+            order = Order.objects.get(pk=request.session['cart'])
             hasCart = True
     except:
         print("Either no cart exists or it is invalid")
 
-    return render(request, 'menu-home.html', {'hasCart': hasCart})
+    return render(request, 'menu-home.html', {'hasCart': hasCart, 'order':order})
 
 # @brief generates the search page
 # shows results on word(s) that are in a name/description
@@ -55,6 +55,13 @@ def MenuHomePageView(request):
 # @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def SearchPageView(request):
+    hasCart = False
+    try:
+        if 'cart' in request.session:
+            order = Order.objects.get(pk=request.session['cart'])
+            hasCart = True
+    except:
+        print("Either no cart exists or it is invalid")
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     drinks = Menu.objects.filter(
         (Q(name__icontains=q) |
@@ -63,7 +70,7 @@ def SearchPageView(request):
          Q(size__iexact="doppio"))
         
     )
-    context = {'drinks': drinks}
+    context = {'drinks': drinks, 'hasCart':hasCart, 'order':order}
     return render(request,'search.html', context)
 
 # @brief generates the page based on the type of drink selected
@@ -72,6 +79,7 @@ def SearchPageView(request):
 # @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def DrinksPageView(request,pk):
+    order = Order.objects.get(pk=request.session['cart'])
     if 'item-in-view' in request.session:
         try:
             OrderItem.objects.get(pk=request.session['item-in-view']).delete()
@@ -88,12 +96,13 @@ def DrinksPageView(request,pk):
         print("Either no cart exists or it is invalid")
 
     products = Menu.objects.filter(type__iexact=pk, size__iexact="grande")
-    return render(request, 'drinks.html', {'products':products, 'hasCart':hasCart, 'name':pk})
+    return render(request, 'drinks.html', {'products':products, 'hasCart':hasCart, 'name':pk, 'order':order})
 
 
 def CustomizationDetailView(request, pk):
+    order = Order.objects.get(pk=request.session['cart'])
     customizations = Customization.objects.filter(type__iexact=pk)
-    return render(request, 'customization.html', {'customizations':customizations, 'name':pk})
+    return render(request, 'customization.html', {'customizations':customizations, 'name':pk, 'hasCart':True, 'order':order})
 
 # @brief generates the page where the customer can see the drink and can what type of customization to add
 #
@@ -106,7 +115,7 @@ def ItemDetailView(request, pk):
     hasCart = False
     try:
         if 'cart' in request.session:
-            Order.objects.get(pk=request.session['cart'])
+            order1 = Order.objects.get(pk=request.session['cart'])
             hasCart = True
     except:
         print("Either no cart exists or it is invalid")
@@ -124,18 +133,24 @@ def ItemDetailView(request, pk):
             OrderItem.objects.get(pk=request.session['item-in-view']).delete()
 
         order = int(request.session['cart'])
-        request.session['item-in-view'] = OrderItem.create(
-                Order.objects.get(pk=order), # Create orderItem belonging to cart
-                item).pk # Create with menu item selected
-
+    #     request.session['item-in-view'] = OrderItem.create(
+    #             Order.objects.get(pk=order), # Create orderItem belonging to cart
+    #             item).pk # Create with menu item selected
+    # orderItem = OrderItem.objects.get(pk=request.session['item-in-view'])
     size = 'grande'    
     # If it is a POST request we will process the form data
     if request.method == 'POST':
         # create a form and populate with data from the request
         form = CustomizationForm(request.POST)
+        form.setSizes(item.getPossibleSizes())
         # check if the form is valid
         if form.is_valid():
+            print(form.cleaned_data)
             order = int(request.session['cart'])
+            request.session['item-in-view'] = OrderItem.create(
+                Order.objects.get(pk=order), # Create orderItem belonging to cart
+                item).pk # Create with menu item selected
+            orderItem = OrderItem.objects.get(pk=request.session['item-in-view'])
             size = form.cleaned_data['size']
             print(size)
             item_name  = OrderItem.objects.get(pk=request.session['item-in-view']).menu_item.name
@@ -154,14 +169,14 @@ def ItemDetailView(request, pk):
                         OrderItem.objects.get(pk=request.session['item-in-view']).addCustomization(Customization.objects.get(id=value),amount)
             del request.session['item-in-view']
 
-            return render(request, 'menu-home.html', {'hasCart':hasCart})
+            return render(request, 'menu-home.html', {'hasCart':hasCart, 'order':order1})
     # If method is GET create a blank form
     else:
         form = CustomizationForm(request.POST)
         form.setSizes(item.getPossibleSizes())
 
         
-    return render(request, 'item-detail.html', {'item': item, 'form':form, 'hasCart':hasCart})
+    return render(request, 'item-detail.html', {'item': item, 'form':form, 'hasCart':hasCart, 'order':order1})
 
 # @brief generates the location of the stgore on a page
 #
@@ -171,11 +186,11 @@ def LocationView(request):
     hasCart = False
     try:
         if 'cart' in request.session:
-            Order.objects.get(pk=request.session['cart'])
+            order = Order.objects.get(pk=request.session['cart'])
             hasCart = True
     except:
         print("Either no cart exists or it is invalid")
-    return render(request,'locations.html', {'hasCart': hasCart})
+    return render(request,'locations.html', {'hasCart': hasCart, 'order':order})
 
 @staff_member_required
 def AnalyticsPageView(request):
