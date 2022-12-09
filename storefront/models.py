@@ -230,6 +230,7 @@ class FinanceView():
         usage = InventoryUsage.objects.filter(date__gte=self.start_date, date__lte=self.end_date)
 
         # Get the sum total of each item used
+        # Basically equivalent to usage.aggregate(amount=Sum('amount_used'))
         amount_query = usage.filter(item=OuterRef('id')).values('amount_used').annotate(amount=Sum('amount_used')).values('amount')
 
         return Inventory.objects.filter(id__in=usage.values('item')).annotate(
@@ -248,6 +249,24 @@ class FinanceView():
 
         return Menu.objects.annotate(sales=Subquery(sum_query)).order_by('-sales')
 
+    ##
+    # @brief Return the Inventory items which sold less than the given percent of their stock
+    #
+    # @param pct The percent threshold for Inventory items. Should be in the range 0 < pct < 1.
+    # @return A QuerySet of Inventory items with an annotated column ('percent_usage') indicating the percentage used.
+    def excessReport(self, pct):
+        usage = self.getInventoryUsage()
+        
+        return usage.annotate(percent_usage=F('stock_used') / (F('stock')+F('stock_used'))).filter(percent_usage__lte=pct) 
+
+    ##
+    # @brief Return all Inventory items which have less than min_units*amount_per_unit stock
+    #
+    # @param The minimum amount of units of product required to have in stock
+    # @return A QuerySet of Inventory Items with an annotated column ('num_units') indicating the number of units in stock
+    def restockReport(self, min_units=100):
+        
+        return Inventory.objects.annotate(num_units=F('stock') / F('amount_per_unit')).filter(num_units__lte=min_units)
 ##
 # @brief Model to track the usage of Inventory items per day
 #
