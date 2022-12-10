@@ -1,6 +1,6 @@
 <div class = "products">
     {% for product in products %}
-        <a href="{% url 'item-detail' product.id %}">
+        <a href="{% url 'customizations' product.id %}">
             <div class="card">
                 <div class="card-body">
                     <p class="card-title">{{ product.name }}</p>

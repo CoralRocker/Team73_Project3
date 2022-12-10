@@ -84,7 +84,7 @@
                     <a class='btn btn-success' href="{% url 'checkout' %}" title="checkout">Check Out</a>
                   {% elif user.is_authenticated %}
                   {% else %}
-                    <a class="btn btn-success" href="/accounts/signup/" title="signup" class="header-menu_link">Sign Up</a>
+                    <a class="btn btn-success" href="/accounts/signup/" title="signup" class="header-menu_link" style="margin-left:40px;">Sign Up</a>
                   {% endif %}
                 </li>
             </div>

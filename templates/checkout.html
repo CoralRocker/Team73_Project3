@@ -10,32 +10,32 @@
             <div class="item-price"></div>
         </div>
         <div class="item-size">
-            <p>{{item.menu_item.size}}</p>
+            <p><i>{{item.menu_item.size}}</i></p>
         </div>
         {% for customizationItem in item.itemcustomization_set.all %}
         <div class="customization-info">
             {% if customizationItem.customization.type != 'milk' %}
-            <div class="customization-output">{{customizationItem.amount}} {{customizationItem.customization.type}}(s) of {{customizationItem.customization.name}} <b>+${{customizationItem.getCustomizationPrice}}</b></div>
+            <div class="customization-output">{{customizationItem.amount}} {{customizationItem.customization.type}}(s) of {{customizationItem.customization.name}} >+${{customizationItem.getCustomizationPrice}}</div>
             {% else %}
-            <div class="customization-output">{{customizationItem.customization.name}} milk <b>+${{customizationItem.getCustomizationPrice}}</b></div>
+            <div class="customization-output">{{customizationItem.customization.name}} milk +${{customizationItem.getCustomizationPrice}}</div>
             {% endif %}
             <div class="customization-price"></div>
         </div>
         {% endfor %}
-        <div class="total-item-price">Total Price of Item is ${{item.getPrice}}</div>
+        <div class="total-item-price" >Total Price of Item: <strong> ${{item.getPrice}}</strong></div>
 
         <form method="POST", action="">
             {% csrf_token %}
-            <button class="delete-cart-item" name="remove-id" value="{{item.id}}">Remove</button>
+            <button class="delete-cart-item btn btn-success  removeit_button" name="remove-id" value="{{item.id}}">Remove</button>
         </form>
         <hr>
     </div>
     {% endfor %}
-    <div class="total">Total     ${{order.getPrice}}</div>
+    <div class="total"><strong>Total:</strong>     ${{order.getPrice}}</div>
     <div class="checkout-button">
         <form method="POST", action="">
             {% csrf_token %}
-            <button class="delete-cart-item" name="checkingout">Checkout ${{order.getPrice}}</button>
+            <button class="delete-cart-item btn btn-success  checkout_button" name="checkingout"><strong>CHECKOUT</strong> ${{order.getPrice}}</button>
         </form>
     </div>
 </div>
