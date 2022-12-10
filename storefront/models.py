@@ -158,6 +158,158 @@ class Finance(Model):
         db_table = 'finances'
 
 ##
+# @brief Return a date +/- a certain number of days
+#
+# @param day The starting date to add/subtract from
+# @param delta The number of days to add or subtract
+# @return The date which is day plus delta days
+def deltaDate(day, delta):
+    return datetime.date.fromordinal(day.toordinal() + int(delta))
+
+##
+# @brief A class to provide analytical functions over multiple
+# financial days
+#
+class FinanceView():
+
+    ##
+    # @brief Create a FinancialView for the date range given
+    #
+    # The date range given is inclusive of both the start and the end.
+    # The start and end dates don't have to be in the database. As long
+    # as the parameters are valid dates, the class will work.
+    #
+    # If you set the object to have an end date past the current day, 
+    # you will have to call updateOrders and updateFinances to update
+    # the class' information before rerunning reports and analytics.
+    #
+    # @param start The start date for the view
+    # @param end The end for the view
+    def __init__(self, start :datetime.date, end :datetime.date):
+        self.start_date = start
+        self.end_date = end
+
+        self.orders_set = Order.objects.filter(date__gte=self.start_date, date__lte=self.end_date)
+        self.finance_set = Finance.objects.filter(date__gte=self.start_date, date__lte=self.end_date)
+
+    ##
+    # @brief Get the set of Order objects for this view
+    #
+    # @return A QuerySet of Order objects
+    def getOrders(self):
+        return self.orders_set
+
+    ##
+    # @brief Update the set of Order objects and return it
+    #
+    # @return A QuerySet of Order objects
+    def updateOrders(self):
+        self.orders_set = Order.objects.filter(date__gte=self.start_date, date__lte=self.end_date)
+        return self.orders_set
+
+    ##
+    # @brief Return the set of finance objects for this view
+    # 
+    # @return A QuerySet of Finance objects for the days in view
+    def getFinances(self):
+        return self.finance_set
+
+    ##
+    # @brief Update the set of Finance Objects
+    # 
+    # @return The updated QuerySet of Finance objects
+    def updateFinances(self):
+        self.finance_set = Finance.objects.filter(date__gte=self.start_date, date__lte=self.end_date)
+        return self.finance_set
+    
+    ##
+    # @brief Get a QuerySet representing the inventory usage for these days
+    # 
+    # @return A QuerySet of Inventory items used, with a 'stock_used' column appended to it
+    def getInventoryUsage(self):
+        usage = InventoryUsage.objects.filter(date__gte=self.start_date, date__lte=self.end_date)
+
+        # Get the sum total of each item used
+        # Basically equivalent to usage.aggregate(amount=Sum('amount_used'))
+        amount_query = usage.filter(item=OuterRef('id')).values('amount_used').annotate(amount=Sum('amount_used')).values('amount')
+
+        return Inventory.objects.filter(id__in=usage.values('item')).annotate(
+                stock_used=Subquery(amount_query))
+    
+    ##
+    # @brief Return a QuerySet of the Menu items sold, with a 'sales' column annotated
+    # 
+    # Items which sold nothing have 'sales' set to 0.
+    #
+    # @return A QuerySet of Menu items with a new column describing how many were sold
+    def salesByItem(self):
+        items = OrderItem.objects.filter(order__in=self.orders_set.values('id'))
+
+        sum_query = items.filter(menu_item=OuterRef('id')).order_by().annotate(num=Value(1)).values('num').annotate(total=Sum('num', default=0)).values('total')
+
+        return Menu.objects.annotate(sales=Subquery(sum_query)).order_by('-sales')
+
+    ##
+    # @brief Return the Inventory items which sold less than the given percent of their stock
+    #
+    # @param pct The percent threshold for Inventory items. Should be in the range 0 < pct < 1.
+    # @return A QuerySet of Inventory items with an annotated column ('percent_usage') indicating the percentage used.
+    def excessReport(self, pct):
+        usage = self.getInventoryUsage()
+        
+        return usage.annotate(percent_usage=F('stock_used') / (F('stock')+F('stock_used'))).filter(percent_usage__lte=pct) 
+
+    ##
+    # @brief Return all Inventory items which have less than min_units*amount_per_unit stock
+    #
+    # @param The minimum amount of units of product required to have in stock
+    # @return A QuerySet of Inventory Items with an annotated column ('num_units') indicating the number of units in stock
+    def restockReport(self, min_units=100):
+        
+        return Inventory.objects.annotate(num_units=F('stock') / F('amount_per_unit')).filter(num_units__lte=min_units)
+
+
+    ##
+    # @brief Return a QuerySet of SalesPair rows, each of which describes a pair of items 
+    # that sell together and how many times they sold together. 
+    # 
+    # The date in these objects is meaningless. The user should interpret the report as
+    # being the sum of all of the sold object pairs in the date interval given.
+    #
+    # Note that the queryset returned by this has some restrictions, such as being unable
+    # to be ordered using `.order_by()`.
+    #
+    # @returns A QuerySet describing how frequently pairs of items sold together
+    def sellsTogetherReport(self):
+
+        qset = SalesPair.objects.filter(
+            date__gte=self.start_date, 
+            date__lte=self.end_date).distinct('item_a', 'item_b').annotate(
+            total=Subquery(
+                SalesPair.objects.filter(
+                    item_a=OuterRef('item_a'), 
+                    item_b=OuterRef('item_b')
+                    ).values('amount').annotate(total=Sum('amount')).values('total')
+                )
+            )
+
+        return qset
+
+    ##
+    # @brief Returns the sellsTogetherReport, but as a Python list sorted by the total 
+    # amount of each pair sold. 
+    #
+    # By default the list is sorted in descending order on the column total.
+    #
+    # @param descending Whether to sort in descending (True) or ascending (False) order
+    # @param col The name of table column to sort on
+    # @param disp A python function taking a single SalesPair and returning the value
+    # to return in the sorted list. Basically your __repr__ function
+    def sellsTogetherReportSorted(self, descending=True, col='total', disp=lambda x: x):
+        totals = list(self.sellsTogetherReport().all())
+        totals.sort(key=lambda x: eval(f"{-1.0 if descending else 1.0}*x.{col}"))
+        return [disp(x) for x in totals]
+##
 # @brief Model to track the usage of Inventory items per day
 #
 class InventoryUsage(Model):
@@ -177,27 +329,86 @@ class InventoryUsage(Model):
     # @brief Get or Create an InventoryUsage row
     # 
     # If the requested row does not exist, it is created with the given
-    # information. Otherwise, the row's amount used is increased by the 
-    # given amount
+    # information and 0 amount_used. Otherwise, it is returned
     #
     # @param date The date to track the Inventory for
     # @param item The Inventory item that is being tracked
-    # @param amount_used The amount of the item that was used in grams
     # @return The InventoryUsage item fetched or created
     @classmethod
-    def create(cls, date, item, amount_used):
-        try:
-            inv = cls(date=date, item=item, amount_used=amount_used)
-            inv.save()
-            return inv
-        except:
-            inv = cls.objects.get(date=date)
-            inv.amount_used += amount_used
-            inv.save()
-            return inv
+    def createOrGet(cls, date, item):
+        inv = cls.objects.filter(date=date, item=item)
+        if inv.exists():
+            return inv.first()
+
+        obj = cls(date=date, item=item, amount_used=0.0)
+        obj.save()
+        return obj
+
 
     def __str__(self):
         return f"Usage of {self.item.name} on date {self.date} : {self.amount_used}"
+    
+
+    class Meta:
+        ## Constraint that dates and items must be unique
+        constraints = [
+            UniqueConstraint(fields=['date','item'], name='usage_unique')
+        ]
+
+##
+# @brief This Model facilitates the creation of the SellsTogetherReport.
+#
+# This model aggregates the amount sold of every pair of Menu items for each
+# day. This makes aggregating the SellsTogetherReport easy, at the expense of
+# slightly slowing down the checkout time for each order and taking marginally
+# more space on the DB.
+class SalesPair(Model):
+    ## The ID for an instance
+    id = BigAutoField(primary_key=True)
+
+    ## The date that this instance is describing
+    date = DateField()
+
+    # The two items (item_a and item_b) are "sorted" by the item they contain's 
+    # primary keys. This allows easy fetching of objects using min and max
+
+    ## The item with the smaller primary key
+    item_a = ForeignKey('Menu', on_delete=CASCADE, related_name='item_a')
+
+    ## The item with the larger primary key
+    item_b = ForeignKey('Menu', on_delete=CASCADE, related_name='item_b')
+
+    ## How frequently the pair were sold together
+    amount = IntegerField()
+
+    ##
+    # @brief Fetch the corresponding SalesPair object, or create it if it doesn't exist.
+    #
+    # @param date The date to search for
+    # @param i1 One of the item pair. Doesn't have to be largest or smallest pk
+    # @param i2 The other item in the pair. Also doesn't have to be largest or smallest
+    # @return A SalesPair object. Either a new one if the pair doesn't exist, or the 
+    # corresponding one, if it exists.
+    @classmethod 
+    def getOrCreate(cls, date, i1, i2):
+        objs = cls.objects.filter(date=date, item_a_id=min(i1.pk, i2.pk), item_b_id=max(i1.pk, i2.pk))
+
+        if objs.exists():
+            return objs.first()
+        else:
+            obj = cls(date=date, 
+                      item_a=Menu.objects.get(pk=min(i1.pk, i2.pk)),
+                      item_b=Menu.objects.get(pk=max(i1.pk, i2.pk)),
+                      amount=0)
+            obj.save()
+            return obj
+
+
+    class Meta:
+        ## The Constraint that dates, item_a, and item_b must be unique for each instance
+        constraints = [
+                UniqueConstraint(fields=['date', 'item_a', 'item_b'], name='a_b_unique')
+            ]
 
 ##
 # @brief Inventory Model Class
@@ -298,7 +509,7 @@ class Menu(Model):
     def getPossibleSizes(self):
         result = list()
         for item in Menu.objects.filter(name=self.name):
-            result.append((item.pk, item.size))
+            result.append((item.size, item.size))
 
         return result
 
@@ -461,12 +672,17 @@ class OrderItem(Model):
     # @param amount The amount of the Menu item that is desired
     # @return The created OrderItem
     @classmethod
-    def create(cls, order, menu_item, amount=1):
-        item = cls(order=order, menu_item=menu_item, amount=amount)
+    def create(cls, menu_item, amount=1):
+        item = cls(menu_item=menu_item, amount=amount)
         item.cost = menu_item.price * amount
         item.save()
         return item
 
+    def addOrder(self,order):
+        print(order)
+        self.order = order
+        self.save()
+        return
     ##
     # @brief Get the price of the item and customizations in the inventory
     #
@@ -775,14 +991,33 @@ class Order(Model):
     # @brief Finalize an order by removing its stock from the Inventory
     # and by placing the Inventory used into the InventoryUsage table.
     #
+    # This is a pretty hefty function -- It may take a couple of seconds
+    # to run per order.
     def checkout(self):
         usage = self.getInventoryUsageQuerySet()
-        for inv in usage:
+        for inv in usage.all():
             # Save the used stock for the day's count
-            InventoryUsage.create(self.date, inv, inv.stock_used)
+            obj = InventoryUsage.createOrGet(self.date, inv)
+            obj.amount_used += inv.stock_used
+
             
         # Update the Inventory stock
         usage.update(stock=F('stock')-F('stock_used'))
+
+        # Add purchased pairs to the SalesPairs table
+        num_items = self.items.count()
+        sorted_items = self.items.order_by('id')
+        combinations = list()
+        for i in range(num_items-1):
+            for j in range(i, num_items):
+                obj = SalesPair.getOrCreate(self.date,
+                                      sorted_items.all()[i],
+                                      sorted_items.all()[j])
+
+                obj.amount += 1
+                obj.save()
+                
+
 
 
     ##

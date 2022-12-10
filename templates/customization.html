@@ -1,6 +1,53 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 
-<form>
 
-</form>
+{% block content %}
+
+<div class="m-5">
+    <h1 class="mx-5 my-4">{{name}}</h1>
+    <form id="custom_form"  method="post">
+        <h1 class="">{{ item.name }}</h1>
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="hidden" name="next" value="{{ request.path }}">
+    </form>
+    <button class="btn btn-success mx-2 my-2 add-to-cart" type="submit" form="custom_form"> Add To Drink </button>
+    {% comment %} <a class="btn btn-success btn-done" href="javascript:history.back()">Done</a> {% endcomment %}
+</div>
+
+{% comment %} <script>
+    var data = 0;
+    document.getElementById("counting").innerText = data;
+
+    function increment() {
+        data = data + 1;
+        document.getElementById("counting-{{customization.name}}").innerText = data;
+    }
+
+    function decrement() {
+        if (data == 0) {
+            data = 0;
+        }
+        else {
+            data = data - 1;
+        }
+        document.getElementById("counting").innerText = data;
+    }
+
+    function addElement() {
+        // create a new div element
+        const newDiv = document.createElement("div");
+      
+        // and give it some content
+        const newContent = document.createTextNode("Hi there and greetings!");
+      
+        // add the text node to the newly created div
+        newDiv.appendChild(newContent);
+      
+        // add the newly created element and its content into the DOM
+        const currentDiv = document.getElementById("div1");
+        document.body.insertBefore(newDiv, currentDiv);
+      }
+</script> {% endcomment %}
+{% endblock content %}

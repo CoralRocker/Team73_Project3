@@ -250,6 +250,7 @@ ul{
     overflow-x: auto;
 }
 
+<<<<<<< HEAD
 
 .signout_title{
     font-weight: 600;
@@ -299,3 +300,46 @@ ul{
     margin-bottom: 10px;
     margin-top: 10px;
 } 
+=======
+.customization-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 400px;
+    border-radius: 15px;
+    border: 3px solid var(--starbucks-green);
+}
+
+.customization-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.customization-count .customization-name {
+    display: inline-block;
+}
+
+.customization-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.btn-counter {
+    height: 30px;
+    width: 25px;
+}
+
+.btn-done {
+    scale: 125%;
+    margin-left: 3.5em;
+}
+
+.btn-customization {
+    width: 160px;
+    height: 40px;
+}
+
+.add-to-cart {
+    width: 96%;
+}
+>>>>>>> 00ffb418c4c2650334b42bce72df69d58fa60daf
