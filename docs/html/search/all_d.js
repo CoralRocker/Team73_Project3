@@ -1,9 +1,5 @@
 var searchData=
 [
-  ['order_0',['order',['../classstorefront_1_1models_1_1OrderItem.html#ac7f3de83696a9f2d08829288b6b50a0d',1,'storefront::models::OrderItem']]],
-  ['order_1',['Order',['../classstorefront_1_1models_1_1Order.html',1,'storefront::models']]],
-  ['order_5fitem_2',['order_item',['../classstorefront_1_1models_1_1ItemCustomization.html#a293949ab66febb690fcb9f21269d6e1a',1,'storefront::models::ItemCustomization']]],
-  ['ordered_3',['ordered',['../classstorefront_1_1models_1_1Inventory.html#a639ab1b50655bb23d605fe849a1f8bfc',1,'storefront::models::Inventory']]],
-  ['orderitem_4',['OrderItem',['../classstorefront_1_1models_1_1OrderItem.html',1,'storefront::models']]],
-  ['orders_5fset_5',['orders_set',['../classstorefront_1_1models_1_1FinanceView.html#ad792d37aa706524044a24efb384ee4a9',1,'storefront::models::FinanceView']]]
+  ['name_0',['name',['../classstorefront_1_1apps_1_1StorefrontConfig.html#af3cd253e2490271b9cb0f5e5854ee8a4',1,'storefront.apps.StorefrontConfig.name()'],['../classstorefront_1_1models_1_1Customization.html#aaa4fd2fd6390966460f507e59bf8eb31',1,'storefront.models.Customization.name()'],['../classstorefront_1_1models_1_1Inventory.html#a6a541ad8ec65f871cfacf27e371c331e',1,'storefront.models.Inventory.name()'],['../classstorefront_1_1models_1_1Menu.html#a23c0d713dc9e2fa5d7e499e0e63f50c0',1,'storefront.models.Menu.name()']]],
+  ['new_5fdark_5fcaramel_1',['New_Dark_Caramel',['../classstorefront_1_1forms_1_1SauceForm.html#a22093cc3df77ea0cd411a152090f8381',1,'storefront::forms::SauceForm']]]
 ];

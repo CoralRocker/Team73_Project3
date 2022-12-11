@@ -125,9 +125,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8785ff5971eb3c22abdcbf0dbe3de40c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstorefront_1_1models_1_1OrderItem.html#a8785ff5971eb3c22abdcbf0dbe3de40c">getPrice</a> (self)</td></tr>
 <tr class="memdesc:a8785ff5971eb3c22abdcbf0dbe3de40c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Because the cost is a function of the customizations applied, this retrieves the cost to the customer.  <a href="classstorefront_1_1models_1_1OrderItem.html#a8785ff5971eb3c22abdcbf0dbe3de40c">More...</a><br /></td></tr>
 <tr class="separator:a8785ff5971eb3c22abdcbf0dbe3de40c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad642ed15bf8c5f7a3e370c0f7d41c4f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstorefront_1_1models_1_1OrderItem.html#aad642ed15bf8c5f7a3e370c0f7d41c4f">calcPrice</a> (self)</td></tr>
+<tr class="memdesc:aad642ed15bf8c5f7a3e370c0f7d41c4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Force a recalculation of the item's price and return it.  <a href="classstorefront_1_1models_1_1OrderItem.html#aad642ed15bf8c5f7a3e370c0f7d41c4f">More...</a><br /></td></tr>
+<tr class="separator:aad642ed15bf8c5f7a3e370c0f7d41c4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d88336e36e1bdf84e577c674d015f7e"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstorefront_1_1models_1_1OrderItem.html#a3d88336e36e1bdf84e577c674d015f7e">addCustomization</a> (self, <a class="el" href="classstorefront_1_1models_1_1Customization.html">Customization</a> cust, float <a class="el" href="classstorefront_1_1models_1_1OrderItem.html#a3148491668045e38db9b599bc7d1e168">amount</a>)</td></tr>
 <tr class="memdesc:a3d88336e36e1bdf84e577c674d015f7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add the given amount of the given <a class="el" href="classstorefront_1_1models_1_1Customization.html" title="Customization Model Class.">Customization</a>.  <a href="classstorefront_1_1models_1_1OrderItem.html#a3d88336e36e1bdf84e577c674d015f7e">More...</a><br /></td></tr>
 <tr class="separator:a3d88336e36e1bdf84e577c674d015f7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f93b9e7d134c32559deb3c6ed674928"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstorefront_1_1models_1_1OrderItem.html#a3f93b9e7d134c32559deb3c6ed674928">addCustomizations</a> (self, custs)</td></tr>
+<tr class="memdesc:a3f93b9e7d134c32559deb3c6ed674928"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add one of each customization in custs.  <a href="classstorefront_1_1models_1_1OrderItem.html#a3f93b9e7d134c32559deb3c6ed674928">More...</a><br /></td></tr>
+<tr class="separator:a3f93b9e7d134c32559deb3c6ed674928"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b3c84eafbb5aabd6fcf599dbba2e435"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstorefront_1_1models_1_1OrderItem.html#a8b3c84eafbb5aabd6fcf599dbba2e435">__str__</a> (self)</td></tr>
 <tr class="separator:a8b3c84eafbb5aabd6fcf599dbba2e435"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -218,6 +224,42 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a3f93b9e7d134c32559deb3c6ed674928" name="a3f93b9e7d134c32559deb3c6ed674928"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f93b9e7d134c32559deb3c6ed674928">&#9670;&#160;</a></span>addCustomizations()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def storefront.models.OrderItem.addCustomizations </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>custs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Add one of each customization in custs. </p>
+<p >This method is significantly faster than using multiple addCustomization calls because it performs only 2 SQL queries, no matter how many customizations are given. This is at worst equal to addCustomization in efficiency </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">custs</td><td>A list (or other iterable) of <a class="el" href="classstorefront_1_1models_1_1Customization.html" title="Customization Model Class.">Customization</a> objects or primary keys </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a86dd56d25cc71d3db750e85dffbabab3" name="a86dd56d25cc71d3db750e85dffbabab3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a86dd56d25cc71d3db750e85dffbabab3">&#9670;&#160;</a></span>addOrder()</h2>
 
@@ -243,6 +285,27 @@ Static Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="aad642ed15bf8c5f7a3e370c0f7d41c4f" name="aad642ed15bf8c5f7a3e370c0f7d41c4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad642ed15bf8c5f7a3e370c0f7d41c4f">&#9670;&#160;</a></span>calcPrice()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> float storefront.models.OrderItem.calcPrice </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Force a recalculation of the item's price and return it. </p>
+<dl class="section return"><dt>Returns</dt><dd>The item's calculated price </dd></dl>
 
 </div>
 </div>

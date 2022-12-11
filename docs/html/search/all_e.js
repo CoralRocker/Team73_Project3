@@ -1,5 +1,9 @@
 var searchData=
 [
-  ['price_0',['price',['../classstorefront_1_1models_1_1Inventory.html#af9583e3cfb61eb86d66905cfd4294273',1,'storefront.models.Inventory.price()'],['../classstorefront_1_1models_1_1Menu.html#a645eaaba149bb4b6e743761b50cbbfd6',1,'storefront.models.Menu.price()'],['../classstorefront_1_1models_1_1Order.html#a4ab859d6be0de95348a0fb3514af17bf',1,'storefront.models.Order.price()']]],
-  ['profit_1',['profit',['../classstorefront_1_1models_1_1Finance.html#a9ff214cd242039250fb0b822fa74b6fb',1,'storefront::models::Finance']]]
+  ['order_0',['order',['../classstorefront_1_1models_1_1OrderItem.html#ac7f3de83696a9f2d08829288b6b50a0d',1,'storefront::models::OrderItem']]],
+  ['order_1',['Order',['../classstorefront_1_1models_1_1Order.html',1,'storefront::models']]],
+  ['order_5fitem_2',['order_item',['../classstorefront_1_1models_1_1ItemCustomization.html#a293949ab66febb690fcb9f21269d6e1a',1,'storefront::models::ItemCustomization']]],
+  ['ordered_3',['ordered',['../classstorefront_1_1models_1_1Inventory.html#a639ab1b50655bb23d605fe849a1f8bfc',1,'storefront::models::Inventory']]],
+  ['orderitem_4',['OrderItem',['../classstorefront_1_1models_1_1OrderItem.html',1,'storefront::models']]],
+  ['orders_5fset_5',['orders_set',['../classstorefront_1_1models_1_1FinanceView.html#ad792d37aa706524044a24efb384ee4a9',1,'storefront::models::FinanceView']]]
 ];

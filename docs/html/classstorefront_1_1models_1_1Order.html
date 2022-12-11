@@ -108,6 +108,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0e5af3c67b2d51510c89679e2b2d8395"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstorefront_1_1models_1_1Order.html#a0e5af3c67b2d51510c89679e2b2d8395">getPrice</a> (self)</td></tr>
 <tr class="memdesc:a0e5af3c67b2d51510c89679e2b2d8395"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the price of the order and save it.  <a href="classstorefront_1_1models_1_1Order.html#a0e5af3c67b2d51510c89679e2b2d8395">More...</a><br /></td></tr>
 <tr class="separator:a0e5af3c67b2d51510c89679e2b2d8395"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add4b12c85c96acfba9ee1b4ff83dd27b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstorefront_1_1models_1_1Order.html#add4b12c85c96acfba9ee1b4ff83dd27b">calcPrice</a> (self)</td></tr>
+<tr class="memdesc:add4b12c85c96acfba9ee1b4ff83dd27b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Force a recalculation of the price of an order.  <a href="classstorefront_1_1models_1_1Order.html#add4b12c85c96acfba9ee1b4ff83dd27b">More...</a><br /></td></tr>
+<tr class="separator:add4b12c85c96acfba9ee1b4ff83dd27b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9f0733c227528f37a9fef177fa14f95"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstorefront_1_1models_1_1Order.html#ae9f0733c227528f37a9fef177fa14f95">getInventoryUsageQuerySet</a> (self)</td></tr>
 <tr class="memdesc:ae9f0733c227528f37a9fef177fa14f95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the <a class="el" href="classstorefront_1_1models_1_1Inventory.html" title="Inventory Model Class.">Inventory</a> usage for the entire order as a QuerySet of the <a class="el" href="classstorefront_1_1models_1_1Inventory.html" title="Inventory Model Class.">Inventory</a> table with the 'stock_used' column annotated onto it.  <a href="classstorefront_1_1models_1_1Order.html#ae9f0733c227528f37a9fef177fa14f95">More...</a><br /></td></tr>
 <tr class="separator:ae9f0733c227528f37a9fef177fa14f95"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,6 +163,28 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="add4b12c85c96acfba9ee1b4ff83dd27b" name="add4b12c85c96acfba9ee1b4ff83dd27b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add4b12c85c96acfba9ee1b4ff83dd27b">&#9670;&#160;</a></span>calcPrice()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"> float storefront.models.Order.calcPrice </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Force a recalculation of the price of an order. </p>
+<p >Note that this calls <a class="el" href="classstorefront_1_1models_1_1Order.html#add4b12c85c96acfba9ee1b4ff83dd27b" title="Force a recalculation of the price of an order.">calcPrice()</a> for every <a class="el" href="classstorefront_1_1models_1_1OrderItem.html" title="OrderItem Model Class.">OrderItem</a>. This may be a little slow.</p>
+<dl class="section return"><dt>Returns</dt><dd>The calculated the price of the order </dd></dl>
+
+</div>
+</div>
 <a id="ab455d2578445a8feb0488291251359c8" name="ab455d2578445a8feb0488291251359c8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab455d2578445a8feb0488291251359c8">&#9670;&#160;</a></span>checkout()</h2>
 
@@ -177,7 +202,8 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Finalize an order by removing its stock from the <a class="el" href="classstorefront_1_1models_1_1Inventory.html" title="Inventory Model Class.">Inventory</a> and by placing the <a class="el" href="classstorefront_1_1models_1_1Inventory.html" title="Inventory Model Class.">Inventory</a> used into the <a class="el" href="classstorefront_1_1models_1_1InventoryUsage.html" title="Model to track the usage of Inventory items per day.">InventoryUsage</a> table. </p>
-<p >This is a pretty hefty function &ndash; It may take a couple of seconds to run per order. </p>
+<p >This function has a portion which runs in Theta(2^n) time. I've optimized this as much as possible so that the only section of code which runs in that awful time is a string join and the creation of combinations of sold objects. <br  />
+ </p>
 
 </div>
 </div>
