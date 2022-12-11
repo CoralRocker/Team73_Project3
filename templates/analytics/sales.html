@@ -11,6 +11,11 @@
           margin: 30px;
         }
     </style>
+    <div class="report">
+        {% for sale in report %}
+            <div>{{sale}}</div>
+        {% endfor %}
+    </div>
     <form id="sales-form" method="post">
         {% csrf_token %}
         <label for="start_date">Enter Start Date as (yyyy-mm-dd):</label>
