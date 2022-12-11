@@ -317,10 +317,19 @@ def CheckoutPageView(request):
 # @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def SalesPageView(request):
+    report = ""
     if request.method == 'POST':
         data = request.POST
+        if "start_date" in data:
+            start_date = data.get("start_date")
+        if "end_date" in data:
+            end_date = data.get("end_date")
+        finances = FinanceView(start_date,end_date)
+        report = finances.salesByItem()
+        
+        print(report)
 
-    return render(request,'analytics/sales.html')
+    return render(request,'analytics/sales.html', {'report':report})
 
 # @brief generates the page to view the excess report
 #
