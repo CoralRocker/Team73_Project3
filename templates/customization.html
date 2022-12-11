@@ -10,9 +10,8 @@
         <h1 class="">{{ item.name }}</h1>
             {% csrf_token %}
             {{ form|crispy }}
-            <input type="hidden" name="next" value="{{ request.path }}">
+            <button class="btn btn-success mx-2 my-2 add-to-cart" type="submit" form="custom_form"> Add To Drink </button>
     </form>
-    <button class="btn btn-success mx-2 my-2 add-to-cart" type="submit" form="custom_form"> Add To Drink </button>
     {% comment %} <a class="btn btn-success btn-done" href="javascript:history.back()">Done</a> {% endcomment %}
 </div>
 

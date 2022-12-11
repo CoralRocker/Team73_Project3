@@ -860,6 +860,7 @@ class OrderItem(Model):
             newCust.save()
 
         self.cost = self.amount * (self.getCustomizationPrice() + float(self.menu_item.price))
+        self.save()
         return
 
     class Meta:
@@ -900,7 +901,7 @@ class ItemCustomization(Model):
     #
     # @return The price of the customization(s)
     def getCustomizationPrice(self) -> float: 
-        return round(float(cust.cost*cust.amount),2)
+        return round(float(self.customization.cost*self.amount),2)
         
 
     def __str__(self):

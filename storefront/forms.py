@@ -29,72 +29,8 @@ class CustomizationForm(forms.Form):
             ),
         )
 
-    cust_milk = [(item.id, item.name) for item in Customization.objects.filter(type__iexact="milk")]
-    cust_milk.insert(0, ('', ''))
-    
-    cust_splash = [(item.id, item.name) for item in Customization.objects.filter(type__iexact="splash")]
-    cust_splash.insert(0, ('', ''))
-    
-    cust_syrups = [(item.id, item.name) for item in Customization.objects.filter(type__iexact="syrup")]
-    cust_syrups.insert(0, ('', ''))
-    
-    cust_sauces = [(item.id, item.name) for item in Customization.objects.filter(type__iexact="sauce")]
-    cust_sauces.insert(0, ('', ''))
-    
-    cust_drizzle = [(item.id, item.name) for item in Customization.objects.filter(type__iexact="drizzle")]
-    cust_drizzle.insert(0, ('', ''))
-    
-    cust_lining = [(item.id, item.name) for item in Customization.objects.filter(type__iexact="lining")]
-    cust_lining.insert(0, ('', ''))
-    
-    cust_topping = [(item.id, item.name) for item in Customization.objects.filter(type__iexact="topping")]
-    cust_topping.insert(0, ('', ''))
-    
-    cust_mix = [(item.id, item.name) for item in Customization.objects.filter(type__iexact="mix")]
-    cust_mix.insert(0, ('', ''))
-    
-    cust_foam = [(item.id, item.name) for item in Customization.objects.filter(type__iexact="foam")]
-    cust_foam.insert(0, ('', ''))
-    
-    cust_sweetener = [(item.id, item.name) for item in Customization.objects.filter(type__iexact="sweetener")]
-    cust_sweetener.insert(0, ('', ''))
-    
-    cust_sweetener_packet = [(item.id, item.name) for item in Customization.objects.filter(type__iexact="sweetener-pack")]
-    cust_sweetener_packet.insert(0, ('', ''))
-    
-    cust_inclusion = [(item.id, item.name) for item in Customization.objects.filter(type__iexact="inclusion")]
-    cust_inclusion.insert(0, ('', ''))
-    
-    cust_chai = [(item.id, item.name) for item in Customization.objects.filter(type__iexact="chai")]
-    cust_chai.insert(0, ('', ''))
-    
-    cust_juice = [(item.id, item.name) for item in Customization.objects.filter(type__iexact="juice")]
-    cust_juice.insert(0, ('', ''))
-
     size = forms.ChoiceField(required=True)
 
-    milk = forms.ChoiceField(required=False, choices=cust_milk, initial='')
-
-    splash = forms.ChoiceField(required=False, choices=cust_splash, initial='')
-    syrup = forms.ChoiceField(required=False, choices=cust_syrups, initial='')
-    amt_syrup = forms.IntegerField(min_value=0, max_value=12, required=False)
-    sauce = forms.ChoiceField(required=False, choices=cust_sauces, initial='')
-    amt_sauce = forms.IntegerField(min_value=0, max_value=12, required=False)
-    drizzle = forms.ChoiceField(required=False, choices=cust_drizzle, initial='')
-    lining = forms.ChoiceField(required=False, choices=cust_lining, initial='')
-    topping = forms.ChoiceField(required=False, choices=cust_topping, initial='')
-    mix = forms.ChoiceField(required=False, choices=cust_mix, initial='')
-    amt_mix = forms.IntegerField(min_value=0, max_value=12, required=False)
-    foam = forms.ChoiceField(required=False, choices=cust_foam, initial='')
-    sweetener = forms.ChoiceField(required=False, choices=cust_sweetener, initial='')
-    amt_sweetener = forms.IntegerField(min_value=0, max_value=12, required=False)
-    sweetener_packet = forms.ChoiceField(required=False, choices=cust_sweetener_packet, initial='')
-    amt_sweetener_packet = forms.IntegerField(min_value=0, max_value=12, required=False)
-    inclusion = forms.ChoiceField(required=False, choices=cust_inclusion, initial='')
-    chai = forms.ChoiceField(required=False, choices=cust_chai, initial='')
-    amt_chai = forms.IntegerField(min_value=0, max_value=12, required=False)
-    juice = forms.ChoiceField(required=False, choices=cust_juice, initial='')
-    amt_juice = forms.IntegerField(min_value=0, max_value=12, required=False)
     
     def setSizes(self, sizes):
         self.fields['size']._set_choices(sizes)
@@ -105,5 +41,68 @@ class SplashForm(forms.Form):
     
 class MilkForm(forms.Form):
     MILK_CHOICES = ((item.id, item.name) for item in Customization.objects.filter(type__iexact="milk"))
-    splahes = ChoiceField(label="Milk:", choices=MILK_CHOICES, required=False)
+    milk = ChoiceField(label="Milk:", choices=MILK_CHOICES, required=False)
+    
+class ExtraShotForm(forms.Form):
+    coffee = forms.IntegerField(min_value=0, max_value=3, required=False)
 
+class SyrupForm(forms.Form):
+    Apple_Brown_Sugar = forms.IntegerField(min_value=0, max_value=12, required=False, label="Apple Brown Sugar:")
+    Brown_Sugar = forms.IntegerField(min_value=0, max_value=12, required=False, label="Brown Sugar:")
+    Caramel = forms.IntegerField(min_value=0, max_value=12, required=False, label="Caramel:")
+    Cinnamon_Dolce = forms.IntegerField(min_value=0, max_value=12, required=False, label="Cinnamon Dolce:")
+    Hazelnut = forms.IntegerField(min_value=0, max_value=12, required=False, label="Hazelnut:")
+    Peppermint = forms.IntegerField(min_value=0, max_value=12, required=False, label="Peppermint:")
+    Raspberry = forms.IntegerField(min_value=0, max_value=12, required=False, label="Raspberry:")
+    Toasted_Vanilla = forms.IntegerField(min_value=0, max_value=12, required=False, label="Toasted Vanilla:")
+    Toffee_Nut = forms.IntegerField(min_value=0, max_value=12, required=False, label="Toffee Nut:")
+    Vanilla = forms.IntegerField(min_value=0, max_value=12, required=False, label="Vanilla:")
+    Sugar_Free_Vanilla = forms.IntegerField(min_value=0, max_value=12, required=False, label="Sugar free Vanilla:")
+
+class SauceForm(forms.Form):
+    Mocha = forms.IntegerField(min_value=0, max_value=12, required=False, label="Mocha:")
+    New_Dark_Caramel = forms.IntegerField(min_value=0, max_value=12, required=False, label="Dark Caramel")
+    Pumpkin = forms.IntegerField(min_value=0, max_value=12, required=False, label="Pumpkin:")
+    White_Chocolate_Mocha_Sauce = forms.IntegerField(min_value=0, max_value=12, required=False, label="White Chocolate Mocha:")
+    
+class DrizzleForm(forms.Form):
+    DRIZZLE_CHOICES = ((item.id, item.name) for item in Customization.objects.filter(type__iexact="drizzle"))
+    drizzles = MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=DRIZZLE_CHOICES, required=False)
+
+class LiningForm(forms.Form):
+    LINING_CHOICES = ((item.id, item.name) for item in Customization.objects.filter(type__iexact="lining"))
+    linings = MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=LINING_CHOICES, required=False)
+
+class ToppingForm(forms.Form):
+    TOPPING_CHOICES = ((item.id, item.name) for item in Customization.objects.filter(type__iexact="topping"))
+    toppings = MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=TOPPING_CHOICES, required=False)
+
+class MixForm(forms.Form):
+    Vanilla_bean_powder = forms.IntegerField(min_value=0, max_value=12, required=False, label="Vanilla Bean Powder:")
+    Chocolate_malt_powder = forms.IntegerField(min_value=0, max_value=12, required=False, label="Chocolate Malt Powder:")
+
+class FoamForm(forms.Form):
+    FOAM_CHOICES = ((item.id, item.name) for item in Customization.objects.filter(type__iexact="foam"))
+    foams = MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=FOAM_CHOICES, required=False)
+
+class SweetenerForm(forms.Form):
+    Classic_syrup = forms.IntegerField(min_value=0, max_value=12, required=False, label="Classic Syrup:")
+    Liquid_cane_sugar = forms.IntegerField(min_value=0, max_value=12, required=False, label="Liquid Cane Suagr")
+    Honey_blend = forms.IntegerField(min_value=0, max_value=12, required=False, label="Honey Blend:")
+
+class SweetenerPacketForm(forms.Form):
+    Sweet_n_low = forms.IntegerField(min_value=0, max_value=12, required=False, label="Sweet n Low:")
+    Equal = forms.IntegerField(min_value=0, max_value=12, required=False, label="Equal:")
+    Splenda = forms.IntegerField(min_value=0, max_value=12, required=False, label="Splenda:")
+    Stevia_blend = forms.IntegerField(min_value=0, max_value=12, required=False, label="Stevia Blend:")
+
+class InclusionForm(forms.Form):
+    INCLUSION_CHOICES = ((item.id, item.name) for item in Customization.objects.filter(type__iexact="inclusion"))
+    inclusions = MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=INCLUSION_CHOICES, required=False)
+    
+class ChaiForm(forms.Form):
+    Chai_pump = forms.IntegerField(min_value=0, max_value=12, required=False, label="Chai Pump:")
+
+class JuiceForm(forms.Form):
+    Apple_juice = forms.IntegerField(min_value=0, max_value=12, required=False, label="Apple Juice:")
+    Peach_juice_blend = forms.IntegerField(min_value=0, max_value=12, required=False, label="Peach Juice Blend:")

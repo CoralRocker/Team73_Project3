@@ -4,7 +4,13 @@
 <title>{% block title %}Meowbucks | {{ item.name }} {% endblock title %}</title>
 {% block content %}
     <div class="container my-4">
-        {% comment %} <h1>{{ item.name }}</h1> {% endcomment %}
+        <div class="col-md-8">
+            <form id="customization_form"  method="post">
+                <h1 class="">{{ item.name }}</h1>
+                    {% csrf_token %}
+                    {{ form|crispy }}
+            </form>
+        </div>
         <div class="row">
             <div class="col-md-4">
                 <div class="row">
@@ -13,7 +19,20 @@
                     {% else %}
                         <img class="item-img" src="../../{{ item.image }}" alt="Card image {{ item.name }}"/>
                         <button class="btn btn-success mx-2 my-2 add-to-cart" type="submit" form="customization_form"> Add To Cart </button>
-                        {% comment %} <div class="order-price"><font size="6"><b>PRICE: ${{item.price}}</b></font></p></div> {% endcomment %}
+                        <div class="order-price"><font size="6"><b>PRICE: ${{orderItem.cost}}</b></font></p></div>
+                        <div class="customizations">
+                            {% for customizationItem in orderItem.itemcustomization_set.all %}
+                            <div class="customization-info">
+                                {% if customizationItem.customization.type != 'milk' %}
+                                <div class="customization-output">{{customizationItem.amount}} {{customizationItem.customization.type}}(s) of {{customizationItem.customization.name}} >+${{customizationItem.getCustomizationPrice}}</div>
+                                {% else %}
+                                <div class="customization-output">{{customizationItem.customization.name}} milk +${{customizationItem.getCustomizationPrice}}</div>
+                                {% endif %}
+                                <div class="customization-price"></div>
+                            </div>
+                            {% endfor %}
+                        </div>    
+                        <p></p>
                         <div class="item-description">{{item.description}}</div>
                         <div class="item-ingredients">
                         <p></p>
@@ -26,13 +45,6 @@
                         </div>
                     {% endif %}
                 </div>
-            </div>
-            <div class="col-md-8">
-                <form id="customization_form"  method="post">
-                    <h1 class="">{{ item.name }}</h1>
-                        {% csrf_token %}
-                        {{ form|crispy }}
-                </form>
             </div>
             <div class="col-md-1 mx-5">
                 <a class="btn btn-success mx-2 my-2 btn-customization" href="{% url 'customization' 'milk' %}">Milk</a>
