@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-n#=bw)!^@!fkp*by(55xiauryv*$nbsa#_4v2=4_ibo)ka10n1
 DEBUG = True
 
 # This '*' should be updated later on to a specific domain
-ALLOWED_HOSTS = ["project3-csce331.herokuapp.com"]
+ALLOWED_HOSTS = ["project3-csce331.herokuapp.com", "127.0.0.1"]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://project3-csce331.herokuapp.com"
@@ -72,6 +72,7 @@ MIDDLEWARE = [
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
 
 ROOT_URLCONF = 'app.urls'
 
