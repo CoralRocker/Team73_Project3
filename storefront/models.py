@@ -1,4 +1,5 @@
 from django.db.models import *
+import itertools
 import datetime
 
 ## 
@@ -729,8 +730,8 @@ class OrderItem(Model):
         m_item = oi_item.menu_item 
         menu_usage = Inventory.objects.filter(
                 id__in=m_item.ingredient_set.values('inventory')).annotate(
-                stock_used=(Subquery(m_item.ingredient_set.filter(
-                    inventory=OuterRef('id')).values('amount')))
+                stock_used=Subquery(m_item.ingredient_set.filter(
+                    inventory=OuterRef('id')).values('amount'))
                 )
 
         # Get the inventory usage QuerySet of a single Customization
@@ -742,8 +743,10 @@ class OrderItem(Model):
         # customizations
         cust_usage = Inventory.objects.filter(id__in=an_set.values('ingredient')).annotate(
                 stock_used=Subquery(an_set.filter(
-                    ingredient=OuterRef('id')
-                    ).values('stock_used'))
+                        ingredient=OuterRef('id')
+                    ).values('ingredient').annotate(
+                        total=Sum('stock_used')).values('total')
+                    )
                 )
         
         full_usage = Inventory.objects.filter(
@@ -862,6 +865,18 @@ class OrderItem(Model):
         self.cost = self.amount * (self.getCustomizationPrice() + float(self.menu_item.price))
         return
 
+    def addCustomizations(self, custs):
+        cust_items = [ ItemCustomization(order_item=self, customization=pair, amount=1) for pair in custs]
+        
+        duplicates = self.itemcustomization_set.filter(customization__in=custs).update(amount=F('amount')+Value(1))
+        
+        
+        ItemCustomization.objects.bulk_create(cust_items, ignore_conflicts=True)
+
+
+
+
+
     class Meta:
         db_table = 'order_items'
         
@@ -902,9 +917,13 @@ class ItemCustomization(Model):
     def getCustomizationPrice(self) -> float: 
         return round(float(cust.cost*cust.amount),2)
         
-
     def __str__(self):
         return f"{self.order_item.menu_item.name} :> {self.customization.name} {self.customization.type} x {self.amount}"
+    
+    class Meta:
+        constraints = [
+            UniqueConstraint(fields=['order_item', 'customization'], name='itemcustomization_single_cust')
+            ]
 
 ##
 # @brief Order Model Class
@@ -995,29 +1014,32 @@ class Order(Model):
     # to run per order.
     def checkout(self):
         usage = self.getInventoryUsageQuerySet()
-        for inv in usage.all():
-            # Save the used stock for the day's count
-            obj = InventoryUsage.createOrGet(self.date, inv)
-            obj.amount_used += inv.stock_used
+        usageItems = [InventoryUsage(date=self.date, item=i, amount_used=0.0) for i in usage]
+        InventoryUsage.objects.bulk_create(usageItems, ignore_conflicts=True)
+        InventoryUsage.objects.filter(date=self.date, item__in=usage).update(
+                amount_used=F('amount_used') + Subquery(usage.filter(id=OuterRef('item')).values('stock_used'))
+                )
 
+        print("Usage Calculated")
             
         # Update the Inventory stock
         usage.update(stock=F('stock')-F('stock_used'))
 
+        print("Stock Updated")
+
         # Add purchased pairs to the SalesPairs table
         num_items = self.items.count()
-        sorted_items = self.items.order_by('id')
-        combinations = list()
-        for i in range(num_items-1):
-            for j in range(i, num_items):
-                obj = SalesPair.getOrCreate(self.date,
-                                      sorted_items.all()[i],
-                                      sorted_items.all()[j])
+        sorted_items = self.items.order_by('id').values_list('id', flat=True)
+        combos = itertools.combinations(sorted_items, 2)
+        arr = f"({','.join(map(lambda x: f'({x[0]},{x[1]})', combos))})"
 
-                obj.amount += 1
-                obj.save()
-                
-
+        SalesPair.objects.bulk_create([SalesPair(date=self.date, item_a_id=p[0], item_b_id=p[1], amount=0) for p in combos], ignore_conflicts=True)
+        try:
+            SalesPair.objects.raw("UPDATE storefront_salespair SET amount=amount+1 WHERE (item_a_id, item_b_id) IN " + arr)[0]
+        except:
+            pass
+ 
+        print("SalesPairs Added")
 
 
     ##
