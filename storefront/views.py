@@ -116,10 +116,31 @@ def CustomizationDetailView(request, pk):
                 return redirect('item-detail', pk=orderItem.menu_item.id)
     elif pk == 'syrup':
         form = SyrupForm(request.POST)
+        if request.method == 'POST':
+            if form.is_valid():
+                for key, value in form.cleaned_data.items():
+                    name = key.replace("_"," ")
+                    if value and value != '':
+                        orderItem.addCustomization(Customization.objects.get(name=name),float(value))
+                return redirect('item-detail', pk=orderItem.menu_item.id)
     elif pk ==  'coffee':
         form = ExtraShotForm(request.POST)
+        if request.method == 'POST':
+            if form.is_valid():
+                for key, value in form.cleaned_data.items():
+                    name = key.replace("_","-")
+                    if value and value != '':
+                        orderItem.addCustomization(Customization.objects.get(name=name),float(value))
+                return redirect('item-detail', pk=orderItem.menu_item.id)
     elif pk == 'sauce':
         form = SauceForm(request.POST)
+        if request.method == 'POST':
+            if form.is_valid():
+                for key, value in form.cleaned_data.items():
+                    name = key.replace("_"," ")
+                    if value and value != '':
+                        orderItem.addCustomization(Customization.objects.get(name=name),float(value))
+                return redirect('item-detail', pk=orderItem.menu_item.id)
     elif pk ==  'drizzle':
         form = DrizzleForm(request.POST)
     elif pk == 'lining':
@@ -130,24 +151,60 @@ def CustomizationDetailView(request, pk):
         form = MixForm(request.POST)
     elif pk ==  'foam':
         form = FoamForm(request.POST)
+        if request.method == 'POST':
+            if form.is_valid():
+                for key, value in form.cleaned_data.items():
+                    name = key.replace("_","-")
+                    if value and value != '':
+                        orderItem.addCustomization(Customization.objects.get(name=name),float(value))
+                return redirect('item-detail', pk=orderItem.menu_item.id)
     elif pk == 'sweetener':
         form = SweetenerForm(request.POST)
+        if request.method == 'POST':
+            if form.is_valid():
+                for key, value in form.cleaned_data.items():
+                    name = key.replace("_","-")
+                    if value and value != '':
+                        orderItem.addCustomization(Customization.objects.get(name=name),float(value))
+                return redirect('item-detail', pk=orderItem.menu_item.id)
     elif pk ==  'sweetener-packet':
         form = SweetenerPacketForm(request.POST)
+        if request.method == 'POST':
+            if form.is_valid():
+                for key, value in form.cleaned_data.items():
+                    name = key.replace("_","-")
+                    if value and value != '':
+                        orderItem.addCustomization(Customization.objects.get(name=name),float(value))
+                return redirect('item-detail', pk=orderItem.menu_item.id)
     elif pk == 'inclusion':
         form = InclusionForm(request.POST)
     elif pk ==  'chai':
         form = ChaiForm(request.POST)
+        if request.method == 'POST':
+            if form.is_valid():
+                for key, value in form.cleaned_data.items():
+                    name = key.replace("_","-")
+                    if value and value != '':
+                        orderItem.addCustomization(Customization.objects.get(name=name),float(value))
+                return redirect('item-detail', pk=orderItem.menu_item.id)
     elif pk == 'juice':
         form = JuiceForm(request.POST)
+        if request.method == 'POST':
+            if form.is_valid():
+                for key, value in form.cleaned_data.items():
+                    name = key.replace("_","-")
+                    if value and value != '':
+                        orderItem.addCustomization(Customization.objects.get(name=name),float(value))
+                return redirect('item-detail', pk=orderItem.menu_item.id)
     elif pk == 'splash':
         form = SplashForm(request.POST)
-        if request.method == "POST":
-                if form.is_valid():
-                    for key, value in form.cleaned_data.items():
-                        if value and value != '':
-                            orderItem.addCustomization(Customization.objects.get(id=value),1)
-                    return redirect('item-detail', pk=orderItem.menu_item.id)
+    if request.method == 'POST':
+            if form.is_valid():
+                for key, value in form.cleaned_data.items():
+                    if value and value != '':
+                        for val in value:
+                            orderItem.addCustomization(Customization.objects.get(id=val),1)
+                return redirect('item-detail', pk=orderItem.menu_item.id)
     return render(request, 'customization.html', {'customizations':customizations, 'name':pk, 'hasCart':True, 'order':order, 'form':form})
 
 # @brief generates the page where the customer can see the drink and can what type of customization to add
@@ -181,7 +238,7 @@ def ItemDetailView(request, pk):
             OrderItem.objects.get(pk=request.session['item-in-view']).delete()
 
         order = int(request.session['cart'])
-        request.session['item-in-view'] = OrderItem.create( # Create orderItem belonging to cart
+        request.session['item-in-view'] = OrderItem.create(# Create orderItem belonging to cart
                 item).pk # Create with menu item selected
     orderItem = OrderItem.objects.get(pk=request.session['item-in-view'])
     size = 'grande'    
@@ -197,7 +254,7 @@ def ItemDetailView(request, pk):
             size = form.cleaned_data['size']
             item_name  = OrderItem.objects.get(pk=request.session['item-in-view']).menu_item.name
             item =  Menu.objects.get(Q(name=item_name) & Q(size=size))
-            OrderItem.objects.get(pk=request.session['item-in-view']).delete()
+            
             for key, value in form.cleaned_data.items():
                 amount = 1
                 if value and value != '':
@@ -206,6 +263,7 @@ def ItemDetailView(request, pk):
                             amount_string = 'amt_' + key
                             amount = form.cleaned_data[amount_string]
                         OrderItem.objects.get(pk=request.session['item-in-view']).addCustomization(Customization.objects.get(id=value),amount)
+            print(order1.items)
             del request.session['item-in-view']
 
             return render(request, 'menu-home.html', {'hasCart':hasCart, 'order':order1})
