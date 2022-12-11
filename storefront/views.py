@@ -227,19 +227,21 @@ def ItemDetailView(request, pk):
     except:
         print("Either no cart exists or it is invalid")
 
-
+    
 
     # Create Temporary Item Session
     # Create if item is different than previous, or if doesn't exist
-    if 'item-in-view' not in request.session or OrderItem.objects.get(pk=request.session['item-in-view']).menu_item.name != item.name:
+    if 'item-in-view' not in request.session or (obj := OrderItem.objects.filter(pk=request.session['item-in-view']).first()) == None or obj.menu_item.name != item.name:
 
         # Delete Previous Items
-        if 'item-in-view' in request.session:
+        if 'item-in-view' in request.session and obj != None:
             OrderItem.objects.get(pk=request.session['item-in-view']).delete()
 
         order = int(request.session['cart'])
         request.session['item-in-view'] = OrderItem.create(# Create orderItem belonging to cart
                 item).pk # Create with menu item selected
+
+
     orderItem = OrderItem.objects.get(pk=request.session['item-in-view'])
     size = 'grande'    
     # If it is a POST request we will process the form data
