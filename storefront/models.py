@@ -1056,8 +1056,14 @@ class Order(Model):
         self.calcPrice()
 
         usage = self.getInventoryUsageQuerySet()
+
+        # Create InventoryUsage items
         usageItems = [InventoryUsage(date=self.date, item=i, amount_used=0.0) for i in usage]
+
+        # Bulk create (or do nothing) the InventoryUsage 
         InventoryUsage.objects.bulk_create(usageItems, ignore_conflicts=True)
+
+        # Update the inventory usage
         InventoryUsage.objects.filter(date=self.date, item__in=usage).update(
                 amount_used=F('amount_used') + Subquery(usage.filter(id=OuterRef('item')).values('stock_used'))
                 )
@@ -1076,6 +1082,9 @@ class Order(Model):
             return
         combos = list()
         arr = '('
+
+        # Create all combinations of items
+        # Also create a string with an SQL array of pairs of Menu items
         for i in range(num_items-1):
             for j in range(i+1,num_items):
                 combos.append((sorted_items[i],sorted_items[j]))
@@ -1084,10 +1093,12 @@ class Order(Model):
                     arr += ','
         arr += ')'
 
+        # Create all SalesPair objects that don't already exist
         SalesPair.objects.bulk_create([SalesPair(date=self.date, item_a_id=p[0], item_b_id=p[1], amount=0) for p in combos], ignore_conflicts=True)
 
         ## Raw SQL Update
 
+        # Add 1 to every SalesPair involved in this order
         with connection.cursor() as cursor:
             cursor.execute("UPDATE storefront_salespair SET amount=amount+1 WHERE (item_a_id, item_b_id) IN " + arr)
  
