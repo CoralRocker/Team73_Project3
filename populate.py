@@ -11,6 +11,25 @@
 ### modify the variables below to configure what tables will be repopulated
 ### NOTE: Tables will be wiped before being repopulated unless {table}_append is true
 
+# Randomized Order Creation
+import datetime
+from dateutil.rrule import DAILY, rrule
+create_random_orders = True
+start_date = datetime.date(2022, 12, 1)
+end_date = datetime.date.today()
+
+min_order_per_day = 0
+max_order_per_day = 35
+
+min_item_per_order = 1
+max_item_per_order = 10
+
+min_amt_per_item = 1
+max_amt_per_item = 5
+
+min_cust_per_item = 0
+max_cust_per_item = 5
+
 # Repopulation Variables. Set these to True to repopulate the corresponding table
 inventory_repopulate = False # Set to true to modify the inventory table
 inventory_append = False # Set to true to append items to the inventory.
@@ -18,7 +37,7 @@ inventory_append = False # Set to true to append items to the inventory.
 menu_repopulate = False # Set to true to modify the menu table
 menu_append = False  # Set to true to append data to the menu instead of clearing it
 
-customization_repopulate = True # Set to true to modify the customizations table
+customization_repopulate = False # Set to true to modify the customizations table
 customization_append = False # Set to true to append data to the customizations instead of clearing it
 
 # Repopulation Files. Set these to the path to the TSV file with the data
@@ -43,7 +62,7 @@ django.setup()
 from storefront.models import *
 import re # Regex
 import csv # CSV/TSV File parsing
-
+import random
 
 ###
 ### Inventory Repopulation
@@ -155,3 +174,64 @@ if customization_repopulate:
             print(f"Appended {count} items to Customization")
         else:
             print(f"Replaced Customization with {count} items")
+
+
+###
+### Randomized Order Creation
+###
+
+
+if create_random_orders:
+    import itertools
+
+    custs = list(Customization.objects.all())
+    items = list(Menu.objects.all())
+
+    for day in rrule(DAILY, dtstart=start_date, until=end_date): 
+        num_orders = random.randint(min_order_per_day, max_order_per_day)
+        print(f"For day {day}: {num_orders} orders")
+
+        orders = [Order(cashier='randomly generated', date=day.date()) for i in range(num_orders)]
+        order_amts = [( # Generate Order Helper Amounts
+                num_items, #                                                                            number of items for this order
+                random.choices(range(min_amt_per_item, max_amt_per_item+1), k=num_items), #             amt of each orderItem
+                random.choices(range(min_cust_per_item, max_cust_per_item+1), k=num_items), #           amount of customizations per item
+            ) for o in range(num_orders) if (num_items:=random.randint(min_item_per_order, max_item_per_order)) != None]
+
+        order_menu_cust_items = [(
+                [(
+                    random.choice(items),                           # Menu item for the OrderItem
+                    random.choices(custs, k=order_amts[o][2][i]),   # Customization list
+                ) for i in range(order_amts[o][0])]
+            ) for o in range(num_orders)]
+
+        order_items = [
+                [
+                    OrderItem(order=orders[o], menu_item=order_menu_cust_items[o][i][0], amount=order_amts[o][1][i], cost=0.0) # Create the OrderItem
+                for i in range(order_amts[o][0])] # Loop through items in order
+            for o in range(num_orders)] # Loop through orders
+
+        order_item_customizations = [
+                [
+                    [
+                        ItemCustomization(order_item=order_items[o][i], customization=order_menu_cust_items[o][i][1][c], amount=1) # Create the customization
+                    for c in range(order_amts[o][2][i]) ] # Loop through each customization
+                for i in range(order_amts[o][0])] # Loop through items in order
+            for o in range(num_orders)] # Loop through orders
+
+        orders = Order.objects.bulk_create(orders)
+
+        orderitems_flat = itertools.chain.from_iterable(order_items)
+        itemcusts_flat = itertools.chain.from_iterable(itertools.chain.from_iterable(order_item_customizations))
+
+        OrderItem.objects.bulk_create(orderitems_flat)
+        ItemCustomization.objects.bulk_create(itemcusts_flat, ignore_conflicts=True)
+
+        print("All orders created. Checking out")
+        for i, o in enumerate(orders):
+            print(f"Order {i} / {len(orders)}")
+            o.checkout()
+            print("\033[4F\033[0J", end='')
+
+        print("\033[2F\033[J", end='')
+    print("All orders successfully created and checked out")    
