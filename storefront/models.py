@@ -1,4 +1,5 @@
 from django.db.models import *
+from django.db import connection
 import itertools
 import datetime
 
@@ -232,7 +233,7 @@ class FinanceView():
 
         # Get the sum total of each item used
         # Basically equivalent to usage.aggregate(amount=Sum('amount_used'))
-        amount_query = usage.filter(item=OuterRef('id')).values('amount_used').annotate(amount=Sum('amount_used')).values('amount')
+        amount_query = usage.filter(item=OuterRef('id')).values('item').annotate(amount=Sum('amount_used')).values('amount')
 
         return Inventory.objects.filter(id__in=usage.values('item')).annotate(
                 stock_used=Subquery(amount_query))
@@ -267,7 +268,7 @@ class FinanceView():
     # @return A QuerySet of Inventory Items with an annotated column ('num_units') indicating the number of units in stock
     def restockReport(self, min_units=100):
         
-        return Inventory.objects.annotate(num_units=F('stock') / F('amount_per_unit')).filter(num_units__lte=min_units)
+        return Inventory.objects.annotate(num_units=F('stock') / F('amount_per_unit')).filter(num_units__lt=min_units)
 
 
     ##
@@ -289,8 +290,10 @@ class FinanceView():
             total=Subquery(
                 SalesPair.objects.filter(
                     item_a=OuterRef('item_a'), 
-                    item_b=OuterRef('item_b')
-                    ).values('amount').annotate(total=Sum('amount')).values('total')
+                    item_b=OuterRef('item_b'),
+                    date__gte=self.start_date,
+                    date__lte=self.end_date,
+                    ).values('item_a','item_b').annotate(total=Sum('amount')).values('total')
                 )
             )
 
@@ -626,6 +629,7 @@ class Ingredient(Model):
         return f"{self.menu_item.name} :> {self.inventory.name} x {self.amount}"
 
     class Meta:
+        ## The constraint that menu items can only have one of each type of ingredient
         constraints = [
             UniqueConstraint(fields=['menu_item', 'inventory'], name='unique_ingredients')
             ]
@@ -854,6 +858,15 @@ class OrderItem(Model):
     # @returns The cost to the customer
     def getPrice(self) -> float:
         return float(self.cost)
+    
+    ##
+    # @brief Force a recalculation of the item's price and return it.
+    # 
+    # @return The item's calculated price
+    def calcPrice(self) -> float:
+        self.cost = self.amount * (self.getCustomizationPrice() + float(self.menu_item.price))
+        self.save()
+        return self.getPrice()
 
     ##
     # @brief Add the given amount of the given Customization
@@ -871,14 +884,21 @@ class OrderItem(Model):
         self.save()
         return
 
+    ##
+    # @brief Add one of each customization in custs 
+    #
+    # This method is significantly faster than using multiple addCustomization
+    # calls because it performs only 2 SQL queries, no matter how many customizations
+    # are given. This is at worst equal to addCustomization in efficiency
+    # @param custs A list (or other iterable) of Customization objects or primary keys
     def addCustomizations(self, custs):
-        cust_items = [ ItemCustomization(order_item=self, customization=pair, amount=1) for pair in custs]
+        cust_items = [ ItemCustomization(order_item=self, customization=pair, amount=0) for pair in custs]
         
-        duplicates = self.itemcustomization_set.filter(customization__in=custs).update(amount=F('amount')+Value(1))
-        
-        
+        self.itemcustomization_set.filter(customization__in=custs).update(amount=F('amount')+Value(1))
         ItemCustomization.objects.bulk_create(cust_items, ignore_conflicts=True)
 
+        self.cost = self.amount * (self.getCustomizationPrice() + float(self.menu_item.price))
+        self.save()
 
 
 
@@ -927,6 +947,8 @@ class ItemCustomization(Model):
         return f"{self.order_item.menu_item.name} :> {self.customization.name} {self.customization.type} x {self.amount}"
     
     class Meta:
+
+        ## The constraint that orderitems may only have a single row per customization item
         constraints = [
             UniqueConstraint(fields=['order_item', 'customization'], name='itemcustomization_single_cust')
             ]
@@ -980,12 +1002,23 @@ class Order(Model):
     #
     # @return The price of the order for the customer
     def getPrice(self) -> float:
-        price = 0.0
-        for item in self.orderitem_set.all():
-            price += item.getPrice()
+        self.price = float(self.orderitem_set.aggregate(cost=Sum('cost'))['cost'])
+        self.save()
+        return round(self.price,2)
 
-        self.price = price
-        return round(price,2)
+    ##
+    # @brief Force a recalculation of the price of an order
+    #
+    # Note that this calls calcPrice() for every OrderItem. This
+    # may be a little slow. 
+    #
+    # @return The calculated the price of the order
+    def calcPrice(self) -> float:
+        self.price = 0.0
+        for item in self.orderitem_set.all():
+            self.price += item.calcPrice()
+        self.save()
+        return round(self.price, 2)
 
     ## 
     # @brief Get the Inventory usage for the entire order as a
@@ -1016,8 +1049,10 @@ class Order(Model):
     # @brief Finalize an order by removing its stock from the Inventory
     # and by placing the Inventory used into the InventoryUsage table.
     #
-    # This is a pretty hefty function -- It may take a couple of seconds
-    # to run per order.
+    # This function has a portion which runs in Theta(2^n) time. I've 
+    # optimized this as much as possible so that the only section of
+    # code which runs in that awful time is a string join and the creation
+    # of combinations of sold objects.  
     def checkout(self):
         usage = self.getInventoryUsageQuerySet()
         usageItems = [InventoryUsage(date=self.date, item=i, amount_used=0.0) for i in usage]
@@ -1026,26 +1061,36 @@ class Order(Model):
                 amount_used=F('amount_used') + Subquery(usage.filter(id=OuterRef('item')).values('stock_used'))
                 )
 
-        print("Usage Calculated")
+        # print("Usage Calculated")
             
         # Update the Inventory stock
         usage.update(stock=F('stock')-F('stock_used'))
 
-        print("Stock Updated")
+        # print("Stock Updated")
 
         # Add purchased pairs to the SalesPairs table
-        num_items = self.items.count()
         sorted_items = self.items.order_by('id').values_list('id', flat=True)
-        combos = itertools.combinations(sorted_items, 2)
-        arr = f"({','.join(map(lambda x: f'({x[0]},{x[1]})', combos))})"
+        num_items = self.items.count()
+        if num_items < 2:
+            return
+        combos = list()
+        arr = '('
+        for i in range(num_items-1):
+            for j in range(i+1,num_items):
+                combos.append((sorted_items[i],sorted_items[j]))
+                arr += f"({sorted_items[i]},{sorted_items[j]})"
+                if not (i == num_items-2 and j == num_items-1):
+                    arr += ','
+        arr += ')'
 
         SalesPair.objects.bulk_create([SalesPair(date=self.date, item_a_id=p[0], item_b_id=p[1], amount=0) for p in combos], ignore_conflicts=True)
-        try:
-            SalesPair.objects.raw("UPDATE storefront_salespair SET amount=amount+1 WHERE (item_a_id, item_b_id) IN " + arr)[0]
-        except:
-            pass
+
+        ## Raw SQL Update
+
+        with connection.cursor() as cursor:
+            cursor.execute("UPDATE storefront_salespair SET amount=amount+1 WHERE (item_a_id, item_b_id) IN " + arr)
  
-        print("SalesPairs Added")
+        # print("SalesPairs Added")
 
 
     ##
