@@ -625,6 +625,11 @@ class Ingredient(Model):
     def __str__(self):
         return f"{self.menu_item.name} :> {self.inventory.name} x {self.amount}"
 
+    class Meta:
+        constraints = [
+            UniqueConstraint(fields=['menu_item', 'inventory'], name='unique_ingredients')
+            ]
+
 ## 
 # @brief OrderItem Model Class
 # 

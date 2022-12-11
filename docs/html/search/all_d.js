@@ -4,5 +4,6 @@ var searchData=
   ['order_1',['Order',['../classstorefront_1_1models_1_1Order.html',1,'storefront::models']]],
   ['order_5fitem_2',['order_item',['../classstorefront_1_1models_1_1ItemCustomization.html#a293949ab66febb690fcb9f21269d6e1a',1,'storefront::models::ItemCustomization']]],
   ['ordered_3',['ordered',['../classstorefront_1_1models_1_1Inventory.html#a639ab1b50655bb23d605fe849a1f8bfc',1,'storefront::models::Inventory']]],
-  ['orderitem_4',['OrderItem',['../classstorefront_1_1models_1_1OrderItem.html',1,'storefront::models']]]
+  ['orderitem_4',['OrderItem',['../classstorefront_1_1models_1_1OrderItem.html',1,'storefront::models']]],
+  ['orders_5fset_5',['orders_set',['../classstorefront_1_1models_1_1FinanceView.html#ad792d37aa706524044a24efb384ee4a9',1,'storefront::models::FinanceView']]]
 ];

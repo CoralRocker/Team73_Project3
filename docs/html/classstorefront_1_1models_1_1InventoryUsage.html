@@ -75,6 +75,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classstorefront_1_1models_1_1InventoryUsage-members.html">List of all members</a>  </div>
@@ -91,11 +92,16 @@ Inheritance diagram for storefront.models.InventoryUsage:</div>
   <img src="classstorefront_1_1models_1_1InventoryUsage.png" alt=""/>
  </div></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstorefront_1_1models_1_1InventoryUsage_1_1Meta.html">Meta</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2ad3b1078134367df2cf2f20b29b1293"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstorefront_1_1models_1_1InventoryUsage.html#a2ad3b1078134367df2cf2f20b29b1293">create</a> (cls, <a class="el" href="classstorefront_1_1models_1_1InventoryUsage.html#a9d2ad29f29ac1ee610c19aa1c5b37df9">date</a>, <a class="el" href="classstorefront_1_1models_1_1InventoryUsage.html#a70e894d8a678cae47dc19c43a44d3444">item</a>, <a class="el" href="classstorefront_1_1models_1_1InventoryUsage.html#afdaf49a4b542b1f4385fcc90505c033d">amount_used</a>)</td></tr>
-<tr class="memdesc:a2ad3b1078134367df2cf2f20b29b1293"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get or Create an <a class="el" href="classstorefront_1_1models_1_1InventoryUsage.html" title="Model to track the usage of Inventory items per day.">InventoryUsage</a> row.  <a href="classstorefront_1_1models_1_1InventoryUsage.html#a2ad3b1078134367df2cf2f20b29b1293">More...</a><br /></td></tr>
-<tr class="separator:a2ad3b1078134367df2cf2f20b29b1293"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f89be4075157263423981412a6af659"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstorefront_1_1models_1_1InventoryUsage.html#a4f89be4075157263423981412a6af659">createOrGet</a> (cls, <a class="el" href="classstorefront_1_1models_1_1InventoryUsage.html#a9d2ad29f29ac1ee610c19aa1c5b37df9">date</a>, <a class="el" href="classstorefront_1_1models_1_1InventoryUsage.html#a70e894d8a678cae47dc19c43a44d3444">item</a>)</td></tr>
+<tr class="memdesc:a4f89be4075157263423981412a6af659"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get or Create an <a class="el" href="classstorefront_1_1models_1_1InventoryUsage.html" title="Model to track the usage of Inventory items per day.">InventoryUsage</a> row.  <a href="classstorefront_1_1models_1_1InventoryUsage.html#a4f89be4075157263423981412a6af659">More...</a><br /></td></tr>
+<tr class="separator:a4f89be4075157263423981412a6af659"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1427da0fdfe88bbec9f5ff1c1bbc7799"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstorefront_1_1models_1_1InventoryUsage.html#a1427da0fdfe88bbec9f5ff1c1bbc7799">__str__</a> (self)</td></tr>
 <tr class="separator:a1427da0fdfe88bbec9f5ff1c1bbc7799"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -134,14 +140,14 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a2ad3b1078134367df2cf2f20b29b1293" name="a2ad3b1078134367df2cf2f20b29b1293"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2ad3b1078134367df2cf2f20b29b1293">&#9670;&#160;</a></span>create()</h2>
+<a id="a4f89be4075157263423981412a6af659" name="a4f89be4075157263423981412a6af659"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f89be4075157263423981412a6af659">&#9670;&#160;</a></span>createOrGet()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">def storefront.models.InventoryUsage.create </td>
+          <td class="memname">def storefront.models.InventoryUsage.createOrGet </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>cls</em>, </td>
@@ -156,13 +162,7 @@ Static Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>item</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>amount_used</em>&#160;</td>
+          <td class="paramname"><em>item</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -173,12 +173,11 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Get or Create an <a class="el" href="classstorefront_1_1models_1_1InventoryUsage.html" title="Model to track the usage of Inventory items per day.">InventoryUsage</a> row. </p>
-<p >If the requested row does not exist, it is created with the given information. Otherwise, the row's amount used is increased by the given amount</p>
+<p >If the requested row does not exist, it is created with the given information and 0 amount_used. Otherwise, it is returned</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">date</td><td>The date to track the <a class="el" href="classstorefront_1_1models_1_1Inventory.html" title="Inventory Model Class.">Inventory</a> for </td></tr>
     <tr><td class="paramname">item</td><td>The <a class="el" href="classstorefront_1_1models_1_1Inventory.html" title="Inventory Model Class.">Inventory</a> item that is being tracked </td></tr>
-    <tr><td class="paramname">amount_used</td><td>The amount of the item that was used in grams </td></tr>
   </table>
   </dd>
 </dl>

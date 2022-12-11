@@ -89,6 +89,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstorefront_1_1models_1_1Finance.html">Finance</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classstorefront_1_1models_1_1Finance.html" title="Finance Model Class.">Finance</a> Model Class.  <a href="classstorefront_1_1models_1_1Finance.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstorefront_1_1models_1_1FinanceView.html">FinanceView</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class to provide analytical functions over multiple financial days.  <a href="classstorefront_1_1models_1_1FinanceView.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstorefront_1_1models_1_1Ingredient.html">Ingredient</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classstorefront_1_1models_1_1Ingredient.html" title="Ingredient Model Class.">Ingredient</a> Model Class.  <a href="classstorefront_1_1models_1_1Ingredient.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -110,14 +113,58 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstorefront_1_1models_1_1OrderItem.html">OrderItem</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classstorefront_1_1models_1_1OrderItem.html" title="OrderItem Model Class.">OrderItem</a> Model Class.  <a href="classstorefront_1_1models_1_1OrderItem.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstorefront_1_1models_1_1SalesPair.html">SalesPair</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This Model facilitates the creation of the SellsTogetherReport.  <a href="classstorefront_1_1models_1_1SalesPair.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ad3028364121d9f3dbb321eb2cbcd4225"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestorefront_1_1models.html#ad3028364121d9f3dbb321eb2cbcd4225">deltaDate</a> (day, delta)</td></tr>
+<tr class="memdesc:ad3028364121d9f3dbb321eb2cbcd4225"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a date +/- a certain number of days.  <a href="namespacestorefront_1_1models.html#ad3028364121d9f3dbb321eb2cbcd4225">More...</a><br /></td></tr>
+<tr class="separator:ad3028364121d9f3dbb321eb2cbcd4225"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace8f730c8ce052ff43ea93bcba774810"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestorefront_1_1models.html#ace8f730c8ce052ff43ea93bcba774810">invSum</a> (dict[<a class="el" href="classstorefront_1_1models_1_1Inventory.html">Inventory</a>, float] out, dict[<a class="el" href="classstorefront_1_1models_1_1Inventory.html">Inventory</a>, float] inv)</td></tr>
 <tr class="memdesc:ace8f730c8ce052ff43ea93bcba774810"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add two <a class="el" href="classstorefront_1_1models_1_1Inventory.html" title="Inventory Model Class.">Inventory</a> dictionaries.  <a href="namespacestorefront_1_1models.html#ace8f730c8ce052ff43ea93bcba774810">More...</a><br /></td></tr>
 <tr class="separator:ace8f730c8ce052ff43ea93bcba774810"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ad3028364121d9f3dbb321eb2cbcd4225" name="ad3028364121d9f3dbb321eb2cbcd4225"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3028364121d9f3dbb321eb2cbcd4225">&#9670;&#160;</a></span>deltaDate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def storefront.models.deltaDate </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>day</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>delta</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Return a date +/- a certain number of days. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">day</td><td>The starting date to add/subtract from </td></tr>
+    <tr><td class="paramname">delta</td><td>The number of days to add or subtract </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The date which is day plus delta days </dd></dl>
+
+</div>
+</div>
 <a id="ace8f730c8ce052ff43ea93bcba774810" name="ace8f730c8ce052ff43ea93bcba774810"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ace8f730c8ce052ff43ea93bcba774810">&#9670;&#160;</a></span>invSum()</h2>
 

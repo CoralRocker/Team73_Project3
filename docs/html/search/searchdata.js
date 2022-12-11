@@ -4,7 +4,7 @@ var indexSectionsWithContent =
   1: "cfimos",
   2: "s",
   3: "_afmtuv",
-  4: "_acdefghilmrst",
+  4: "_acdefghilmrstu",
   5: "acdefhijlmnoprstu"
 };
 
