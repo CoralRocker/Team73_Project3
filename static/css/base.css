@@ -244,13 +244,11 @@ ul{
     white-space: nowrap;
     overflow-x: auto;
 }
-
 .customization-info{
     white-space: nowrap;
     overflow-x: auto;
 }
 
-<<<<<<< HEAD
 
 .signout_title{
     font-weight: 600;
@@ -300,7 +298,6 @@ ul{
     margin-bottom: 10px;
     margin-top: 10px;
 } 
-=======
 .customization-wrapper {
     display: flex;
     justify-content: center;
@@ -342,4 +339,3 @@ ul{
 .add-to-cart {
     width: 96%;
 }
->>>>>>> 00ffb418c4c2650334b42bce72df69d58fa60daf

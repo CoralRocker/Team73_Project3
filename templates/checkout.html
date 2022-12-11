@@ -2,33 +2,41 @@
 
 {% block content %}
 
-<div class="checkout-container">
+<div class="checkout-container container">
     {% for item in order.orderitem_set.all %}
-    <div class="checkout-orders-container">
-        <div class="item-name-price">
-            <div class="item-name">{{item.menu_item.name}}    <b>${{item.menu_item.price}}</b></div>    
-            <div class="item-price"></div>
+    <div class="checkout-orders-container row">
+        <div class="col-sm-3">
+          <img src="{{ item.menu_item.image }}" alt="Image of {{item.menu_item.name}}" class="img-thumbnail rounded float-left" style="height: auto; width: auto;"/>
         </div>
-        <div class="item-size">
-            <p><i>{{item.menu_item.size}}</i></p>
-        </div>
-        {% for customizationItem in item.itemcustomization_set.all %}
-        <div class="customization-info">
-            {% if customizationItem.customization.type != 'milk' %}
-            <div class="customization-output">{{customizationItem.amount}} {{customizationItem.customization.type}}(s) of {{customizationItem.customization.name}} >+${{customizationItem.getCustomizationPrice}}</div>
-            {% else %}
-            <div class="customization-output">{{customizationItem.customization.name}} milk +${{customizationItem.getCustomizationPrice}}</div>
-            {% endif %}
-            <div class="customization-price"></div>
-        </div>
-        {% endfor %}
-        <div class="total-item-price" >Total Price of Item: <strong> ${{item.getPrice}}</strong></div>
 
-        <form method="POST", action="">
-            {% csrf_token %}
-            <button class="delete-cart-item btn btn-success  removeit_button" name="remove-id" value="{{item.id}}">Remove</button>
-        </form>
-        <hr>
+        <div class="col-sm-9">
+          <hr>
+          <div class="item-name-price col-md">
+            <div class="item-name">{{item.menu_item.name}} x {{ item.amount }}   <b>${{item.menu_item.price}}</b></div>    
+              <div class="item-price"></div>
+          </div>
+          <div class="item-size">
+              <p><i>{{item.menu_item.size}}</i></p>
+          </div>
+          {% for customizationItem in item.itemcustomization_set.all %}
+          <div class="customization-info">
+              {% if customizationItem.customization.type != 'milk' %}
+              <div class="customization-output">{{customizationItem.amount}} {{customizationItem.customization.type}}(s) of {{customizationItem.customization.name}} >+${{customizationItem.getCustomizationPrice}}</div>
+              {% else %}
+              <div class="customization-output">{{customizationItem.customization.name}} milk +${{customizationItem.getCustomizationPrice}}</div>
+              {% endif %}
+              <div class="customization-price"></div>
+          </div>
+
+          {% endfor %}
+          <div class="total-item-price" >Total Price of Item: <strong> ${{item.getPrice}}</strong></div>
+
+          <form method="POST", action="">
+              {% csrf_token %}
+              <button class="delete-cart-item btn btn-success  removeit_button" name="remove-id" value="{{item.id}}">Remove</button>
+          </form>
+          <hr>
+        </div>
     </div>
     {% endfor %}
     <div class="total"><strong>Total:</strong>     ${{order.getPrice}}</div>

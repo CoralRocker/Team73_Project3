@@ -11,17 +11,30 @@
           margin: 30px;
         }
     </style>
-    <div class="report">
+    <div class="report container fs-3">
         {% for sale in report %}
-            <div>{{sale}}</div>
+            <div class="row ">
+              <div class="col-sm-3 d-flex justify-content-end">
+                <img class="rounded float-left img-thumbnail" src="{{sale.image}}" alt="Image for {{sale.name}}" style="height:10vw;width:auto;"/> 
+              </div>
+                                                                                     
+              <div class="col-sm-9 d-flex justify-content-start align-items-center ">
+                <b>{{sale.size}} {{sale.name}}</b>&nbsp;x&nbsp;<b>{{sale.sales}}</b>
+              </div>
+  
+            </div>
         {% endfor %}
     </div>
-    <form id="sales-form" method="post">
+    <form id="sales-form" class="container" method="post">
         {% csrf_token %}
-        <label for="start_date">Enter Start Date as (yyyy-mm-dd):</label>
-        <input id="start_date" name="start_date" type="text"/>
-        <label for="end_date">Enter End Date as (yyyy-mm-dd):</label>
-        <input id="end_date" name="end_date" type="text"/>
+        <div class="row">
+          <label class="col" for="start_date">Enter Start Date</label>
+          <input class="col" id="start_date" name="start_date" class="form-control" type="date"/>
+        </div>
+        <div class="row">
+          <label class="col" for="end_date">Enter End Date:</label>
+          <input class="col" id="end_date" name="end_date" class="form-control" type="date"/>
+        </div>
     </form>
     <button class="btn btn-success mx-2 my-2 " type="submit" form="sales-form" > Generate Sales Report </button>
 </div>

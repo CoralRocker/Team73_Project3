@@ -1053,8 +1053,6 @@ class Order(Model):
     # code which runs in that awful time is a string join and the creation
     # of combinations of sold objects.  
     def checkout(self):
-        self.calcPrice()
-
         usage = self.getInventoryUsageQuerySet()
 
         # Create InventoryUsage items

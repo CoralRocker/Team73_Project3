@@ -29,11 +29,23 @@ class CustomizationForm(forms.Form):
             ),
         )
 
-    size = forms.ChoiceField(required=True)
+    size = forms.ChoiceField(required=False, 
+                             widget=forms.Select(attrs={
+                                                    'onchange':'submit()',
+                                                    'form':'customization_form'})
+                             )
+    amount = forms.IntegerField(min_value=1, required=False, 
+                            widget=forms.NumberInput(attrs={
+                                                    'value':1,
+                                                    'onchange':'submit()',
+                                                    'form':'customization_form'})
+                            )
 
     
     def setSizes(self, sizes):
         self.fields['size']._set_choices(sizes)
+        self.fields['size'].initial = self.fields['size']._get_choices()[0]
+        self.fields['amount'].initial = 1
         
 class SplashForm(forms.Form):
     SPLASH_CHOICES = ((item.id, item.name) for item in Customization.objects.filter(type__iexact="splash"))
@@ -44,26 +56,26 @@ class MilkForm(forms.Form):
     milk = ChoiceField(label="Milk:", choices=MILK_CHOICES, required=False)
     
 class ExtraShotForm(forms.Form):
-    Extra_shot = forms.IntegerField(min_value=0, max_value=3, required=False)
+    Extra_shot = forms.IntegerField(initial=0, min_value=0, max_value=3, required=False)
 
 class SyrupForm(forms.Form):
-    Apple_Brown_Sugar = forms.IntegerField(min_value=0, max_value=12, required=False, label="Apple Brown Sugar:")
-    Brown_Sugar = forms.IntegerField(min_value=0, max_value=12, required=False, label="Brown Sugar:")
-    Caramel = forms.IntegerField(min_value=0, max_value=12, required=False, label="Caramel:")
-    Cinnamon_Dolce = forms.IntegerField(min_value=0, max_value=12, required=False, label="Cinnamon Dolce:")
-    Hazelnut = forms.IntegerField(min_value=0, max_value=12, required=False, label="Hazelnut:")
-    Peppermint = forms.IntegerField(min_value=0, max_value=12, required=False, label="Peppermint:")
-    Raspberry = forms.IntegerField(min_value=0, max_value=12, required=False, label="Raspberry:")
-    Toasted_Vanilla = forms.IntegerField(min_value=0, max_value=12, required=False, label="Toasted Vanilla:")
-    Toffee_Nut = forms.IntegerField(min_value=0, max_value=12, required=False, label="Toffee Nut:")
-    Vanilla = forms.IntegerField(min_value=0, max_value=12, required=False, label="Vanilla:")
-    Sugar_Free_Vanilla = forms.IntegerField(min_value=0, max_value=12, required=False, label="Sugar free Vanilla:")
+    Apple_Brown_Sugar = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Apple Brown Sugar:")
+    Brown_Sugar = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Brown Sugar:")
+    Caramel = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Caramel:")
+    Cinnamon_Dolce = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Cinnamon Dolce:")
+    Hazelnut = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Hazelnut:")
+    Peppermint = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Peppermint:")
+    Raspberry = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Raspberry:")
+    Toasted_Vanilla = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Toasted Vanilla:")
+    Toffee_Nut = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Toffee Nut:")
+    Vanilla = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Vanilla:")
+    Sugar_Free_Vanilla = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Sugar free Vanilla:")
 
 class SauceForm(forms.Form):
-    Mocha = forms.IntegerField(min_value=0, max_value=12, required=False, label="Mocha:")
-    New_Dark_Caramel = forms.IntegerField(min_value=0, max_value=12, required=False, label="Dark Caramel")
-    Pumpkin = forms.IntegerField(min_value=0, max_value=12, required=False, label="Pumpkin:")
-    White_Chocolate_Mocha_Sauce = forms.IntegerField(min_value=0, max_value=12, required=False, label="White Chocolate Mocha:")
+    Mocha = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Mocha:")
+    New_Dark_Caramel = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Dark Caramel")
+    Pumpkin = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Pumpkin:")
+    White_Chocolate_Mocha_Sauce = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="White Chocolate Mocha:")
     
 class DrizzleForm(forms.Form):
     DRIZZLE_CHOICES = ((item.id, item.name) for item in Customization.objects.filter(type__iexact="drizzle"))
@@ -78,31 +90,33 @@ class ToppingForm(forms.Form):
     toppings = MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=TOPPING_CHOICES, required=False)
 
 class MixForm(forms.Form):
-    Vanilla_bean_powder = forms.IntegerField(min_value=0, max_value=12, required=False, label="Vanilla Bean Powder:")
-    Chocolate_malt_powder = forms.IntegerField(min_value=0, max_value=12, required=False, label="Chocolate Malt Powder:")
+    Vanilla_bean_powder = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Vanilla Bean Powder:")
+    Chocolate_malt_powder = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Chocolate Malt Powder:")
 
 class FoamForm(forms.Form):
     FOAM_CHOICES = ((item.id, item.name) for item in Customization.objects.filter(type__iexact="foam"))
     foams = MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=FOAM_CHOICES, required=False)
 
 class SweetenerForm(forms.Form):
-    Classic_syrup = forms.IntegerField(min_value=0, max_value=12, required=False, label="Classic Syrup:")
-    Liquid_cane_sugar = forms.IntegerField(min_value=0, max_value=12, required=False, label="Liquid Cane Suagr")
-    Honey_blend = forms.IntegerField(min_value=0, max_value=12, required=False, label="Honey Blend:")
+    Classic_syrup = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Classic Syrup:")
+    Liquid_cane_sugar = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Liquid Cane Suagr")
+    Honey_blend = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Honey Blend:")
+
 
 class SweetenerPacketForm(forms.Form):
-    Sweet_n_low = forms.IntegerField(min_value=0, max_value=12, required=False, label="Sweet n Low:")
-    Equal = forms.IntegerField(min_value=0, max_value=12, required=False, label="Equal:")
-    Splenda = forms.IntegerField(min_value=0, max_value=12, required=False, label="Splenda:")
-    Stevia_blend = forms.IntegerField(min_value=0, max_value=12, required=False, label="Stevia Blend:")
+    Sweet_n_low = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Sweet n Low:")
+    Equal = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Equal:")
+    Splenda = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Splenda:")
+    Stevia_blend = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Stevia Blend:")
 
 class InclusionForm(forms.Form):
     INCLUSION_CHOICES = ((item.id, item.name) for item in Customization.objects.filter(type__iexact="inclusion"))
     inclusions = MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=INCLUSION_CHOICES, required=False)
+
     
 class ChaiForm(forms.Form):
-    Chai_pump = forms.IntegerField(min_value=0, max_value=12, required=False, label="Chai Pump:")
+    Chai_pump = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Chai Pump:")
 
 class JuiceForm(forms.Form):
-    Apple_juice = forms.IntegerField(min_value=0, max_value=12, required=False, label="Apple Juice:")
-    Peach_juice_blend = forms.IntegerField(min_value=0, max_value=12, required=False, label="Peach Juice Blend:")
+    Apple_juice = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Apple Juice:")
+    Peach_juice_blend = forms.IntegerField(initial=0, min_value=0, max_value=12, required=False, label="Peach Juice Blend:")

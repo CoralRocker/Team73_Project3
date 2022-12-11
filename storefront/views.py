@@ -254,18 +254,27 @@ def ItemDetailView(request, pk):
             order = int(request.session['cart'])
             orderItem.addOrder(Order.objects.get(pk=order))
             size = form.cleaned_data['size']
-            item_name  = OrderItem.objects.get(pk=request.session['item-in-view']).menu_item.name
-            item =  Menu.objects.get(Q(name=item_name) & Q(size=size))
+            item_name = orderItem.menu_item.name
+            item = Menu.objects.filter(size=size, name=item_name).first()
+            
+            orderItem.amount = form.cleaned_data['amount']
+            orderItem.menu_item = item 
+
+            orderItem.save()
             
             for key, value in form.cleaned_data.items():
-                amount = 1
                 if value and value != '':
-                    if key[0:3] != 'amt' and key != 'size':
+                    if key[0:3] != 'amt' and key != 'size' and key != 'amount':
                         if key != 'milk' and key != 'drizzle' and key != 'topping' and key != 'foam' and key != 'lining' and key != 'inclusion':
                             amount_string = 'amt_' + key
                             amount = form.cleaned_data[amount_string]
-                        OrderItem.objects.get(pk=request.session['item-in-view']).addCustomization(Customization.objects.get(id=value),amount)
-            print(order1.items)
+                        orderItem.addCustomization(Customization.objects.get(id=value),amount)
+
+            # The submit button was not pressed, this is just an update
+            if not request.POST.get('a2c-btn', False):
+                return render(request, 'item-detail.html', {'item': item, 'form':form, 'hasCart':hasCart, 'order':order1, 'orderItem':orderItem})
+                
+
             del request.session['item-in-view']
 
             return render(request, 'menu-home.html', {'hasCart':hasCart, 'order':order1})
