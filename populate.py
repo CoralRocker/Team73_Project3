@@ -19,7 +19,7 @@ start_date = datetime.date(2022, 12, 1)
 end_date = datetime.date.today()
 
 min_order_per_day = 0
-max_order_per_day = 35
+max_order_per_day = 100
 
 min_item_per_order = 1
 max_item_per_order = 10
