@@ -11,9 +11,18 @@
           margin: 30px;
         }
     </style>
-    <div class="report">
+    <div class="report container fs-3">
         {% for sale in report %}
-            <div>{{sale}}</div>
+            <div class="row ">
+              <div class="col-sm-3 d-flex justify-content-end">
+                <img class="rounded float-left img-thumbnail" src="{{sale.image}}" alt="Image for {{sale.name}}" style="height:10vw;width:auto;"/> 
+              </div>
+                                                                                     
+              <div class="col-sm-9 d-flex justify-content-start align-items-center ">
+                <b>{{sale.size}} {{sale.name}}</b>&nbsp;x&nbsp;<b>{{sale.sales}}</b>
+              </div>
+  
+            </div>
         {% endfor %}
     </div>
     <form id="sales-form" method="post">

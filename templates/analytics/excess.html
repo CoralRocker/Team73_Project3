@@ -11,6 +11,11 @@
           margin: 30px;
         }
     </style>
+    <div class="report">
+        {% for excess in report %}
+            <div>{{excess.name}}</div>
+        {% endfor %}
+    </div>
     <form id="sales-form" method="post">
         {% csrf_token %}
         <label for="timestamp">Enter Timestamp as (yyyy-mm-dd):</label>

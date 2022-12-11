@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, ListView
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Q
+from datetime import date
 
 from .models import *
 from .forms import CustomizationForm, SplashForm, MilkForm, ExtraShotForm, SyrupForm, SauceForm
@@ -328,8 +329,6 @@ def SalesPageView(request):
             end_date = data.get("end_date")
         finances = FinanceView(start_date,end_date)
         report = finances.salesByItem()
-        
-        print(report)
 
     return render(request,'analytics/sales.html', {'report':report})
 
@@ -338,20 +337,34 @@ def SalesPageView(request):
 # @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def ExcessPageView(request):
+    report = ""
     if request.method == 'POST':
         data = request.POST
+        if "timestamp" in data:
+            start_date = data.get("timestamp")
+        print(data)
+        end_date = date.today()
+        finances = FinanceView(start_date,end_date)
+        report = finances.excessReport(.10)
 
-    return render(request,'analytics/excess.html')
+    return render(request,'analytics/excess.html', {'report':report})
 
 # @brief generates the page to view the frequent report
 #
 # @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def FrequentPageView(request):
+    report = ""
     if request.method == 'POST':
         data = request.POST
+        if "start_date" in data:
+            start_date = data.get("start_date")
+        if "end_date" in data:
+            end_date = data.get("end_date")
+        finances = FinanceView(start_date,end_date)
+        report = finances.sellsTogetherReport()
 
-    return render(request,'analytics/frequent.html')
+    return render(request,'analytics/frequent.html', {'report':report})
 # @brief generates the page to view the restock report
 #
 # @param request The HTTP Request object from the website
