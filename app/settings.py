@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-n#=bw)!^@!fkp*by(55xiauryv*$nbsa#_4v2=4_ibo)ka10n1
 DEBUG = True
 
 # This '*' should be updated later on to a specific domain
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["project3-csce331.herokuapp.com"]
 
 
 # Application definition
