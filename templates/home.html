@@ -18,7 +18,7 @@
   </head>
 
   {% block content %}
-    <div class="page_intro intro">
+    <div class="page_intro_intro">
       <div class="intro_container container">
         <div class="intro_body">
           <div class="intro_content">
@@ -30,7 +30,9 @@
               <span class="intro_position">Refer to our <a href="{% url 'menu-home' %}" title="link-to-menu" class="header-menu_link green">menu</a> page to view our drink options.</span>
         </div>
       </div>
+      <div class="image-container">
+        <img class="meowbuckslogo" src="/static/assets/meowbuckslogo.png" alt="meowbuckslogo" style="width:20%;height:auto;">
+      </div>
     </div>
-    <img class="meowbuckslogo" src="/static/assets/meowbuckslogo.png" alt="meowbuckslogo">
   {% endblock content %}
 </html>

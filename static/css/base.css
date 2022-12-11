@@ -167,6 +167,10 @@ ul{
     width: 100%;
 }
 
+.page_intro_intro{
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+}
 .header_bxmenu{
     display: none;
 }
