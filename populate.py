@@ -15,14 +15,14 @@
 import datetime
 from dateutil.rrule import DAILY, rrule
 create_random_orders = True
-start_date = datetime.date(2022, 12, 1)
+start_date = datetime.date(2022, 12, 8)
 end_date = datetime.date.today()
 
 min_order_per_day = 0
 max_order_per_day = 100
 
 min_item_per_order = 1
-max_item_per_order = 10
+max_item_per_order = 30
 
 min_amt_per_item = 1
 max_amt_per_item = 5
@@ -231,7 +231,7 @@ if create_random_orders:
         for i, o in enumerate(orders):
             print(f"Order {i} / {len(orders)}")
             o.checkout()
-            print("\033[4F\033[0J", end='')
+            print("\033[1F\033[0J", end='')
 
         print("\033[2F\033[J", end='')
     print("All orders successfully created and checked out")    
