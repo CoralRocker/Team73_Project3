@@ -6,8 +6,9 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Q
 
 from .models import *
-from .forms import CustomizationForm, SplashForm, MilkForm
-    
+from .forms import CustomizationForm, SplashForm, MilkForm, ExtraShotForm, SyrupForm, SauceForm
+from .forms import DrizzleForm, LiningForm, ToppingForm, MixForm, FoamForm, SweetenerForm, SweetenerPacketForm
+from .forms import InclusionForm, ChaiForm, JuiceForm  
 class MenuPageView(ListView):
     model = Menu
     template_name = "menu.html"
@@ -105,12 +106,48 @@ def CustomizationDetailView(request, pk):
     order = Order.objects.get(pk=request.session['cart'])
     orderItem = OrderItem.objects.get(pk=request.session['item-in-view'])
     customizations = Customization.objects.filter(type__iexact=pk)
-    if pk == 'splash':
-        form = SplashForm(request.POST)
-    elif pk == 'milk':
+    if pk == 'milk':
         form = MilkForm(request.POST)
-    if request.method == "post":
-        return redirect('')
+        if request.method == 'POST':
+            if form.is_valid():
+                for key, value in form.cleaned_data.items():
+                    if value and value != '':
+                        orderItem.addCustomization(Customization.objects.get(id=value),1)
+                return redirect('item-detail', pk=orderItem.menu_item.id)
+    elif pk == 'syrup':
+        form = SyrupForm(request.POST)
+    elif pk ==  'coffee':
+        form = ExtraShotForm(request.POST)
+    elif pk == 'sauce':
+        form = SauceForm(request.POST)
+    elif pk ==  'drizzle':
+        form = DrizzleForm(request.POST)
+    elif pk == 'lining':
+        form = LiningForm(request.POST)
+    elif pk ==  'topping':
+        form = ToppingForm(request.POST)
+    elif pk == 'mix':
+        form = MixForm(request.POST)
+    elif pk ==  'foam':
+        form = FoamForm(request.POST)
+    elif pk == 'sweetener':
+        form = SweetenerForm(request.POST)
+    elif pk ==  'sweetener-packet':
+        form = SweetenerPacketForm(request.POST)
+    elif pk == 'inclusion':
+        form = InclusionForm(request.POST)
+    elif pk ==  'chai':
+        form = ChaiForm(request.POST)
+    elif pk == 'juice':
+        form = JuiceForm(request.POST)
+    elif pk == 'splash':
+        form = SplashForm(request.POST)
+        if request.method == "POST":
+                if form.is_valid():
+                    for key, value in form.cleaned_data.items():
+                        if value and value != '':
+                            orderItem.addCustomization(Customization.objects.get(id=value),1)
+                    return redirect('item-detail', pk=orderItem.menu_item.id)
     return render(request, 'customization.html', {'customizations':customizations, 'name':pk, 'hasCart':True, 'order':order, 'form':form})
 
 # @brief generates the page where the customer can see the drink and can what type of customization to add
@@ -158,9 +195,7 @@ def ItemDetailView(request, pk):
             order = int(request.session['cart'])
             orderItem.addOrder(Order.objects.get(pk=order))
             size = form.cleaned_data['size']
-            print(size)
             item_name  = OrderItem.objects.get(pk=request.session['item-in-view']).menu_item.name
-            print(item_name)
             item =  Menu.objects.get(Q(name=item_name) & Q(size=size))
             OrderItem.objects.get(pk=request.session['item-in-view']).delete()
             for key, value in form.cleaned_data.items():
@@ -180,7 +215,7 @@ def ItemDetailView(request, pk):
         form.setSizes(item.getPossibleSizes())
 
         
-    return render(request, 'item-detail.html', {'item': item, 'form':form, 'hasCart':hasCart, 'order':order1})
+    return render(request, 'item-detail.html', {'item': item, 'form':form, 'hasCart':hasCart, 'order':order1, 'orderItem':orderItem})
 
 # @brief generates the location of the stgore on a page
 #
