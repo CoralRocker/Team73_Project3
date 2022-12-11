@@ -29,6 +29,10 @@ DEBUG = True
 # This '*' should be updated later on to a specific domain
 ALLOWED_HOSTS = ["project3-csce331.herokuapp.com"]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://project3-csce331.herokuapp.com"
+]
+
 
 # Application definition
 
