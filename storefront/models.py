@@ -1054,6 +1054,8 @@ class Order(Model):
     # code which runs in that awful time is a string join and the creation
     # of combinations of sold objects.  
     def checkout(self):
+        self.calcPrice()
+
         usage = self.getInventoryUsageQuerySet()
         usageItems = [InventoryUsage(date=self.date, item=i, amount_used=0.0) for i in usage]
         InventoryUsage.objects.bulk_create(usageItems, ignore_conflicts=True)
