@@ -44,7 +44,7 @@ class MilkForm(forms.Form):
     milk = ChoiceField(label="Milk:", choices=MILK_CHOICES, required=False)
     
 class ExtraShotForm(forms.Form):
-    coffee = forms.IntegerField(min_value=0, max_value=3, required=False)
+    Extra_shot = forms.IntegerField(min_value=0, max_value=3, required=False)
 
 class SyrupForm(forms.Form):
     Apple_Brown_Sugar = forms.IntegerField(min_value=0, max_value=12, required=False, label="Apple Brown Sugar:")
