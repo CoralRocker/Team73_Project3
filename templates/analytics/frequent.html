@@ -3,19 +3,19 @@
 {% block items %}
 
 <div class="frequent-form-container">
-    <div class="report container" style="width:100%">
+    <div class="report container" style="max-width:98%">
         {% for frequent in report %}
         <div class="row">
+          <span class="col-sm-1">Item 1:</span>
           <span class="col-sm-4">
             <b>{{frequent.item_a_name}}</b>
           </span>
-          <span class="col-sm-1">&nbsp;+&nbsp;</span>
+          <span class="col-sm-1">Item 2:</span>
           <span class="col-sm-4">
             <b>{{frequent.item_b_name}}</b>
           </span>
-          <span class="col-sm-1">&nbsp;=&nbsp;</span>
           <span class="col-sm-2">
-            <b>{{frequent.total}}</b>
+            <b>Sold together {{frequent.total}} time(s)</b>
           </span>
         </div>
         {% endfor %}
