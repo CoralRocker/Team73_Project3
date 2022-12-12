@@ -277,6 +277,7 @@ def ItemDetailView(request, pk):
 
             # The submit button was not pressed, this is just an update
             if not request.POST.get('a2c-btn', False):
+                print("Not submit, just reload")
                 return render(request, 'item-detail.html', {'item': item, 'form':form, 'hasCart':hasCart, 'order':order1, 'orderItem':orderItem, 'item_description':item_description})
                 
 
