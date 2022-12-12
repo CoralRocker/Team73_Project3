@@ -377,12 +377,8 @@ def FrequentPageView(request):
             end_date = data.get("end_date")
 
         finances = FinanceView(start_date,end_date)
-<<<<<<< HEAD
         report = finances.sellsTogetherReport()
         print(report)
-=======
-        report = finances.sellsTogetherReportSorted(limit=100)
->>>>>>> 99ee94a039fd92911ee2a5fb253bd133fc72e25a
 
     return render(request,'analytics/frequent.html', {'report':report})
 # @brief generates the page to view the restock report
