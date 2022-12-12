@@ -259,7 +259,7 @@ class FinanceView():
     def excessReport(self, pct):
         usage = self.getInventoryUsage()
         
-        return usage.annotate(percent_usage=F('stock_used') / (F('stock')+F('stock_used'))).filter(percent_usage__lte=pct) 
+        return usage.annotate(percent_usage=F('stock_used') / (F('stock')+F('stock_used'))).filter(percent_usage__lte=pct).order_by('-percent_usage') 
 
     ##
     # @brief Return all Inventory items which have less than min_units*amount_per_unit stock

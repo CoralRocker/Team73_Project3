@@ -356,10 +356,11 @@ def ExcessPageView(request):
         data = request.POST
         if "timestamp" in data:
             start_date = data.get("timestamp")
-        print(data)
+        pct = float(data.get('pct', 0.1))
+        
         end_date = date.today()
         finances = FinanceView(start_date, end_date)
-        report = finances.excessReport(.10)
+        report = finances.excessReport(pct)
 
     return render(request,'analytics/excess.html', {'report':report})
 
