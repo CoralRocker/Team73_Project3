@@ -59,6 +59,7 @@ def MenuHomePageView(request):
 # @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def SearchPageView(request):
+    order = SET_NULL
     hasCart = False
     try:
         if 'cart' in request.session:
@@ -122,7 +123,7 @@ def CustomizationDetailView(request, pk):
                 for key, value in form.cleaned_data.items():
                     name = key.replace("_"," ")
                     if value and value != '':
-                        orderItem.addCustomization(Customization.objects.get(name=name),float(value))
+                        orderItem.addCustomization(Customization.objects.filter(Q(name=name) & Q(type='syrup')),float(value))
                 return redirect('item-detail', pk=orderItem.menu_item.id)
     elif pk ==  'coffee':
         form = ExtraShotForm(request.POST)
@@ -140,7 +141,7 @@ def CustomizationDetailView(request, pk):
                 for key, value in form.cleaned_data.items():
                     name = key.replace("_"," ")
                     if value and value != '':
-                        orderItem.addCustomization(Customization.objects.get(name=name),float(value))
+                        orderItem.addCustomization(Customization.objects.filter(Q(name=name) & Q(type='sauce'))[0],float(value))
                 return redirect('item-detail', pk=orderItem.menu_item.id)
     elif pk ==  'drizzle':
         form = DrizzleForm(request.POST)
@@ -214,9 +215,11 @@ def CustomizationDetailView(request, pk):
 # @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def ItemDetailView(request, pk):
+    
     item = Menu.objects.get(pk = pk)
     item_description = Menu.objects.filter(Q(name=item.name) & Q(size__iexact='grande'))[0].description
     
+    order1 = SET_NULL
     hasCart = False
     
     # Create Cart if it doesn't exist
@@ -294,6 +297,7 @@ def ItemDetailView(request, pk):
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def LocationView(request):
     hasCart = False
+    order = SET_NULL
     try:
         if 'cart' in request.session:
             order = Order.objects.get(pk=request.session['cart'])

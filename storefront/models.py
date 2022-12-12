@@ -856,7 +856,7 @@ class OrderItem(Model):
     #
     # @returns The cost to the customer
     def getPrice(self) -> float:
-        return float(self.cost)
+        return round(float(self.cost),2)
     
     ##
     # @brief Force a recalculation of the item's price and return it.
@@ -1001,7 +1001,7 @@ class Order(Model):
     #
     # @return The price of the order for the customer
     def getPrice(self) -> float:
-        self.price = float(self.orderitem_set.aggregate(cost=Sum('cost'))['cost'])
+        self.price = self.calcPrice()
         self.save()
         return round(self.price,2)
 
@@ -1111,7 +1111,7 @@ class Order(Model):
     # @return The new Order item created
     @classmethod
     def create(cls, cashier :str, date = datetime.datetime.now()):
-        ordr = cls(cashier=cashier, date=date)
+        ordr = cls(cashier=cashier, date=date, price=0)
         ordr.save()
         return ordr
 
