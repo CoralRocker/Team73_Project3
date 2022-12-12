@@ -3,7 +3,17 @@
 {% block items %}
 
 <div class="restock-form-container">
-    
+    <div class="report container fs-3">
+        {% for restock in report %}
+            <div class="row ">
+                                                                                     
+              <div class="col-sm-9 d-flex justify-content-start align-items-center ">
+                <b>{{restock.size}} {{restock.name}}</b>&nbsp;x&nbsp;<b>{{restock.amount_per_unit}}</b>
+              </div>
+  
+            </div>
+        {% endfor %}
+    </div>
 </div>
 
 {% endblock items %}
