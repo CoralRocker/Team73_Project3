@@ -19,14 +19,14 @@
                     {% else %}
                         <img class="item-img" src="../../{{ item.image }}" alt="Card image {{ item.name }}"/>
                         <button class="btn btn-success mx-2 my-2 add-to-cart" type="submit" form="customization_form" name="a2c-btn" value=1> Add To Cart </button>
-                        <div class="order-price"><font size="6"><b>PRICE: ${{orderItem.calcPrice}}</b></font></p></div>
+                        <div class="order-price"><font size="6"><b>PRICE: ${{orderItem.calcPrice |floatformat:2}}</b></font></p></div>
                         <div class="customizations">
                             {% for customizationItem in orderItem.itemcustomization_set.all %}
                             <div class="customization-info">
                                 {% if customizationItem.customization.type != 'milk' %}
-                                <div class="customization-output">{{customizationItem.amount}} {{customizationItem.customization.type}}(s) of {{customizationItem.customization.name}} >+${{customizationItem.getCustomizationPrice}}</div>
+                                <div class="customization-output">{{customizationItem.amount}} {{customizationItem.customization.type}}(s) of {{customizationItem.customization.name}} >+${{customizationItem.getCustomizationPrice |floatformat:2}}</div>
                                 {% else %}
-                                <div class="customization-output">{{customizationItem.customization.name}} milk +${{customizationItem.getCustomizationPrice}}</div>
+                                <div class="customization-output">{{customizationItem.customization.name}} milk +${{customizationItem.getCustomizationPrice |floatformat:2}}</div>
                                 {% endif %}
                                 <div class="customization-price"></div>
                             </div>

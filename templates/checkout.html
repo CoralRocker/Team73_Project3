@@ -12,7 +12,7 @@
         <div class="col-sm-9">
           <hr>
           <div class="item-name-price col-md">
-            <div class="item-name">{{item.menu_item.name}} x {{ item.amount }}   <b>${{item.menu_item.price}}</b></div>    
+            <div class="item-name">{{item.menu_item.name}} x {{ item.amount }}   <b>${{item.menu_item.price |floatformat:2}}</b></div>    
               <div class="item-price"></div>
           </div>
           <div class="item-size">
@@ -21,15 +21,15 @@
           {% for customizationItem in item.itemcustomization_set.all %}
           <div class="customization-info">
               {% if customizationItem.customization.type != 'milk' %}
-              <div class="customization-output">{{customizationItem.amount}} {{customizationItem.customization.type}}(s) of {{customizationItem.customization.name}} >+${{customizationItem.getCustomizationPrice}}</div>
+              <div class="customization-output">{{customizationItem.amount}} {{customizationItem.customization.type}}(s) of {{customizationItem.customization.name}} >+${{customizationItem.getCustomizationPrice |floatformat:2}}</div>
               {% else %}
-              <div class="customization-output">{{customizationItem.customization.name}} milk +${{customizationItem.getCustomizationPrice}}</div>
+              <div class="customization-output">{{customizationItem.customization.name}} milk +${{customizationItem.getCustomizationPrice |floatformat:2}}</div>
               {% endif %}
               <div class="customization-price"></div>
           </div>
 
           {% endfor %}
-          <div class="total-item-price" >Total Price of Item: <strong> ${{item.getPrice}}</strong></div>
+          <div class="total-item-price" >Total Price of Item: <strong> ${{item.getPrice |floatformat:2}}</strong></div>
 
           <form method="POST", action="">
               {% csrf_token %}
@@ -39,11 +39,11 @@
         </div>
     </div>
     {% endfor %}
-    <div class="total"><strong>Total:</strong>     ${{order.getPrice}}</div>
+    <div class="total"><strong>Total:</strong>     ${{order.getPrice |floatformat:2}}</div>
     <div class="checkout-button">
         <form method="POST", action="">
             {% csrf_token %}
-            <button class="delete-cart-item btn btn-success  checkout_button" name="checkingout"><strong>CHECKOUT</strong> ${{order.getPrice}}</button>
+            <button class="delete-cart-item btn btn-success  checkout_button" name="checkingout"><strong>CHECKOUT</strong> ${{order.getPrice |floatformat:2}}</button>
         </form>
     </div>
 </div>
