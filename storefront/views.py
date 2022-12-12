@@ -215,6 +215,7 @@ def CustomizationDetailView(request, pk):
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def ItemDetailView(request, pk):
     item = Menu.objects.get(pk = pk)
+    item_description = Menu.objects.filter(Q(name=item.name) & Q(size__iexact='grande'))[0].description
     
     hasCart = False
     
@@ -273,7 +274,7 @@ def ItemDetailView(request, pk):
 
             # The submit button was not pressed, this is just an update
             if not request.POST.get('a2c-btn', False):
-                return render(request, 'item-detail.html', {'item': item, 'form':form, 'hasCart':hasCart, 'order':order1, 'orderItem':orderItem})
+                return render(request, 'item-detail.html', {'item': item, 'form':form, 'hasCart':hasCart, 'order':order1, 'orderItem':orderItem, 'item_description':item_description})
                 
 
             del request.session['item-in-view']
@@ -285,7 +286,7 @@ def ItemDetailView(request, pk):
         form.setSizes(item.getPossibleSizes())
 
         
-    return render(request, 'item-detail.html', {'item': item, 'form':form, 'hasCart':hasCart, 'order':order1, 'orderItem':orderItem})
+    return render(request, 'item-detail.html', {'item': item, 'form':form, 'hasCart':hasCart, 'order':order1, 'orderItem':orderItem,'item_description':item_description})
 
 # @brief generates the location of the stgore on a page
 #
