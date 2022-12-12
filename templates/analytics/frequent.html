@@ -11,29 +11,32 @@
           margin: 30px;
         }
     </style>
-    <div class="report container fs-3">
+    <div class="report container">
         {% for frequent in report %}
-            <div class="row ">
-              <div class="col-sm-3 d-flex justify-content-end">
-                <img class="rounded float-left img-thumbnail" src="{{frequent.item_a.image}}" alt="Image for {{frequent.item_a.name}}" style="height:10vw;width:auto;"/>                                                                         
-                <b>{{frequent.item_a.size}} {{frequent.item_a.name}}</b>
-              </div>
-              <div class="col-sm-9 d-flex justify-content-start align-items-right ">
-                <img class="rounded float-left img-thumbnail" src="{{frequent.item_b.image}}" alt="Image for {{frequent.item_b.name}}" style="height:10vw;width:auto;"/> 
-                <b>{{frequent.item_b.size}} {{frequent.item_b.name}}</b>
-              </div>
-            </div>
+        <div class="row">
+          <span class="col-sm-4">
+            <b>{{frequent.item_a_name}}</b>
+          </span>
+          <span class="col-sm-1">&nbsp;+&nbsp;</span>
+          <span class="col-sm-4">
+            <b>{{frequent.item_b_name}}</b>
+          </span>
+          <span class="col-sm-1">&nbsp;=&nbsp;</span>
+          <span class="col-sm-2">
+            <b>{{frequent.amount}}</b>
+          </span>
+        </div>
         {% endfor %}
     </div>
-    <form id="sales-form" class="container" method="post">
+    <form class="container" id="sales-form" method="post">
         {% csrf_token %}
         <div class="row">
-          <label class="col" for="start_date">Enter Start Date</label>
-          <input class="col" id="start_date" name="start_date" class="form-control" type="date"/>
+          <label class="col-sm-6" for="start_date">Enter Start Date as (yyyy-mm-dd):</label>
+          <input class="col-sm-6" id="start_date" name="start_date" type="date"/>
         </div>
         <div class="row">
-          <label class="col" for="end_date">Enter End Date:</label>
-          <input class="col" id="end_date" name="end_date" class="form-control" type="date"/>
+          <label class="col-sm-6" for="end_date">Enter End Date</label>
+          <input class="col-sm-6" id="end_date" name="end_date" type="date"/>
         </div>
     </form>
     <button class="btn btn-success mx-2 my-2 " type="submit" form="sales-form" > Generate Frequent Report </button>

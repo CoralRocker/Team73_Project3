@@ -169,7 +169,15 @@ ul{
 
 @media (max-width: 600px) {
     .header_body {
-      display: block;
+        display: block;
+    }
+
+    .header_rightside {
+        display: block;
+    }
+
+    .header_leftside {
+        margin-left:10em;
     }
   }
 
@@ -203,6 +211,18 @@ ul{
     display: inline-flex;
     position: relative;
     transition: .3s;
+}
+
+@media screen and (max-width: 900px) {
+    .header-search {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .header_rightside {
+        margin-left: 0px;
+    }
 }
 
 .green {
@@ -315,11 +335,11 @@ ul{
     white-space: nowrap;
     overflow-x: auto;
 }
+
 .customization-info{
     white-space: nowrap;
     overflow-x: auto;
 }
-
 
 .signout_title{
     font-weight: 600;
@@ -390,6 +410,12 @@ ul{
 .customization-name {
     font-size: 18px;
     font-weight: bold;
+}
+
+@media screen and (max-width: 575px) {
+    .delete-cart-item {
+        margin: 10px auto;
+    }
 }
 
 .btn-counter {
