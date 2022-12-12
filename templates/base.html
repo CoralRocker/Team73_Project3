@@ -56,7 +56,7 @@
                   <a href="{% url 'menu-home' %}" title="menu" class="header-menu_link">Menu</a>
                 </li>
                 <li class="header-menu_item">
-                  <a href="{% url 'locations' %}" title="locations" class="header-menu_link">Locations</a>
+                  <a href="{% url 'locations' %}" title="google-maps" class="header-menu_link">Locations</a>
                 </li>
 
                 {% if user.is_staff %}
@@ -70,9 +70,9 @@
 
                 <li class="header-menu_item">
                   {% if user.is_authenticated %}
-                    <a href="/accounts/logout/" title="logout" class="header-menu_link">Log out</a>
+                    <a href="/accounts/logout/" title="account-out" class="header-menu_link">Log out</a>
                   {% else %}
-                    <a href="/accounts/login/" title="login" class="header-menu_link">Log In</a>
+                    <a href="/accounts/login/" title="account-in" class="header-menu_link">Log In</a>
                   {% endif %}
                 </li>
                 <li class="header-menu_item">
@@ -80,7 +80,7 @@
                     <a class='btn btn-success' href="{% url 'checkout' %}" title="checkout">Check Out ({{order.items.count}})</a>
                   {% elif user.is_authenticated %}
                   {% else %}
-                    <a class="btn btn-success" href="/accounts/signup/" title="signup" class="header-menu_link" style="margin-left:40px;">Sign Up</a>
+                    <a class="btn btn-success" href="/accounts/signup/" title="account-up" class="header-menu_link" style="margin-left:40px;">Sign Up</a>
                   {% endif %}
                 </li>
             </div>

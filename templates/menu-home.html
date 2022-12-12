@@ -9,7 +9,10 @@
 <div class="menu-home">
     <a href="{% url 'drinks' "espresso" %}" class="card-title">
         <div class="card">
+            {% if request.user.is_staff %}
+            {%else %}
             <img class="card-img-top" src="/static/assets/Espresso/Espresso.jpeg" alt="Card image Espresso">
+            {% endif %}
             <div class="card-body">
                 <p class="card-title">Espresso</p>
             </div>
@@ -18,7 +21,10 @@
 
     <a href="{% url 'drinks' 'brewed' %}" class="card-title">
         <div class="card">
+            {% if request.user.is_staff %}
+            {%else %}
             <img class="card-img-top" src="/static/assets/Brewed/Pike_Place.jpeg" alt="Card image Brewed">
+            {%endif%}
             <div class="card-body">
                 <p class="card-title">Brewed</p>
             </div>
@@ -27,7 +33,10 @@
 
     <a href="{% url 'drinks' 'blended' %}" class="card-title">
         <div class="card">
+            {% if request.user.is_staff %}
+            {%else %}
             <img class="card-img-top" src="/static/assets/Blended/Caffe_Vanilla_Frappuccino.jpeg" alt="Card image Blended">
+            {% endif %}
             <div class="card-body">
                 <p class="card-title">Blended</p>
             </div>
@@ -36,7 +45,10 @@
 
     <a href="{% url 'drinks' 'tea' %}" class="card-title">
         <div class="card">
+            {% if request.user.is_staff %}
+            {%else %}
             <img class="card-img-top" src="/static/assets/Tea/Chai_Tea.jpeg" alt="Card image Tea">
+            {% endif %}
             <div class="card-body">
                 <p class="card-title">Tea</p>
             </div>
@@ -45,7 +57,10 @@
 
     <a href="{% url 'drinks' 'other' %}" class="card-title">
         <div class="card">
+            {% if request.user.is_staff %}
+            {%else %}
             <img class="card-img-top" src="/static/assets/Other/Hot_Chocolate.jpeg" alt="Card image Other">
+            {% endif %}
             <div class="card-body">
                 <p class="card-title">Other</p>
             </div>
