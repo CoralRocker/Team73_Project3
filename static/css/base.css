@@ -70,8 +70,42 @@ ul{
     margin-top: 20px;
     margin-left: 10vw;
     margin-right: 10vw;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(5, 1fr);
     grid-gap: 20px;
+}
+
+@media screen and (max-width: 920px) {
+    .products {
+      grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media screen and (max-width: 750px) {
+    .products {
+      grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 750px) {
+    .products {
+      grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 570px) {
+    .products {
+      grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 440px) {
+    .products {
+      grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+.category-wrapper {
+    margin-left: 20px;
 }
 
 .menu-container{
@@ -80,9 +114,27 @@ ul{
 }
 
 .menu-home {
+    display: grid;
+    justify-content: center;
     margin-top: 25vh;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    margin-left: 10vw;
+    margin-right: 10vw;
+    grid-template-columns: repeat(5, 1fr);
     grid-gap: 20px;
+}
+
+@media screen and (max-width: 900px) {
+    .menu-home {
+        margin-top: 10vh;
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 620px) {
+    .menu-home {
+        margin-top: 10vh;
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .card-title {
@@ -114,6 +166,12 @@ ul{
     justify-content: space-between;
     align-items: center;
 }
+
+@media (max-width: 600px) {
+    .header_body {
+      display: block;
+    }
+  }
 
 .header_initials {
     font-weight: 600;
@@ -170,7 +228,7 @@ ul{
 .page_intro_intro{
     display: grid;
     margin-left: 20vw;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
 }
 
 .header_bxmenu{
@@ -238,12 +296,19 @@ ul{
 
 
 .meowbuckslogo {
-    height:300px;
+    height:auto;
+    min-width: 50px;
     display: flex;
     float: right;
-    margin-left: 50px;
+    margin-left: 100px;
     margin-top: 100px;
     scale: 400%;
+}
+
+@media screen and (max-width: 780px) {
+    .meowbuckslogo {
+        display: none;
+    }
 }
 
 .item-name-price{
