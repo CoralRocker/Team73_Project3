@@ -151,8 +151,6 @@ def CustomizationDetailView(request, pk):
         form = ToppingForm(request.POST)
     elif pk == 'mix':
         form = MixForm(request.POST)
-    elif pk ==  'foam':
-        form = FoamForm(request.POST)
         if request.method == 'POST':
             if form.is_valid():
                 for key, value in form.cleaned_data.items():
@@ -160,6 +158,8 @@ def CustomizationDetailView(request, pk):
                     if value and value != '':
                         orderItem.addCustomization(Customization.objects.get(name=name),float(value))
                 return redirect('item-detail', pk=orderItem.menu_item.id)
+    elif pk ==  'foam':
+        form = FoamForm(request.POST)
     elif pk == 'sweetener':
         form = SweetenerForm(request.POST)
         if request.method == 'POST':
