@@ -387,7 +387,8 @@ def FrequentPageView(request):
 # @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def RestockPageView(request):
-    if request.method == 'POST':
-        data = request.POST
-
-    return render(request,'analytics/restock.html')
+    start_date = "2022-12-10"
+    end_date = date.today()
+    finances = FinanceView(start_date,end_date)
+    report = finances.restockReport()
+    return render(request,'analytics/restock.html', {'report':report})
