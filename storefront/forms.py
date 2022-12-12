@@ -31,6 +31,7 @@ class CustomizationForm(forms.Form):
 
     size = forms.ChoiceField(required=False, 
                              widget=forms.Select(attrs={
+                                                    'value':'Grande',
                                                     'onchange':'submit()',
                                                     'form':'customization_form'})
                              )
@@ -44,7 +45,7 @@ class CustomizationForm(forms.Form):
     
     def setSizes(self, sizes):
         self.fields['size']._set_choices(sizes)
-        self.fields['size'].initial = self.fields['size']._get_choices()[0]
+        self.fields['size'].initial = 'Grande'
         self.fields['amount'].initial = 1
         
 class SplashForm(forms.Form):

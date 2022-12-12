@@ -285,7 +285,7 @@ def ItemDetailView(request, pk):
             return render(request, 'menu-home.html', {'hasCart':hasCart, 'order':order1})
     # If method is GET create a blank form
     else:
-        form = CustomizationForm(request.POST)
+        form = CustomizationForm()
         form.setSizes(item.getPossibleSizes())
 
         
