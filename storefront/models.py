@@ -259,7 +259,7 @@ class FinanceView():
     def excessReport(self, pct):
         usage = self.getInventoryUsage()
         
-        return usage.annotate(percent_usage=F('stock_used') / (F('stock')+F('stock_used'))).filter(percent_usage__lte=pct) 
+        return usage.annotate(percent_usage=F('stock_used') / (F('stock')+F('stock_used'))).filter(percent_usage__lte=pct).order_by('-percent_usage') 
 
     ##
     # @brief Return all Inventory items which have less than min_units*amount_per_unit stock
@@ -1099,14 +1099,17 @@ class Order(Model):
                     arr += ','
         arr += ')'
 
+        combonames = list(map(lambda x: list(map(lambda y: y.name, x)), zip(*combos)))
+
         # Create all SalesPair objects that don't already exist
         SalesPair.objects.bulk_create([SalesPair(date=self.date, item_a_name=p[0].name, item_a=p[0], item_b=p[1], item_b_name=p[1].name, amount=0) for p in combos], ignore_conflicts=True)
+        SalesPair.objects.filter(date=self.date, item_a_name__in=combonames[0], item_b_name__in=combonames[1]).update(amount=F('amount')+Value(1))
 
         ## Raw SQL Update
 
         # Add 1 to every SalesPair involved in this order
-        with connection.cursor() as cursor:
-            cursor.execute("UPDATE storefront_salespair SET amount=amount+1 WHERE (item_a_id, item_b_id) IN " + arr)
+        # with connection.cursor() as cursor:
+        #     cursor.execute("UPDATE storefront_salespair SET amount=amount+1 WHERE (item_a_id, item_b_id) IN " + arr)
  
         # print("SalesPairs Added")
 

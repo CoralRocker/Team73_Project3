@@ -3,7 +3,40 @@
 {% block items %}
 
 <div class="restock-form-container">
-    
+    <div class="report container" style="max-width:none;">
+        {% for restock in report %}
+            <div class="row ">
+                                                                                     
+              <div class="col-sm-4">
+                <b>{{restock.name}}</b>
+              </div>
+              <div class="col-sm-1">
+                <b> {{restock.num_units |floatformat:2}}</b>
+              </div>
+              <div class="col-sm-3">
+                <b>units remaining </b>
+              </div>
+              <div class="col-sm-1">
+                <b>{{restock.stock |floatformat:2}}</b>
+              </div>
+              <div class="col-sm-3">
+                <b>grams in stock</b>
+              </div>
+  
+            </div>
+        {% endfor %}
+        <hr>
+    </div>
+    <form class="container" id="sales-form" method="post">
+        {% csrf_token %}
+        <div class="container">
+          <div class="row">
+            <span class="col-sm-5">Minimum number of units required:</span>
+            <input class="col-sm-5" id="limit_amt" name="limit_amt" value=100 type="number"/>
+          </div>
+        </div>
+    </form>
+    <button class="btn btn-success mx-2 my-2 " type="submit" form="sales-form" > Generate Frequent Report </button>
 </div>
 
 {% endblock items %}

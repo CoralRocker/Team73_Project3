@@ -18,11 +18,15 @@
                 <img class="rounded float-left img-thumbnail" src="{{sale.image}}" alt="Image for {{sale.name}}" style="height:10vw;width:auto;"/> 
               </div>
                                                                                      
-              <div class="col-sm-9 d-flex justify-content-start align-items-center ">
-                <b>{{sale.size}} {{sale.name}}</b>&nbsp;x&nbsp;<b>{{sale.sales}}</b>
+              <div class="col-sm-7 d-flex justify-content-start align-items-center ">
+                <b>{{sale.size}} {{sale.name}}</b>
               </div>
-  
+
+              <div class="col-sm-2 d-flex justify-content-start align-items-center ">
+                <b>{{sale.sales}} sold</b>
+              </div>
             </div>
+            <hr>
         {% endfor %}
     </div>
     <form id="sales-form" class="container" method="post">

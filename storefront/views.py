@@ -356,10 +356,11 @@ def ExcessPageView(request):
         data = request.POST
         if "timestamp" in data:
             start_date = data.get("timestamp")
-        print(data)
+        pct = float(data.get('pct', 0.1))
+        
         end_date = date.today()
         finances = FinanceView(start_date, end_date)
-        report = finances.excessReport(.10)
+        report = finances.excessReport(pct)
 
     return render(request,'analytics/excess.html', {'report':report})
 
@@ -375,9 +376,11 @@ def FrequentPageView(request):
             start_date = data.get("start_date")
         if "end_date" in data:
             end_date = data.get("end_date")
+        
+        limit = int(data.get('limit_amt', 100))
 
         finances = FinanceView(start_date,end_date)
-        report = finances.sellsTogetherReportSorted(limit=100)
+        report = finances.sellsTogetherReportSorted(limit=limit)
 
     return render(request,'analytics/frequent.html', {'report':report})
 # @brief generates the page to view the restock report
@@ -385,7 +388,15 @@ def FrequentPageView(request):
 # @param request The HTTP Request object from the website
 # @return a render based on the reqeust, home.html, and a hash which is passed into the html
 def RestockPageView(request):
+    report = ""
     if request.method == 'POST':
         data = request.POST
+        limit = int(data.get('limit_amt', 100))
+        start_date = "2022-12-10"
+        end_date = date.today()
 
-    return render(request,'analytics/restock.html')
+        finances = FinanceView(start_date,end_date)
+        report = finances.restockReport(limit)
+
+
+    return render(request,'analytics/restock.html', {'report':report})

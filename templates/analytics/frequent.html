@@ -3,28 +3,51 @@
 {% block items %}
 
 <div class="frequent-form-container">
-    <style>
-        label {
-          display: inline-block;
-          width: 350px;
-          padding: 20px;
-          margin: 30px;
-        }
-    </style>
-    <div class="report">
+    <div class="report container" style="max-width:98%">
         {% for frequent in report %}
-            <div>{{frequent.item_a.name}}</div>
+        <div class="row">
+          <div class="col-sm-1">
+            <img class="rounded float-right img-thumbnail" 
+                 src="{{frequent.item_a.image}}"
+                 alt="Image of {{frequent.item_a_name}}"
+                 style="height:7.5vw;width:auto;"
+                 />
+          </div>
+          <span class="col-sm-4 d-flex align-items-center">
+            <b>{{frequent.item_a_name}}</b>
+          </span>
+          <div class="col-sm-1">
+            <img class="rounded float-right img-thumbnail" 
+                 src="{{frequent.item_b.image}}"
+                 alt="Image of {{frequent.item_b_name}}"
+                 style="height:7.5vw;width:auto;"
+                 />
+          </div>
+          <span class="col-sm-4 d-flex align-items-center">
+            <b>{{frequent.item_b_name}}</b>
+          </span>
+          <span class="col-sm-2 d-flex align-items-center">
+            <b>Sold together {{frequent.total}} time(s)</b>
+          </span>
+        </div>
+        <hr>
         {% endfor %}
     </div>
     <form class="container" id="sales-form" method="post">
         {% csrf_token %}
+        <div class="container">
         <div class="row">
-          <label class="col-sm-6" for="start_date">Enter Start Date as (yyyy-mm-dd):</label>
-          <input class="col-sm-6" id="start_date" name="start_date" type="date"/>
+          <span class="col-sm-5">Enter Start Date:</span>
+          <input class="col-sm-5" id="start_date" name="start_date" type="date" value=2021-01-01/>
         </div>
         <div class="row">
-          <label class="col-sm-6" for="end_date">Enter End Date</label>
-          <input class="col-sm-6" id="end_date" name="end_date" type="date"/>
+          <span class="col-sm-5">Enter End Date</span>
+          <input class="col-sm-5" id="end_date" name="end_date" type="date" value=2023-01-01/>
+        </div>
+        <div class="row">
+          <span class="col-sm-5">Enter Maximum Amount of Items to Show</span>
+          <input class="col-sm-5" id="limit_amt" name="limit_amt" value=100 type="number"/>
+        </div>
         </div>
     </form>
     <button class="btn btn-success mx-2 my-2 " type="submit" form="sales-form" > Generate Frequent Report </button>
