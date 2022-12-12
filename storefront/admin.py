@@ -25,6 +25,9 @@ class IngredientAdmin(admin.ModelAdmin):
     fields = ['menu_item', 'inventory', 'amount']
     readonly_fields = tuple()
 
+    def has_add_permission(self, request):
+        return True
+
 class CustomizationAdmin(admin.ModelAdmin):
     search_fields = ['id', 'name__icontains', 'type__iexact']
 
