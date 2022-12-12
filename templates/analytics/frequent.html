@@ -3,15 +3,7 @@
 {% block items %}
 
 <div class="frequent-form-container">
-    <style>
-        label {
-          display: inline-block;
-          width: 350px;
-          padding: 20px;
-          margin: 30px;
-        }
-    </style>
-    <div class="report container">
+    <div class="report container" style="width:100%">
         {% for frequent in report %}
         <div class="row">
           <span class="col-sm-4">
@@ -23,20 +15,27 @@
           </span>
           <span class="col-sm-1">&nbsp;=&nbsp;</span>
           <span class="col-sm-2">
-            <b>{{frequent.amount}}</b>
+            <b>{{frequent.total}}</b>
           </span>
         </div>
         {% endfor %}
+        <hr>
     </div>
     <form class="container" id="sales-form" method="post">
         {% csrf_token %}
+        <div class="container">
         <div class="row">
-          <label class="col-sm-6" for="start_date">Enter Start Date as (yyyy-mm-dd):</label>
-          <input class="col-sm-6" id="start_date" name="start_date" type="date"/>
+          <span class="col-sm-5">Enter Start Date:</span>
+          <input class="col-sm-5" id="start_date" name="start_date" type="date" value=2021-01-01/>
         </div>
         <div class="row">
-          <label class="col-sm-6" for="end_date">Enter End Date</label>
-          <input class="col-sm-6" id="end_date" name="end_date" type="date"/>
+          <span class="col-sm-5">Enter End Date</span>
+          <input class="col-sm-5" id="end_date" name="end_date" type="date" value=2023-01-01/>
+        </div>
+        <div class="row">
+          <span class="col-sm-5">Enter Maximum Amount of Items to Show</span>
+          <input class="col-sm-5" id="limit_amt" name="limit_amt" value=100 type="number"/>
+        </div>
         </div>
     </form>
     <button class="btn btn-success mx-2 my-2 " type="submit" form="sales-form" > Generate Frequent Report </button>
