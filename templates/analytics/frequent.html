@@ -11,9 +11,21 @@
           margin: 30px;
         }
     </style>
-    <div class="report">
+    <div class="report container">
         {% for frequent in report %}
-            <div>{{frequent.item_a.name}}</div>
+        <div class="row">
+          <span class="col-sm-4">
+            <b>{{frequent.item_a_name}}</b>
+          </span>
+          <span class="col-sm-1">&nbsp;+&nbsp;</span>
+          <span class="col-sm-4">
+            <b>{{frequent.item_b_name}}</b>
+          </span>
+          <span class="col-sm-1">&nbsp;=&nbsp;</span>
+          <span class="col-sm-2">
+            <b>{{frequent.amount}}</b>
+          </span>
+        </div>
         {% endfor %}
     </div>
     <form class="container" id="sales-form" method="post">
