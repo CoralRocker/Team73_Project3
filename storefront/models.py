@@ -856,7 +856,7 @@ class OrderItem(Model):
     #
     # @returns The cost to the customer
     def getPrice(self) -> float:
-        return float(self.cost)
+        return round(float(self.cost),2)
     
     ##
     # @brief Force a recalculation of the item's price and return it.
