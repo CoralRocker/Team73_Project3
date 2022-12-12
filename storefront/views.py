@@ -123,7 +123,7 @@ def CustomizationDetailView(request, pk):
                 for key, value in form.cleaned_data.items():
                     name = key.replace("_"," ")
                     if value and value != '':
-                        orderItem.addCustomization(Customization.objects.filter(Q(name=name) & Q(type='syrup')),float(value))
+                        orderItem.addCustomization(Customization.objects.filter(Q(name=name) & Q(type='syrup'))[0],float(value))
                 return redirect('item-detail', pk=orderItem.menu_item.id)
     elif pk ==  'coffee':
         form = ExtraShotForm(request.POST)
