@@ -358,7 +358,7 @@ def ExcessPageView(request):
             start_date = data.get("timestamp")
         print(data)
         end_date = date.today()
-        finances = FinanceView(start_date,end_date)
+        finances = FinanceView(start_date, end_date)
         report = finances.excessReport(.10)
 
     return render(request,'analytics/excess.html', {'report':report})
@@ -375,8 +375,9 @@ def FrequentPageView(request):
             start_date = data.get("start_date")
         if "end_date" in data:
             end_date = data.get("end_date")
+
         finances = FinanceView(start_date,end_date)
-        report = finances.sellsTogetherReport()
+        report = finances.sellsTogetherReportSorted(limit=100)
 
     return render(request,'analytics/frequent.html', {'report':report})
 # @brief generates the page to view the restock report

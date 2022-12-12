@@ -16,12 +16,16 @@
             <div>{{frequent.item_a.name}}</div>
         {% endfor %}
     </div>
-    <form id="sales-form" method="post">
+    <form class="container" id="sales-form" method="post">
         {% csrf_token %}
-        <label for="start_date">Enter Start Date as (yyyy-mm-dd):</label>
-        <input id="start_date" name="start_date" type="text"/>
-        <label for="end_date">Enter End Date as (yyyy-mm-dd):</label>
-        <input id="end_date" name="end_date" type="text"/>
+        <div class="row">
+          <label class="col-sm-6" for="start_date">Enter Start Date as (yyyy-mm-dd):</label>
+          <input class="col-sm-6" id="start_date" name="start_date" type="date"/>
+        </div>
+        <div class="row">
+          <label class="col-sm-6" for="end_date">Enter End Date</label>
+          <input class="col-sm-6" id="end_date" name="end_date" type="date"/>
+        </div>
     </form>
     <button class="btn btn-success mx-2 my-2 " type="submit" form="sales-form" > Generate Frequent Report </button>
 </div>

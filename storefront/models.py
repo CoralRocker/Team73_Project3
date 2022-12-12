@@ -308,11 +308,12 @@ class FinanceView():
     # @param descending Whether to sort in descending (True) or ascending (False) order
     # @param col The name of table column to sort on
     # @param disp A python function taking a single SalesPair and returning the value
+    # @param limit The maximum number of objects to get
     # to return in the sorted list. Basically your __repr__ function
-    def sellsTogetherReportSorted(self, descending=True, col='total', disp=lambda x: x):
+    def sellsTogetherReportSorted(self, descending=True, col='total', disp=lambda x: x, limit=100):
         totals = list(self.sellsTogetherReport().all())
         totals.sort(key=lambda x: eval(f"{-1.0 if descending else 1.0}*x.{col}"))
-        return [disp(x) for x in totals]
+        return [disp(x) for x in totals[:limit]]
 ##
 # @brief Model to track the usage of Inventory items per day
 #
@@ -378,9 +379,11 @@ class SalesPair(Model):
 
     ## The item with the smaller primary key
     item_a = ForeignKey('Menu', on_delete=CASCADE, related_name='item_a')
+    item_a_name = TextField()
 
     ## The item with the larger primary key
     item_b = ForeignKey('Menu', on_delete=CASCADE, related_name='item_b')
+    item_b_name = TextField()
 
     ## How frequently the pair were sold together
     amount = IntegerField()
@@ -395,14 +398,18 @@ class SalesPair(Model):
     # corresponding one, if it exists.
     @classmethod 
     def getOrCreate(cls, date, i1, i2):
-        objs = cls.objects.filter(date=date, item_a_id=min(i1.pk, i2.pk), item_b_id=max(i1.pk, i2.pk))
+        min_obj = min(i1, i2, key=lambda x: x.pk)
+        max_obj = max(i1, i2, key=lambda x: x.pk)
+        objs = cls.objects.filter(date=date, item_a_name=min_obj.name, item_b_name=max_obj.name)
 
         if objs.exists():
             return objs.first()
         else:
             obj = cls(date=date, 
-                      item_a=Menu.objects.get(pk=min(i1.pk, i2.pk)),
-                      item_b=Menu.objects.get(pk=max(i1.pk, i2.pk)),
+                      item_a=min_obj.pk,
+                      item_a_name=min_obj.name,
+                      item_b=max_obj.pk,
+                      item_b_name=max_obj.name,
                       amount=0)
             obj.save()
             return obj
@@ -411,7 +418,7 @@ class SalesPair(Model):
     class Meta:
         ## The Constraint that dates, item_a, and item_b must be unique for each instance
         constraints = [
-                UniqueConstraint(fields=['date', 'item_a', 'item_b'], name='a_b_unique')
+                UniqueConstraint(fields=['date', 'item_a_name', 'item_b_name'], name='a_b_unique')
             ]
 
 ##
@@ -1074,7 +1081,8 @@ class Order(Model):
         # print("Stock Updated")
 
         # Add purchased pairs to the SalesPairs table
-        sorted_items = self.items.order_by('id').values_list('id', flat=True)
+
+        sorted_items = self.items.order_by('id').all()
         num_items = self.items.count()
         if num_items < 2:
             return
@@ -1086,13 +1094,13 @@ class Order(Model):
         for i in range(num_items-1):
             for j in range(i+1,num_items):
                 combos.append((sorted_items[i],sorted_items[j]))
-                arr += f"({sorted_items[i]},{sorted_items[j]})"
+                arr += f"({sorted_items[i].pk},{sorted_items[j].pk})"
                 if not (i == num_items-2 and j == num_items-1):
                     arr += ','
         arr += ')'
 
         # Create all SalesPair objects that don't already exist
-        SalesPair.objects.bulk_create([SalesPair(date=self.date, item_a_id=p[0], item_b_id=p[1], amount=0) for p in combos], ignore_conflicts=True)
+        SalesPair.objects.bulk_create([SalesPair(date=self.date, item_a_name=p[0].name, item_a=p[0], item_b=p[1], item_b_name=p[1].name, amount=0) for p in combos], ignore_conflicts=True)
 
         ## Raw SQL Update
 
