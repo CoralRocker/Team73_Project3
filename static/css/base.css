@@ -169,8 +169,10 @@ ul{
 
 .page_intro_intro{
     display: grid;
-    grid-template-columns: 3fr 2fr;
+    margin-left: 20vw;
+    grid-template-columns: 1fr 1fr;
 }
+
 .header_bxmenu{
     display: none;
 }
@@ -213,7 +215,7 @@ ul{
     transition: .3s;
 }
 
-.intro_title span {
+.intro_title > span {
     color: var(--starbucks-green);
     transition: .3s;
 }
@@ -236,12 +238,12 @@ ul{
 
 
 .meowbuckslogo {
-    height:350px;
-    display: block;
-    opacity: 100;
-    position: absolute;
-    left: 60%;
-    top: 20%;
+    height:300px;
+    display: flex;
+    float: right;
+    margin-left: 50px;
+    margin-top: 100px;
+    scale: 400%;
 }
 
 .item-name-price{
